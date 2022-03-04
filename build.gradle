@@ -1,0 +1,29 @@
+plugins {
+  id 'com.palantir.baseline' version '4.74.0'
+  id 'org.inferred.processors' version '3.6.0'
+
+  id 'java'
+  id 'org.jetbrains.kotlin.jvm' version '1.6.10' apply false
+  id 'com.google.protobuf' version '0.8.14' apply false
+  id 'org.jetbrains.kotlin.plugin.spring' version '1.6.10' apply false
+  id 'org.springframework.boot' version '2.6.4' apply false
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
+}
+
+allprojects {
+  group = 'org.hse'
+  version = '0.0.1-SNAPSHOT'
+
+  sourceCompatibility = '17'
+
+  repositories {
+    mavenCentral()
+  }
+
+  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+      freeCompilerArgs = ["-Xjsr305=strict"]
+      jvmTarget = "17"
+    }
+  }
+}

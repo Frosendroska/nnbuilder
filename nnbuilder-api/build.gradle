@@ -1,0 +1,57 @@
+buildscript {
+  ext {
+    protobufVersion = '3.19.1'
+    grpcVersion = '1.42.1'
+  }
+}
+
+plugins {
+  id 'java'
+  id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+  id 'com.google.protobuf'
+}
+
+dependencies {
+  implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+  implementation 'io.grpc:grpc-stub:1.40.1'
+  implementation 'io.grpc:grpc-kotlin-stub:1.1.0'
+  implementation "com.google.protobuf:protobuf-java:$protobufVersion"
+  implementation "com.google.protobuf:protobuf-kotlin:$protobufVersion"
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
+
+  compileOnly "jakarta.annotation:jakarta.annotation-api:1.3.5" // Java 9+ compatibility - Do NOT update to 2.0.0
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:${protobufVersion}"
+  }
+
+  plugins {
+    grpc {
+      artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+    }
+    grpckt {
+      artifact = 'io.grpc:protoc-gen-grpc-kotlin:1.2.1:jdk7@jar'
+    }
+  }
+
+  generateProtoTasks {
+    all()*.plugins {
+      kotlin {}
+      grpc {}
+      grpckt {}
+    }
+  }
+
+  generatedFilesBaseDir = "$projectDir/src/generated"
+  clean {
+    delete generatedFilesBaseDir
+  }
+}
+
+idea {
+  module {
+    generatedSourceDirs += file('src/generated')
+  }
+}

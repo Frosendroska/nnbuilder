@@ -1,1 +1,1 @@
-# Constructor-of-nural-networks
+# Constructor-of-neural-networks
