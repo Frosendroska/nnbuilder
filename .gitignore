@@ -6,6 +6,10 @@ build/
 !**/src/test/**/build/
 generated/
 
+node_modules/
+dist/
+webpack-stats.json
+
 ### STS ###
 .apt_generated
 .classpath

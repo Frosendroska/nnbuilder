@@ -9,7 +9,10 @@ plugins {
   id 'java'
   id 'org.jetbrains.kotlin.jvm' version '1.6.10'
   id 'com.google.protobuf'
+  id 'com.moowork.node'
 }
+
+def isWindows = System.getProperty('os.name').toLowerCase().contains('windows')
 
 dependencies {
   implementation "io.grpc:grpc-protobuf:${grpcVersion}"
@@ -34,13 +37,26 @@ protobuf {
     grpckt {
       artifact = 'io.grpc:protoc-gen-grpc-kotlin:1.2.1:jdk7@jar'
     }
+    web {
+      path = file('./node_modules/.bin/protoc-gen-grpc-web' + (isWindows ? '.cmd' : ''))
+    }
   }
 
   generateProtoTasks {
+    all().each {
+      it.dependsOn npm_install
+    }
+
     all()*.plugins {
       kotlin {}
       grpc {}
       grpckt {}
+      js {
+        option 'import_style=commonjs,binary'
+      }
+      web {
+        option 'import_style=commonjs+dts,mode=grpcweb'
+      }
     }
   }
 
@@ -48,6 +64,31 @@ protobuf {
   clean {
     delete generatedFilesBaseDir
   }
+}
+
+task copyJsToTs(type: Copy) {
+  dependsOn tasks.withType(com.google.protobuf.gradle.GenerateProtoTask)
+  from "$projectDir/src/generated/main/js"
+  into "$projectDir/src/generated/main/web"
+}
+
+task index(type: NpmTask) {
+  dependsOn copyJsToTs
+  args = ['run', 'index']
+}
+
+task copyDts(type: NpmTask) {
+  dependsOn npm_run_build
+  args = ['run', 'copy-dts']
+}
+
+npm_run_build {
+  dependsOn index
+}
+
+assemble.dependsOn npm_run_build, copyDts
+tasks.withType(com.google.protobuf.gradle.GenerateProtoTask).all {
+  dependsOn npm_install
 }
 
 idea {

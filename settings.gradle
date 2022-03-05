@@ -2,3 +2,4 @@ rootProject.name = 'nnbuilder'
 
 include 'nnbuilder'
 include 'nnbuilder-api'
+include 'frontend'

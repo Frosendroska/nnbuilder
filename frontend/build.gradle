@@ -1,0 +1,6 @@
+plugins {
+    id 'com.moowork.node'
+}
+
+assemble.dependsOn npm_run_build
+npm_run_build.dependsOn ':nnbuilder-api:assemble'

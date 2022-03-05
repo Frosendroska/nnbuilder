@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+
+service SumService {
+  rpc getSum (GetSumRequest) returns (GetSumResponse);
+}
+
+message GetSumRequest {
+  int64 lhs = 1;
+  int64 rhs = 2;
+}
+
+message GetSumResponse {
+  int64 sum = 1;
+}

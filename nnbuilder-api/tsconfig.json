@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "es2015",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./build/ts-lib",
+    "strict": true,
+    "allowJs": true,
+  },
+  "include": [
+    "./src/generated/main/web",
+  ],
+}
