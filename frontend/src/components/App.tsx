@@ -1,17 +1,45 @@
-import * as api from 'nnbuilder-api';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react'
+import * as api from '../clients'
 
-let client = new api.SumServicePromiseClient("", null);
+export default function App(): JSX.Element {
+    const [sum, setSum] = useState<number | undefined>(undefined)
+    const [lhs, setLhs] = useState<number | undefined>(undefined)
+    const [rhs, setRhs] = useState<number | undefined>(undefined)
 
-type AppProps = {};
+    return <div>
+        <h1>Sum Calculator</h1>
+        <form onSubmit={(event) => {
+            event.preventDefault()
 
-export default function App(_props: AppProps): JSX.Element {
-    const [sum, setSum] = useState<number | undefined>(undefined);
+            if (lhs === undefined || rhs === undefined) return;
 
-    useEffect(() => {
-        let request = new api.GetSumRequest().setLhs(1).setRhs(2)
-        client.getSum(request).then((value: api.GetSumResponse) => setSum(value.getSum))
-    }, [])
-
-    return <h1>{sum}</h1>;
+            const request = new api.GetSumRequest()
+                .setLhs(lhs)
+                .setRhs(rhs)
+            api.sumService.getSum(request).then((value: api.GetSumResponse) => {
+                setSum(value.getSum())
+            })
+        }}>
+            <label>
+                lhs:
+                <input
+                    type="number"
+                    value={lhs || ''}
+                    onChange={(event) => setLhs(Number(event.target.value))}
+                />
+            </label>
+            <br />
+            <label>
+                rhs:
+                <input
+                    type="number"
+                    value={rhs || ''}
+                    onChange={(event) => setRhs(Number(event.target.value))}
+                />
+            </label>
+            <br />
+            <input type="submit" value="Compute sum" />
+        </form>
+        <h2>Computed sum: {sum}</h2>
+    </div>
 }

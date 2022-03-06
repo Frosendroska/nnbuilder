@@ -1,7 +1,13 @@
 // shared config (dev and prod)
 const {resolve} = require('path');
 const BundleTracker = require('webpack-bundle-tracker');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+const parseConfigs = configs => Object.keys(configs || {}).reduce(
+    (acc, val) => ({ ...acc, [val]: JSON.stringify(configs[val]) }),
+    {},
+);
 
 module.exports = {
   resolve: {
@@ -41,8 +47,16 @@ module.exports = {
     ],
   },
   plugins: [
-    // new HtmlWebpackPlugin({template: 'index.html.ejs',}),
     new BundleTracker({filename: './webpack-stats.json'}),
+
+    new webpack.DefinePlugin({
+      'process.env': {
+        ...parseConfigs(dotenv.config({
+          path: '../.env'
+        })),
+        ...parseConfigs(process.env)
+      }
+    }),
   ],
   externals: {
     'react': 'React',
