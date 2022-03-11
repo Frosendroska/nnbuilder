@@ -18,9 +18,20 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+task bootRunDev(type: org.springframework.boot.gradle.tasks.run.BootRun) {
+  group = 'Application'
+
+  doFirst() {
+    main = bootJar.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    systemProperty 'spring.profiles.active', 'dev'
+  }
+}
+
 tasks.named('test') {
   useJUnitPlatform()
 }
+
 spotless {
   java {
     palantirJavaFormat()
@@ -29,7 +40,6 @@ spotless {
     ktlint()
   }
 }
-
 
 bootJar {
   dependsOn ':frontend:assemble'

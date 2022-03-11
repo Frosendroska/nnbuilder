@@ -49,5 +49,3 @@ node {
   npmVersion = '8.5.1'
   download = true
 }
-
-processResources.dependsOn('frontend:assemble')
