@@ -21,7 +21,7 @@ jobs:
       - restore_cache:
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
-          name: Install dependencies
+          name: Build
           command: ./gradlew build -x test -PisCI=true
       - save_cache:
           paths:
@@ -49,6 +49,18 @@ jobs:
       - run:
           name: Run tests
           command: ./gradlew test -x check -PisCI=true
+
+  check:
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    docker:
+      - image: cimg/openjdk:17.0.1
+    resource_class: medium
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: Run style validator
           command: ./gradlew check -PisCI=true
@@ -58,5 +70,8 @@ workflows:
     jobs:
       - build
       - test:
+          requires:
+            - build
+      - check:
           requires:
             - build
