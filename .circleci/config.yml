@@ -1,4 +1,8 @@
-version: 2
+version: 2.1
+
+orbs:
+  node: circleci/node@x.y
+
 jobs:
   build:
     environment:
@@ -9,6 +13,9 @@ jobs:
     resource_class: medium
     steps:
       - checkout
+      - node/install:
+        install-yarn: true
+        node-version: '17.6.0'
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
@@ -41,7 +48,7 @@ jobs:
           at: .
       - run:
           name: Run tests
-          command: ./gradlew test generateMergedReport -x check -PisCI=true
+          command: ./gradlew test -x check -PisCI=true
       - run:
           name: Run style validator
           command: ./gradlew check -PisCI=true
