@@ -33,6 +33,12 @@ allprojects {
     }
   }
 
+  node {
+    version = '17.6.0'
+    npmVersion = '8.5.1'
+    download = true
+  }
+
   spotless {
     format 'misc', {
       target '*.gradle', '*.md', '.gitignore', '*.json', '*.yaml'
@@ -42,10 +48,4 @@ allprojects {
       endWithNewline()
     }
   }
-}
-
-node {
-  version = '17.6.0'
-  npmVersion = '8.5.1'
-  download = true
 }

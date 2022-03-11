@@ -6,6 +6,7 @@ jobs:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
       - image: cimg/openjdk:17.0.1
+    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -33,6 +34,7 @@ jobs:
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
     docker:
       - image: cimg/openjdk:17.0.1
+    resource_class: medium
     steps:
       - checkout
       - attach_workspace:
