@@ -1,0 +1,83 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.0
+
+jobs:
+  build:
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    docker:
+      - image: cimg/openjdk:17.0.1
+    resource_class: medium
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          node-version: "17.6.0"
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - run:
+          name: Build
+          command: ./gradlew build -x test -PisCI=true
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+  test:
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    docker:
+      - image: cimg/openjdk:17.0.1
+    resource_class: medium
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          node-version: "17.6.0"
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command: ./gradlew test -x check -PisCI=true
+
+  check:
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+    docker:
+      - image: cimg/openjdk:17.0.1
+    resource_class: medium
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          node-version: "17.6.0"
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run style validator
+          command: ./gradlew check -PisCI=true
+
+workflows:
+  workflow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - check:
+          requires:
+            - build

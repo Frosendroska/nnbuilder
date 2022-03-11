@@ -6,9 +6,9 @@ buildscript {
 }
 
 plugins {
-  id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+  id 'org.jetbrains.kotlin.jvm'
   id 'com.google.protobuf'
-  id 'com.moowork.node'
+  id 'com.github.node-gradle.node'
 }
 
 def isWindows = System.getProperty('os.name').toLowerCase().contains('windows')
