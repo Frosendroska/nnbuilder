@@ -2,23 +2,27 @@ plugins {
   id 'com.github.node-gradle.node'
 }
 
+task awaitApi {
+  dependsOn ':nnbuilder-api:assemble'
+}
+
 task lint(type: NpmTask) {
-  dependsOn npm_install
+  dependsOn npm_install, awaitApi
   args = ['run', 'lint']
 }
 
 task lintApply(type: NpmTask) {
-  dependsOn npm_install
+  dependsOn npm_install, awaitApi
   args = ['run', 'lintApply']
 }
 
 task jest(type: NpmTask) {
-  dependsOn npm_install
+  dependsOn npm_install, awaitApi
   args = ['run', 'test']
 }
 
+npm_run_build.dependsOn awaitApi
 assemble.dependsOn npm_run_build
-npm_run_build.dependsOn ':nnbuilder-api:assemble'
 
 test.dependsOn jest
 check.dependsOn lint
