@@ -3,15 +3,18 @@ plugins {
 }
 
 task lint(type: NpmTask) {
+  dependsOn npm_install
   args = ['run', 'lint']
 }
 
 task lintApply(type: NpmTask) {
-    args = ['run', 'lintApply']
+  dependsOn npm_install
+  args = ['run', 'lintApply']
 }
 
 task jest(type: NpmTask) {
-    args = ['run', 'test']
+  dependsOn npm_install
+  args = ['run', 'test']
 }
 
 assemble.dependsOn npm_run_build
