@@ -3,6 +3,7 @@ const {resolve} = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const parseConfigs = configs => Object.keys(configs || {}).reduce(
   (acc, val) => ({ ...acc, [val]: JSON.stringify(configs[val]) }),
@@ -47,6 +48,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({template: 'index.html.ejs'}),
     new webpack.DefinePlugin({
       'process.env': {

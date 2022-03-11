@@ -14,7 +14,6 @@ jobs:
     steps:
       - checkout
       - node/install:
-          install-yarn: true
           node-version: "17.6.0"
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
@@ -45,7 +44,6 @@ jobs:
     steps:
       - checkout
       - node/install:
-          install-yarn: true
           node-version: "17.6.0"
       - attach_workspace:
           at: .
@@ -63,7 +61,6 @@ jobs:
     steps:
       - checkout
       - node/install:
-          install-yarn: true
           node-version: "17.6.0"
       - attach_workspace:
           at: .
