@@ -16,7 +16,6 @@ jobs:
       - node/install:
           install-yarn: true
           node-version: "17.6.0"
-          pkg-manager: npm
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
