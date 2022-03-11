@@ -15,7 +15,7 @@ jobs:
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Install dependencies
-          command: ./gradlew build -x test
+          command: ./gradlew build -x test -PisCI=true
       - save_cache:
           paths:
             - ~/.gradle/wrapper
@@ -41,10 +41,10 @@ jobs:
           at: .
       - run:
           name: Run tests
-          command: ./gradlew test generateMergedReport -x check
+          command: ./gradlew test generateMergedReport -x check -PisCI=true
       - run:
           name: Run style validator
-          command: ./gradlew check
+          command: ./gradlew check -PisCI=true
 
 workflows:
   version: 2
