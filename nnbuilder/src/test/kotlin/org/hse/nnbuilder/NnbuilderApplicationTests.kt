@@ -7,6 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest
 class NnbuilderApplicationTests {
 
     @Test
-    fun contextLoads() {
-    }
+    fun  contextLoads() {
+
+
+
+    };
+
+
+
 }

@@ -18,7 +18,7 @@ export default function App(): JSX.Element {
                 .setRhs(rhs)
             api.sumService.getSum(request).then((value: api.GetSumResponse) => {
                 setSum(value.getSum())
-            });;;;
+            });
         }}>
             <label>
                 lhs:
