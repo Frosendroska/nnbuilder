@@ -3,17 +3,22 @@ plugins {
   id 'org.inferred.processors' version '3.6.0'
 
   id 'java'
+  id 'com.moowork.node' version '1.3.1'
+  id 'com.diffplug.spotless' version '6.3.0'
+
   id 'org.jetbrains.kotlin.jvm' version '1.6.10' apply false
   id 'com.google.protobuf' version '0.8.14' apply false
   id 'org.jetbrains.kotlin.plugin.spring' version '1.6.10' apply false
   id 'org.springframework.boot' version '2.6.4' apply false
   id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
-  id 'com.moowork.node' version '1.3.1'
 }
 
 allprojects {
   group = 'org.hse'
   version = '0.0.1-SNAPSHOT'
+
+  apply plugin: 'java'
+  apply plugin: 'com.diffplug.spotless'
 
   sourceCompatibility = '17'
 
@@ -27,16 +32,22 @@ allprojects {
       jvmTarget = "17"
     }
   }
+
+  spotless {
+    format 'misc', {
+      target '*.gradle', '*.md', '.gitignore', '*.json', '*.yaml'
+
+      trimTrailingWhitespace()
+      indentWithSpaces()
+      endWithNewline()
+    }
+  }
 }
 
 node {
   version = '17.6.0'
   npmVersion = '8.5.1'
   download = true
-}
-
-artifacts {
-  archives jar
 }
 
 processResources.dependsOn('frontend:assemble')

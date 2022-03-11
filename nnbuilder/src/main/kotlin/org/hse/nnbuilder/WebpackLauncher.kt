@@ -6,8 +6,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import java.io.File
 import java.nio.file.Paths
-import java.util.*
+import java.util.Locale
 
+/**
+ * Webpack launcher for development environment.
+ */
 @Configuration
 @Profile("dev")
 open class WebpackLauncher {
@@ -16,7 +19,7 @@ open class WebpackLauncher {
         return WebpackRunner()
     }
 
-    class WebpackRunner: InitializingBean {
+    class WebpackRunner : InitializingBean {
         companion object {
             const val WEBPACK_SERVER_PROPERTY = "webpack-server-loaded"
 

@@ -2,7 +2,6 @@
 const merge = require('webpack-merge');
 const commonConfig = require('./common');
 const {resolve} = require('path');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge.merge(commonConfig, {
   mode: 'development',
@@ -13,7 +12,7 @@ module.exports = merge.merge(commonConfig, {
   ],
   output: {
     filename: 'bundle.[fullhash].js',
-    path: resolve(__dirname, '../../build/dist-dev/'),
+    path: resolve(__dirname, '../build/dist-dev/'),
   },
   devServer: {
     hot: true,

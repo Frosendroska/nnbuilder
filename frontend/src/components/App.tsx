@@ -11,7 +11,7 @@ export default function App(): JSX.Element {
         <form onSubmit={(event) => {
             event.preventDefault()
 
-            if (lhs === undefined || rhs === undefined) return;
+            if (lhs === undefined || rhs === undefined) return
 
             const request = new api.GetSumRequest()
                 .setLhs(lhs)

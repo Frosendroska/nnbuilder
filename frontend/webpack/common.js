@@ -2,18 +2,18 @@
 const {resolve} = require('path');
 const webpack = require('webpack');
 const dotenv = require('dotenv');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const parseConfigs = configs => Object.keys(configs || {}).reduce(
-    (acc, val) => ({ ...acc, [val]: JSON.stringify(configs[val]) }),
-    {},
+  (acc, val) => ({ ...acc, [val]: JSON.stringify(configs[val]) }),
+  {},
 );
 
 module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
-  context: resolve(__dirname, '../../src'),
+  context: resolve(__dirname, '../src'),
   output: {
     assetModuleFilename: 'images/[fullhash][ext][query]',
   },

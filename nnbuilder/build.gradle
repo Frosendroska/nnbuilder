@@ -1,5 +1,4 @@
 plugins {
-  id 'java'
   id 'org.jetbrains.kotlin.jvm'
   id 'org.jetbrains.kotlin.plugin.spring'
   id 'org.springframework.boot'
@@ -22,6 +21,15 @@ dependencies {
 tasks.named('test') {
   useJUnitPlatform()
 }
+spotless {
+  java {
+    palantirJavaFormat()
+  }
+  kotlin {
+    ktlint()
+  }
+}
+
 
 bootJar {
   dependsOn ':frontend:assemble'

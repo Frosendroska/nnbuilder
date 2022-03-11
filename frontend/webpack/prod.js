@@ -1,6 +1,6 @@
 // production config
 const merge = require('webpack-merge');
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const {resolve} = require('path');
 
 const commonConfig = require('./common');
@@ -10,7 +10,7 @@ module.exports = merge.merge(commonConfig, {
   entry: './index.tsx',
   output: {
     filename: 'bundle.[fullhash].min.js',
-    path: resolve(__dirname, '../../build/dist'),
+    path: resolve(__dirname, '../build/dist'),
   },
   plugins: [],
   optimization: {

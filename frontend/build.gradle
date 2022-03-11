@@ -1,6 +1,22 @@
 plugins {
-    id 'com.moowork.node'
+  id 'com.moowork.node'
+}
+
+task lint(type: NpmTask) {
+  args = ['run', 'lint']
+}
+
+task lintApply(type: NpmTask) {
+    args = ['run', 'lintApply']
+}
+
+task jest(type: NpmTask) {
+    args = ['run', 'test']
 }
 
 assemble.dependsOn npm_run_build
 npm_run_build.dependsOn ':nnbuilder-api:assemble'
+
+test.dependsOn jest
+check.dependsOn lint
+spotlessApply.dependsOn lintApply
