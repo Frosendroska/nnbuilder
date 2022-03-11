@@ -35,10 +35,8 @@ node {
   download = true
 }
 
-jar {
-  from('frontend/dist') {
-    into 'static'
-  }
+artifacts {
+  archives jar
 }
 
 processResources.dependsOn('frontend:assemble')

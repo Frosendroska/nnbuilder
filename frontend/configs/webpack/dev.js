@@ -13,16 +13,14 @@ module.exports = merge.merge(commonConfig, {
   ],
   output: {
     filename: 'bundle.[fullhash].js',
-    path: resolve(__dirname, '../../dist/webpack_bundles/'),
+    path: resolve(__dirname, '../../build/dist-dev/'),
   },
   devServer: {
     hot: true,
     port: process.env.FRONTEND_DEV_PORT,
   },
   devtool: 'eval-cheap-module-source-map',
-  plugins: [
-    new HtmlWebpackPlugin({template: 'index.html.ejs',}),
-  ],
+  plugins: [],
   optimization: {
     moduleIds: 'named',
   }

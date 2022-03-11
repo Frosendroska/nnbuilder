@@ -9,8 +9,8 @@ module.exports = merge.merge(commonConfig, {
   mode: 'production',
   entry: './index.tsx',
   output: {
-    filename: 'js/bundle.[fullhash].min.js',
-    path: resolve(__dirname, '../../dist/webpack_bundles'),
+    filename: 'bundle.[fullhash].min.js',
+    path: resolve(__dirname, '../../build/dist'),
   },
   plugins: [],
   optimization: {

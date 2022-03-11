@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "yarn run clean-dist && webpack build --config=configs/webpack/prod.js",
-    "clean-dist": "rm -f -r -d dist",
+    "clean-dist": "rm -f -r -d ./build/dist",
     "lint": "eslint './src' --ext .js,.jsx,.ts,.tsx --format stylish --fix",
     "start": "yarn run start-dev",
     "start-dev": "webpack-dev-server --config=configs/webpack/dev.js",
@@ -39,7 +39,6 @@
     "terser-webpack-plugin": "^5.3.1",
     "ts-loader": "^9.2.7",
     "webpack": "^5.70.0",
-    "webpack-bundle-tracker": "^1.4.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4",
     "webpack-merge": "^5.8.0"
