@@ -53,13 +53,13 @@ allprojects {
 }
 
 task buildProxyConfig(type: Exec) {
-  executable "sh"
-  args "scripts/dotenv.sh", ".env", "envoy.template.yaml", "build/envoy.yaml"
+  executable "scripts/dotenv.sh"
+  args ".env", "envoy.template.yaml", "build/envoy.yaml"
 }
 
 task buildDockerConfig(type: Exec) {
-  executable "sh"
-  args "scripts/dotenv.sh", ".env", "docker-compose.template.yaml", "build/docker-compose.yaml"
+  executable "scripts/dotenv.sh"
+  args ".env", "docker-compose.template.yaml", "build/docker-compose.yaml"
 }
 
 dockerCompose {

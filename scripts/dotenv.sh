@@ -1,7 +1,8 @@
-#!/usr/bin sh
+#!/usr/bin/env sh
 
 set -o allexport
-source "$(pwd)/$1"
+# shellcheck disable=SC1090
+. "$(pwd)/$1"
 set +o allexport
 
 envsubst < "$2" > "$3"
