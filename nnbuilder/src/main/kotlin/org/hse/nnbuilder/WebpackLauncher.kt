@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import java.io.File
-import java.nio.file.Paths
 import java.util.Locale
 
 /**
@@ -35,10 +34,9 @@ open class WebpackLauncher {
         }
 
         private fun startWebpackDevServer() {
-            val cmd = if (isWindows()) "cmd /c npm start" else "npm start"
-            println(Paths.get("").toAbsolutePath().toString())
+            val cmd = (if (isWindows()) listOf("cmd", "/c") else listOf()) + listOf("npm", "run", "start-dev")
 
-            ProcessBuilder(cmd.split(" "))
+            ProcessBuilder(cmd)
                 .directory(File("frontend"))
                 .redirectOutput(ProcessBuilder.Redirect.INHERIT)
                 .redirectError(ProcessBuilder.Redirect.INHERIT)
