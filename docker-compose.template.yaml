@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
     ports:
-      - ${GRPC_PROXY_PORT}:${GRPC_PROXY_PORT}
-      - ${GRPC_SERVER_PORT}:${GRPC_SERVER_PORT}
+      - "${GRPC_PROXY_PORT}:${GRPC_PROXY_PORT}"
+      - "${ENVOY_ADMIN_PORT}:${ENVOY_ADMIN_PORT}"
     volumes:
       - type: bind
         source: ./envoy.yaml
