@@ -5,6 +5,7 @@ plugins {
   id 'java'
   id 'com.github.node-gradle.node' version '3.2.1'
   id 'com.diffplug.spotless' version '6.3.0'
+  id 'com.palantir.docker-compose' version '0.32.0'
 
   id 'org.jetbrains.kotlin.jvm' version '1.6.10' apply false
   id 'com.google.protobuf' version '0.8.14' apply false
@@ -42,7 +43,7 @@ allprojects {
 
   spotless {
     format 'misc', {
-      target '*.gradle', '*.md', '.gitignore', '*.json', '*.yaml'
+      target '*.gradle', '*.md', '.gitignore', '*.json', '*.yaml', '*.sh'
 
       trimTrailingWhitespace()
       indentWithSpaces()
@@ -50,3 +51,18 @@ allprojects {
     }
   }
 }
+
+task buildProxyConfig(type: Exec) {
+  executable "sh"
+  args "scripts/dotenv.sh", ".env", "envoy.template.yaml", "build/envoy.yaml"
+}
+
+task buildDockerConfig(type: Exec) {
+  executable "sh"
+  args "scripts/dotenv.sh", ".env", "docker-compose.template.yaml", "build/docker-compose.yaml"
+}
+
+dockerCompose {
+  dockerComposeFile 'build/docker-compose.yaml'
+}
+dockerComposeUp.dependsOn buildProxyConfig, buildDockerConfig
