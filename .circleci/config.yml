@@ -21,7 +21,7 @@ jobs:
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Build
-          command: ./gradlew build -x test -PisCI=true
+          command: ./gradlew build -x test -x check -PisCI=true
       - save_cache:
           paths:
             - ~/.gradle/wrapper
