@@ -3,11 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "build": "yarn run clean-dist && webpack build --config=webpack/prod.js",
-    "clean-dist": "rm -f -r -d ./build/dist",
+    "build": "webpack build --config=webpack/prod.js",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --format stylish",
     "lintApply": "eslint ./src --ext .js,.jsx,.ts,.tsx --format stylish --fix",
-    "start": "yarn run start-dev",
     "start-dev": "webpack-dev-server --config=webpack/dev.js",
     "test": "jest"
   },
@@ -24,6 +22,7 @@
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "babel-loader": "^8.2.3",
+    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.0",
     "dotenv": "^16.0.0",
     "eslint": "^8.10.0",
