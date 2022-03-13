@@ -1,4 +1,4 @@
-# Nnbuilder
+# nnbuilder
 
 ## Development setup
 
