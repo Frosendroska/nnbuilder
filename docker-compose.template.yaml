@@ -5,6 +5,7 @@ services:
     image: envoyproxy/envoy:v1.21.0
     restart: unless-stopped
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
+    network_mode: ${ENVOY_DOCKER_NETWORK_MODE}
     ports:
       - "${GRPC_PROXY_PORT}:${GRPC_PROXY_PORT}"
       - "${ENVOY_ADMIN_PORT}:${ENVOY_ADMIN_PORT}"
