@@ -50,7 +50,7 @@ jobs:
           at: .
       - run:
           name: Run tests
-          command: ./gradlew test -x check
+          command: ./gradlew test codeCoverageReport -x check
       - codecov/upload
 
   check:
