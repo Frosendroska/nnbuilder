@@ -8,7 +8,7 @@ jobs:
   build:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
+      GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
     docker:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
@@ -38,7 +38,7 @@ jobs:
   test:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
+      GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
     docker:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
@@ -56,7 +56,7 @@ jobs:
   check:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
+      GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
     docker:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
