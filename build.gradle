@@ -70,7 +70,6 @@ dockerComposeUp.dependsOn buildProxyConfig, buildDockerConfig
 
 task codeCoverageReport(type: JacocoReport) {
   executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-  dependsOn test
 
   subprojects.each {
     sourceSets it.sourceSets.main
@@ -85,5 +84,6 @@ task codeCoverageReport(type: JacocoReport) {
 }
 
 codeCoverageReport.dependsOn {
+  test
   subprojects*.test
 }
