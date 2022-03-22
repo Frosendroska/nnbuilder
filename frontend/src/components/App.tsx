@@ -19,29 +19,31 @@ export default function App(): JSX.Element {
         })
     }, [lhs, rhs])
 
-    return <div>
-        <h1>Sum Calculator</h1>
-        <form onSubmit={onSubmit}>
-            <label>
-                lhs:
-                <input
-                    type="number"
-                    value={lhs || ''}
-                    onChange={(event) => setLhs(Number(event.target.value))}
-                />
-            </label>
-            <br />
-            <label>
-                rhs:
-                <input
-                    type="number"
-                    value={rhs || ''}
-                    onChange={(event) => setRhs(Number(event.target.value))}
-                />
-            </label>
-            <br />
-            <input type="submit" value="Compute sum" />
-        </form>
-        <h2>Computed sum: {sum}</h2>
-    </div>
+    return (
+        <div>
+            <h1>Sum Calculator</h1>
+            <form onSubmit={onSubmit}>
+                <label>
+                    lhs:
+                    <input
+                        type="number"
+                        value={lhs || ''}
+                        onChange={(event) => setLhs(Number(event.target.value))}
+                    />
+                </label>
+                <br />
+                <label>
+                    rhs:
+                    <input
+                        type="number"
+                        value={rhs || ''}
+                        onChange={(event) => setRhs(Number(event.target.value))}
+                    />
+                </label>
+                <br />
+                <input type="submit" value="Compute sum" />
+            </form>
+            <h2>Computed sum: {sum}</h2>
+        </div>
+    )
 }
