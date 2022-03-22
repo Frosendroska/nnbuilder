@@ -28,7 +28,7 @@ export default function App(): JSX.Element {
                     <input
                         type="number"
                         value={lhs || ''}
-                        onChange={(event) => setLhs(Number(event.target.value))}
+                        onChange={(event) => setLhs(parseInt(event.target.value))}
                     />
                 </label>
                 <br />
@@ -37,7 +37,7 @@ export default function App(): JSX.Element {
                     <input
                         type="number"
                         value={rhs || ''}
-                        onChange={(event) => setRhs(Number(event.target.value))}
+                        onChange={(event) => setRhs(parseInt(event.target.value))}
                     />
                 </label>
                 <br />
