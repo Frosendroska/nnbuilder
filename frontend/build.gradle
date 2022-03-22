@@ -18,7 +18,7 @@ task lintApply(type: NpmTask) {
 
 task jest(type: NpmTask) {
   dependsOn npm_install, awaitApi
-  args = ['run', 'test']
+  args = ['run', project.hasProperty("isCI") ? 'test-ci': 'test']
 }
 
 npm_run_build.dependsOn awaitApi

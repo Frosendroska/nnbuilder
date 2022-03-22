@@ -1,4 +1,4 @@
-# nnbuilder
+# nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/Frosendroska/nnbuilder?style=flat-square) ![Code Coverage](https://img.shields.io/codecov/c/github/Frosendroska/nnbuilder?style=flat-square) ![Lines of Code](https://img.shields.io/tokei/lines/github/Frosendroska/nnbuilder?style=flat-square)
 
 ## Development setup
 

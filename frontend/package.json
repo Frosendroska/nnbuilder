@@ -7,7 +7,8 @@
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --format stylish",
     "lintApply": "eslint ./src --ext .js,.jsx,.ts,.tsx --format stylish --fix",
     "start-dev": "webpack-dev-server --config=webpack/dev.js",
-    "test": "jest"
+    "test": "jest",
+    "test-ci": "jest --ci"
   },
   "author": "",
   "license": "",
@@ -32,7 +33,6 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
     "path": "^0.12.7",
-    "protoc-gen-ts": "^0.8.2",
     "react-hot-loader": "^4.13.0",
     "sass-loader": "^12.6.0",
     "source-map-loader": "^3.0.1",
