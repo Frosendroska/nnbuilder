@@ -58,7 +58,6 @@ allprojects {
       html.enabled false
     }
   }
-  test.dependsOn jacocoTestReport
 }
 
 task buildProxyConfig(type: Exec) {
