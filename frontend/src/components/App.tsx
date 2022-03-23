@@ -1,7 +1,11 @@
 import React, {useCallback, useState} from 'react'
-import * as api from '../clients'
+import * as api from 'nnbuilder-api'
 
-export default function App(): JSX.Element {
+type AppProps = {
+    sumService: api.SumServicePromiseClient
+}
+
+export default function App(props: AppProps): JSX.Element {
     const [sum, setSum] = useState<number | undefined>()
     const [lhs, setLhs] = useState<number | undefined>()
     const [rhs, setRhs] = useState<number | undefined>()
@@ -10,11 +14,10 @@ export default function App(): JSX.Element {
         event.preventDefault()
 
         if (lhs === undefined || rhs === undefined) return
-
         const request = new api.GetSumRequest()
             .setLhs(lhs)
             .setRhs(rhs)
-        api.sumService.getSum(request).then((value: api.GetSumResponse) => {
+        props.sumService.getSum(request).then((value: api.GetSumResponse) => {
             setSum(value.getSum())
         })
     }, [lhs, rhs])

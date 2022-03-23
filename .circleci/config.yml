@@ -2,12 +2,13 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.0
+  codecov: codecov/codecov@3.2.2
 
 jobs:
   build:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
     docker:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
@@ -21,7 +22,7 @@ jobs:
           key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - run:
           name: Build
-          command: ./gradlew build -x test -x check -PisCI=true
+          command: ./gradlew build -x test -x check
       - save_cache:
           paths:
             - ~/.gradle/wrapper
@@ -37,7 +38,7 @@ jobs:
   test:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
     docker:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
@@ -49,12 +50,13 @@ jobs:
           at: .
       - run:
           name: Run tests
-          command: ./gradlew test -x check -PisCI=true
+          command: ./gradlew test -x check
+      - codecov/upload
 
   check:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
+      GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
     docker:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
@@ -66,7 +68,7 @@ jobs:
           at: .
       - run:
           name: Run style validator
-          command: ./gradlew check -PisCI=true
+          command: ./gradlew check -x test
 
 workflows:
   workflow:

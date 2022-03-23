@@ -1,0 +1,16 @@
+# not code
+*.md
+*.yaml
+*.yml
+*.json
+
+# frontend
+webpack/
+
+# gradle
+gradle/
+gradlew
+gradlew.bat
+
+# extra
+scripts/
