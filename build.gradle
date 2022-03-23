@@ -3,7 +3,6 @@ plugins {
   id 'org.inferred.processors' version '3.6.0'
 
   id 'java'
-  id 'jacoco'
   id 'com.github.node-gradle.node' version '3.2.1'
   id 'com.diffplug.spotless' version '6.3.0'
   id 'com.palantir.docker-compose' version '0.32.0'
@@ -68,23 +67,3 @@ dockerCompose {
   dockerComposeFile 'build/docker-compose.yaml'
 }
 dockerComposeUp.dependsOn buildProxyConfig, buildDockerConfig
-
-task codeCoverageReport(type: JacocoReport) {
-  executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-  subprojects.each {
-    sourceSets it.sourceSets.main
-  }
-
-  reports {
-    xml.enabled true
-    xml.destination file("${buildDir}/reports/jacoco/report.xml")
-    html.enabled false
-    csv.enabled false
-  }
-}
-
-codeCoverageReport.dependsOn {
-  test
-  subprojects*.test
-}

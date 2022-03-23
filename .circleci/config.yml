@@ -68,7 +68,7 @@ jobs:
           at: .
       - run:
           name: Run style validator
-          command: ./gradlew check
+          command: ./gradlew check -x test
 
 workflows:
   workflow:
