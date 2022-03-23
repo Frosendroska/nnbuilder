@@ -1,6 +1,6 @@
 flag_management:
   default_rules:
-    carryforward: true
+    carryforward: false
   individual_flags:
     - name: front-end
       paths:
