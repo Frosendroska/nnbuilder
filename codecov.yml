@@ -1,7 +1,10 @@
-flags:
-  front-end:
-    paths:
-      - frontend
-  back-end:
-    paths:
-      - nnbuilder
+flag_management:
+  default_rules:
+    carryforward: true
+  individual_flags:
+    - name: front-end
+      paths:
+        - frontend
+    - name: back-end
+      paths:
+        - nnbuilder
