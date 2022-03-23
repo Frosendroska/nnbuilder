@@ -1,0 +1,7 @@
+flags:
+  front-end:
+    paths:
+      - frontend
+  back-end:
+    paths:
+      - nnbuilder
