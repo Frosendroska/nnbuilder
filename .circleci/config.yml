@@ -87,8 +87,7 @@ jobs:
       - setup_remote_docker
       - checkout
       - envsubst/install
-      - docker/install-docker-tools
-      - docker/check
+      - docker/install-docker-compose
       - attach_workspace:
           at: .
       - run: ./gradlew dockerComposeUp
