@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
   envsubst: sawadashota/envsubst@1.1.0
+  docker: circleci/docker@2.0.3
   codecov: codecov/codecov@3.2.2
 
 jobs:
@@ -85,6 +86,7 @@ jobs:
     steps:
       - checkout
       - envsubst/install
+      - docker/install-docker-compose
       - attach_workspace:
           at: .
       - run: ./gradlew dockerComposeUp
