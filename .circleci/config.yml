@@ -86,7 +86,7 @@ jobs:
     steps:
       - checkout
       - envsubst/install
-      - docker/install-docker-compose
+      - docker/install-docker-tools
       - attach_workspace:
           at: .
       - run: ./gradlew dockerComposeUp
