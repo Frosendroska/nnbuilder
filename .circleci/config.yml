@@ -82,7 +82,7 @@ jobs:
       ENVOY_PROXY_ENDPOINT_ADDRESS: 0.0.0.0
       ENVOY_DOCKER_NETWORK_MODE: host
     machine:
-      image: cimg/openjdk:17.0.1
+      image: ubuntu-2004:202111-02
     resource_class: medium
     steps:
       - checkout
