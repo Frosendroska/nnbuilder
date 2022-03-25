@@ -2,7 +2,7 @@
 
 set -eu
 
-if [ -f "$1" ]; then
+if [ ! -f "$1" ]; then
   echo 'Environment configuration file does not exist'
   exit 0
 fi
