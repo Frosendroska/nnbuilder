@@ -55,15 +55,15 @@ allprojects {
 
 task buildProxyConfig(type: Exec) {
   executable "scripts/dotenv.sh"
-  args "$projectDir/.env", "$projectDir/envoy.template.yaml", "$projectDir/build/envoy.yaml"
+  args "$projectDir/.env", "$projectDir/envoy.template.yaml", "$buildDir/envoy.yaml"
 }
 
 task buildDockerConfig(type: Exec) {
   executable "scripts/dotenv.sh"
-  args "$projectDir/.env", "$projectDir/docker-compose.template.yaml", "$projectDir/build/docker-compose.yaml"
+  args "$projectDir/.env", "$projectDir/docker-compose.template.yaml", "$buildDir/docker-compose.yaml"
 }
 
 dockerCompose {
-  dockerComposeFile 'build/docker-compose.yaml'
+  dockerComposeFile "$buildDir/docker-compose.yaml"
 }
 dockerComposeUp.dependsOn buildProxyConfig, buildDockerConfig
