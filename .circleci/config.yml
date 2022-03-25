@@ -84,9 +84,11 @@ jobs:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
     steps:
+      - setup_remote_docker
       - checkout
       - envsubst/install
       - docker/install-docker-tools
+      - docker/check
       - attach_workspace:
           at: .
       - run: ./gradlew dockerComposeUp
