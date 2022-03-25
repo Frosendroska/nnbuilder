@@ -71,6 +71,7 @@ jobs:
       - run:
           name: Run style validator
           command: ./gradlew check -x test
+
   docker-compose:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
@@ -80,16 +81,13 @@ jobs:
       ENVOY_ADMIN_PORT: 9091
       ENVOY_PROXY_ENDPOINT_ADDRESS: 0.0.0.0
       ENVOY_DOCKER_NETWORK_MODE: host
-    docker:
+    machine:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
     steps:
-      - setup_remote_docker
       - checkout
       - envsubst/install
       - docker/install-docker-compose
-      - attach_workspace:
-          at: .
       - run: ./gradlew dockerComposeUp
       - run: ./gradlew dockerComposeDown
 
@@ -103,6 +101,4 @@ workflows:
       - check:
           requires:
             - build
-      - docker-compose:
-          requires:
-            - build
+      - docker-compose
