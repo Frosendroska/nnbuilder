@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 if [ $# -ne 3 ]; then
   echo 'Usage: dotenv.sh DOT_ENV_FILE IN_FILE OUT_FILE'
