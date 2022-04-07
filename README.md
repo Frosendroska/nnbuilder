@@ -11,12 +11,13 @@
 
 ## Install database on MAC
 
- * brew install postgres
- * pg_ctl -D /usr/local/var/postgres start
- * psql postgres
- * postgres=# create database mydb;
- * postgres=# create user myuser with encrypted password 'mypass';
- * postgres=# grant all privileges on database mydb to myuser;
+ * `brew install postgres` installing postgresql
+ * `pg_ctl -D /usr/local/var/postgres start` start a database
+ * `psql postgres` go inside database
+ * `postgres=# create database nnbuilder;` make a database
+ * `postgres=# create user nnbuilder with encrypted password 'nnbuilder';` set a password
+ * `postgres=# grant all privileges on database nnbuilder to nnbuilder;` grant all privileges
+ * Then go to IDEA and tab on `database`->`+` and add new database with created password and username
 
 ### Helpful commands:
 
