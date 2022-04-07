@@ -1,4 +1,5 @@
-# nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/hse-mentorship/nnbuilder?style=flat-square) ![Lines of Code](https://img.shields.io/tokei/lines/github/hse-mentorship/nnbuilder?style=flat-square)
+# nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/hse-mentorship/nnbuilder?style=flat-square) 
+![Lines of Code](https://img.shields.io/tokei/lines/github/hse-mentorship/nnbuilder?style=flat-square)
 
 ## Development setup
 
@@ -8,6 +9,11 @@
 3. Run `gw idea assemble` to prepare the Intellij project and build intermediate files
 4. Run `gw dockerComposeUp` to enable proxy
 5. Open `nnbuilder.ipr` file in Intellij (on macOS run `open *.ipr`)
+
+## Install database on MAC
+ * brew install postgres
+ * pg_ctl -D /usr/local/var/postgres start
+ * psql postgres
 
 ### Helpful commands:
 
