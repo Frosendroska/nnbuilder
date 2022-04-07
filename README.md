@@ -1,5 +1,4 @@
-# nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/hse-mentorship/nnbuilder?style=flat-square) 
-![Lines of Code](https://img.shields.io/tokei/lines/github/hse-mentorship/nnbuilder?style=flat-square)
+# nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/hse-mentorship/nnbuilder?style=flat-square) ![Lines of Code](https://img.shields.io/tokei/lines/github/hse-mentorship/nnbuilder?style=flat-square)
 
 ## Development setup
 
@@ -11,9 +10,13 @@
 5. Open `nnbuilder.ipr` file in Intellij (on macOS run `open *.ipr`)
 
 ## Install database on MAC
+
  * brew install postgres
  * pg_ctl -D /usr/local/var/postgres start
  * psql postgres
+ * postgres=# create database mydb;
+ * postgres=# create user myuser with encrypted password 'mypass';
+ * postgres=# grant all privileges on database mydb to myuser;
 
 ### Helpful commands:
 
