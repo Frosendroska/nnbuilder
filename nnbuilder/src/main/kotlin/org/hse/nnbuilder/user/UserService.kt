@@ -3,6 +3,7 @@ package org.hse.nnbuilder.user
 import org.hse.nnbuilder.exception.InvalidPasswordException
 import org.hse.nnbuilder.exception.UserNotFoundException
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserService(
@@ -14,6 +15,10 @@ class UserService(
 
     fun findByEmail(email: String): User {
         return userRepository.findByEmail(email) ?: throw UserNotFoundException("User with email $email is not found.")
+    }
+
+    fun findById(id: Long): Optional<User> {
+        return userRepository.findById(id) ?: throw UserNotFoundException("User with id $id is not found.")
     }
 
     fun loginUser(email: String, password: String): User {

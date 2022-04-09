@@ -1,5 +1,6 @@
 package org.hse.nnbuilder.user
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
@@ -17,6 +18,7 @@ class User {
     var email = ""
 
     @Column
+    @JsonIgnore
     var password = ""
         get() = field
         set(value) {
