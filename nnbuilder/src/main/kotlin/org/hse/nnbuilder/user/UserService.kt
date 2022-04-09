@@ -9,7 +9,11 @@ import java.util.*
 class UserService(
         private val userRepository: UserRepository
 ) {
-    fun save(user: User): User {
+    fun save(userDTO: UserDTO): User {
+        val user = User()
+        user.name = userDTO.name
+        user.email = userDTO.email
+        user.password = userDTO.password
         return userRepository.save(user)
     }
 
