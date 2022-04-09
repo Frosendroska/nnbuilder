@@ -20,8 +20,11 @@ class User {
     var password = ""
         get() = field
         set(value) {
-            val passwordEncoder = BCryptPasswordEncoder()
-            field = passwordEncoder.encode(value)
+            field = BCryptPasswordEncoder().encode(value)
         }
+
+    fun checkPassword(enteredPassword: String): Boolean {
+        return BCryptPasswordEncoder().matches(enteredPassword, password)
+    }
 
 }
