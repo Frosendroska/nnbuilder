@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+/// Добавление нейрона
+service AddNeuron {
+  rpc AddNeuron (AddNeuronRequest) returns (AddNeuronResponse);
+}
+
+message AddNeuronRequest {
+}
+
+message AddNeuronResponse {
+}
+
+/// Удаление нейрона
+service DelNeuron {
+  rpc DelNeuron (DelNeuronRequest) returns (DelNeuronResponse);
+}
+
+message DelNeuronRequest {
+}
+
+message DelNeuronResponse {
+}

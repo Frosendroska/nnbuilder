@@ -1,4 +1,4 @@
 package org.hse.nnbuilder;
 
-public class RecurrentNeuralNetwork {
+public class RecurrentNeuralNetwork extends NeuralNetwork {
 }
