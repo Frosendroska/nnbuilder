@@ -1,15 +1,21 @@
 package org.hse.nnbuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.hse.nnbuilder.Layer.ActivationFunction;
 import org.hse.nnbuilder.Layer.LayerType;
 
-public class RecurrentNN extends NeuralNetwork {
+/**
+ * Cells: [0]Input | [1..n-2]Hidden | [n-1]Output
+ */
+public class RecurrentNN extends AbstractNeuralNetwork {
 
-    int defaultNumberOfLayers = 4;
+    /* Param for constructor for default network */
+    final int defaultNumberOfLayers = 4;
 
     RecurrentNN() {
-        nnType = NetworkType.FF;
+        nnType = NetworkType.RNN;
+        layers = new ArrayList<>();
         layers.add(new Layer(3, LayerType.InputCell));
         layers.add(new Layer(3, LayerType.RecurrentCell));
         layers.add(new Layer(3, LayerType.RecurrentCell));
@@ -18,47 +24,21 @@ public class RecurrentNN extends NeuralNetwork {
     }
 
     @Override
-    List<Layer> getNeuralNetworkInformation() {
+    public List<Layer> getNeuralNetworkInformation() {
         // TODO Понять, как сериализовывать для передачи пайторчу
         return null;
     }
 
     @Override
-    void addLayer(int i, LayerType lType) throws Exception {
+    public void addLayer(int i, LayerType lType) throws IllegalArgumentException {
+        // It is possible to add a layer with index [1...n-1]
         assert (0 < i && i < layers.size());
-        if (lType == LayerType.RecurrentCell) {
+        if (lType == LayerType.RecurrentCell || lType == LayerType.MemoryCell) {
             layers.add(i, (new Layer(lType)));
         } else {
-            throw new Exception("You can add only Recurrent layer"); // TODO Сделать нормальное исключение
+            throw new IllegalArgumentException("You can add only Recurrent or Memory layer");
         }
         assert true;
-    }
-
-    @Override
-    void delLayer(int i) {
-        assert (0 < i && i < layers.size() - 1);
-        layers.remove(i);
-    }
-
-    @Override
-    void changeActivationFunction(int i, ActivationFunction f) {
-        // Activation function exists only in Hidden layers
-        assert (0 < i && i < layers.size() - 1);
-        layers.get(i).setActivationFunction(f);
-    }
-
-    @Override
-    void addNeuron(int i) {
-        // Neuron can be added everywhere
-        assert (0 <= i && i < layers.size());
-        layers.get(i).addNeuron();
-    }
-
-    @Override
-    void delNeuron(int i) {
-        // Neuron can be deleted from everywhere
-        assert (0 <= i && i < layers.size());
-        layers.get(i).deleteNeuron();
     }
 
 }

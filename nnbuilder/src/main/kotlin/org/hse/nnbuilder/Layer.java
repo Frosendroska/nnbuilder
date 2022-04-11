@@ -37,7 +37,7 @@ class Layer implements Serializable {
     }
 
     /* Layer type */
-    private final LayerType lType;
+    final LayerType lType;
     /* Function for activation */
     private ActivationFunction activationFunction;
     /* List of neurons on this layer */
@@ -66,20 +66,12 @@ class Layer implements Serializable {
     }
 
     /**
-     * Increase the number of neurons in layer
+     * @param n Current number of neurons in this layer
+     * Set new number if neurons
      */
-    void addNeuron() {
-        assert (neurons >= 0);
-        neurons++;
-    }
-
-    /**
-     * Decrease the number of neurons in layer
-     */
-    void deleteNeuron() {
-        if (neurons >= 0) {
-            neurons--;
-        }
+    void changeNumberOfNeuron(int n) {
+        assert(n >0);
+        neurons = n;
     }
 
     /**

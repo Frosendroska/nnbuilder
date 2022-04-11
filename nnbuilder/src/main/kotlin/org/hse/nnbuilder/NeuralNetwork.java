@@ -8,18 +8,28 @@ import org.hse.nnbuilder.Layer.ActivationFunction;
  * https://www.asimovinstitute.org/neural-network-zoo/
  * Site that can help to specify Neural Network
  */
-public abstract class NeuralNetwork implements Serializable {
+interface NeuralNetwork extends Serializable {
     enum NetworkType {
         FF, // Feed Forward (Default is actually Perception)
         RNN, // Recurrent Neural Network
         LSTM, // Long Term Memory
-        DCN, // Deep Convolutional Network
+        CNN, // Deep Convolutional Network
     }
 
-    /* Type of Neural Network */
-    NetworkType nnType;
-    /* List of layers */
-    List<Layer> layers;
+    /**
+     * @return Type of network
+     */
+    abstract NetworkType getNNType();
+
+    /**
+     * @return Type of network
+     */
+    abstract List<Layer> getLayers();
+
+    /**
+     * @return Get default number of layers
+     */
+    abstract int getDefaultNumberOfLayers();
 
     /**
      * @return json with full description of Neural Network
@@ -29,7 +39,7 @@ public abstract class NeuralNetwork implements Serializable {
     /**
      * Add new layer
      */
-    abstract void addLayer(int i, Layer.LayerType lType) throws Exception;
+    abstract void addLayer(int i, Layer.LayerType lType) throws IllegalArgumentException;
 
     /**
      * @param i The index of layer to be deleted
@@ -46,13 +56,9 @@ public abstract class NeuralNetwork implements Serializable {
 
     /**
      * @param i Index of the layer
+     * @param n New number of neurons
      * Add neuron to i'th layer
      */
-    abstract void addNeuron(int i);
+    abstract void changeNumberOfNeuron(int i, int n);
 
-    /**
-     * @param i Index of the layer
-     * Delete neuron on i'th layer
-     */
-    abstract void delNeuron(int i);
 }
