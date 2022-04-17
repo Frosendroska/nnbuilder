@@ -24,12 +24,6 @@ public class RecurrentNN extends AbstractNeuralNetwork {
     }
 
     @Override
-    public List<Layer> getNeuralNetworkInformation() {
-        // TODO Понять, как сериализовывать для передачи пайторчу
-        return null;
-    }
-
-    @Override
     public void addLayer(int i, LayerType lType) throws IllegalArgumentException {
         // It is possible to add a layer with index [1...n-1]
         assert (0 < i && i < layers.size());

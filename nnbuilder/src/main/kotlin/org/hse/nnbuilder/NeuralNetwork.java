@@ -34,7 +34,7 @@ interface NeuralNetwork extends Serializable {
     /**
      * @return json with full description of Neural Network
      */
-    abstract List<Layer> getNeuralNetworkInformation();
+    abstract String getNeuralNetworkInformation();
 
     /**
      * Add new layer

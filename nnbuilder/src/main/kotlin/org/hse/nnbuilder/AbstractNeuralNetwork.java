@@ -2,6 +2,8 @@ package org.hse.nnbuilder;
 
 import java.util.List;
 import org.hse.nnbuilder.Layer.ActivationFunction;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public abstract class AbstractNeuralNetwork implements NeuralNetwork {
     /* Type of Neural Network */
@@ -12,38 +14,53 @@ public abstract class AbstractNeuralNetwork implements NeuralNetwork {
     int defaultNumberOfLayers;
 
     @Override
-    public NetworkType getNNType() {
+    final public NetworkType getNNType() {
         return nnType;
     }
 
     @Override
-    public List<Layer> getLayers() {
+    final public List<Layer> getLayers() {
         return layers;
     }
 
     @Override
-    public int getDefaultNumberOfLayers() {
+    final public int getDefaultNumberOfLayers() {
         return defaultNumberOfLayers;
     }
 
     @Override
-    public void delLayer(int i) {
+    final public void delLayer(int i) {
         // It is possible to delete only hidden layers
         assert (0 < i && i < layers.size() - 1);
         layers.remove(i);
     }
 
     @Override
-    public void changeActivationFunction(int i, ActivationFunction f) {
+    final public void changeActivationFunction(int i, ActivationFunction f) {
         // Activation function exists only in Hidden layers
         assert (0 < i && i < layers.size() - 1);
         layers.get(i).setActivationFunction(f);
     }
 
     @Override
-    public void changeNumberOfNeuron(int i, int n) {
+    final public void changeNumberOfNeuron(int i, int n) {
         // Neuron can be added everywhere (input is fixed)
         assert (0 < i && i < layers.size());
         layers.get(i).changeNumberOfNeuron(n);
+    }
+
+    @Override
+    final public String getNeuralNetworkInformation() {
+        JSONObject jsonNeuralNetwork = new JSONObject();
+        // Put a type
+        jsonNeuralNetwork.put("NetworkType", nnType.toString());
+        // Put layers to JsonArray
+        JSONArray jsonLayers = new JSONArray();
+        for (var l : layers) {
+            jsonLayers.put(l.getLayerInformation());
+        }
+        // Put JsonArray to JSONObject
+        jsonNeuralNetwork.put("Layers", jsonLayers);
+        return null;
     }
 }

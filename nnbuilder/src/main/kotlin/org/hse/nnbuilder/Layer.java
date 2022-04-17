@@ -1,6 +1,7 @@
 package org.hse.nnbuilder;
 
 import java.io.Serializable;
+import org.json.JSONObject;
 
 class Layer implements Serializable {
     enum LayerType {
@@ -58,11 +59,10 @@ class Layer implements Serializable {
     }
 
     /**
-     * @return json with full description of Layer
+     * @return json string with full description of Layer
      */
-    Layer getLayerInformation() {
-        // TODO Понять, как сериализовывать для передачи пайторчу
-        return null;
+    JSONObject getLayerInformation() {
+        return new JSONObject(this);
     }
 
     /**
@@ -70,7 +70,7 @@ class Layer implements Serializable {
      * Set new number if neurons
      */
     void changeNumberOfNeuron(int n) {
-        assert(n >0);
+        assert (n > 0);
         neurons = n;
     }
 

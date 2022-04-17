@@ -2,24 +2,16 @@ syntax = "proto3";
 
 package org.hse.nnbuilder.services;
 
-/// Добавление нейрона
-service AddNeuron {
-  rpc AddNeuron (AddNeuronRequest) returns (AddNeuronResponse);
+/// LAYERS
+message LayerModification {
+  oneof modification {
+    int64 addLayer = 1;
+    int64 layerModify = 2;
+    int64 delLayer = 3;
+  }
 }
 
-message AddNeuronRequest {
-}
-
-message AddNeuronResponse {
-}
-
-/// Удаление нейрона
-service DelNeuron {
-  rpc DelNeuron (DelNeuronRequest) returns (DelNeuronResponse);
-}
-
-message DelNeuronRequest {
-}
-
-message DelNeuronResponse {
+/// NEURONS
+message NeuronsModification {
+  int64 changeNumberOfNeuron = 1;
 }
