@@ -7,9 +7,9 @@ import org.hse.nnbuilder.auth.Constants
 class SumService : SumServiceGrpcKt.SumServiceCoroutineImplBase() {
 
     override suspend fun getSum(request: Sum.GetSumRequest): Sum.GetSumResponse {
-        //clientId -- это получаемый id пользователя из передаваемого токена
-        //сейчас наш запрос в принципе не должен вызываться, потому что Status.UNAUTHENTICATED в Interceptor'e.
-        // Если раскоментировать нижние строки, то он перестает вызываться, почему-то......
+        // clientId -- это получаемый id пользователя из передаваемого токена
+        // Сейчас наш запрос в принципе не должен вызываться, потому что Status.UNAUTHENTICATED в Interceptor'e, однако все работает
+        // Но если раскоментировать нижние строки, то он перестает вызываться, почему-то......
 
 //        val clientId: String = Constants.CLIENT_ID_CONTEXT_KEY.get()
 //        println("Processing request from $clientId")
