@@ -9,17 +9,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 class User() {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long = 0
+    private var id: Long = 0
 
     @Column
-    var name = ""
+    private var name = ""
 
     @Column(unique = true)
-    var email = ""
+    private var email = ""
 
     @Column
     @JsonIgnore
-    var password = ""
+    private var password = ""
         get() = field
         set(value) {
             field = BCryptPasswordEncoder().encode(value)
@@ -33,6 +33,10 @@ class User() {
 
     fun checkPassword(enteredPassword: String): Boolean {
         return BCryptPasswordEncoder().matches(enteredPassword, password)
+    }
+
+    fun getId() : Long {
+        return id
     }
 
 }
