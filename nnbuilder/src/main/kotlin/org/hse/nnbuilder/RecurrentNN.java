@@ -11,16 +11,25 @@ import org.hse.nnbuilder.Layer.LayerType;
 public class RecurrentNN extends AbstractNeuralNetwork {
 
     /* Param for constructor for default network */
-    final int defaultNumberOfLayers = 4;
+    static final int defaultNumberOfLayers = 4;
 
+    /* Create empty Recurrent Neural Network */
     RecurrentNN() {
         nnType = NetworkType.RNN;
         layers = new ArrayList<>();
-        layers.add(new Layer(3, LayerType.InputCell));
-        layers.add(new Layer(3, LayerType.RecurrentCell));
-        layers.add(new Layer(3, LayerType.RecurrentCell));
-        layers.add(new Layer(3, LayerType.OutputCell));
-        assert (layers.size() == defaultNumberOfLayers);
+    }
+
+    /* Build default Recurrent Neural Network */
+    public static RecurrentNN buildDefaultRecurrentNN() {
+        RecurrentNN nn = new RecurrentNN();
+        nn.learningRate = 0.01f;
+        nn.layers.add(new Layer(3, LayerType.InputCell));
+        nn.layers.add(new Layer(3, LayerType.InputCell));
+        nn.layers.add(new Layer(3, LayerType.RecurrentCell));
+        nn.layers.add(new Layer(3, LayerType.RecurrentCell));
+        nn.layers.add(new Layer(3, LayerType.OutputCell));
+        assert (nn.layers.size() == defaultNumberOfLayers);
+        return nn;
     }
 
     @Override

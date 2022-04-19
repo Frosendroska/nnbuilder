@@ -5,13 +5,15 @@ import org.hse.nnbuilder.Layer.ActivationFunction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public abstract class AbstractNeuralNetwork implements NeuralNetwork {
+abstract class AbstractNeuralNetwork implements NeuralNetwork {
     /* Type of Neural Network */
     NetworkType nnType;
     /* List of layers */
     List<Layer> layers;
+    /* Learning rate */
+    float learningRate;
     /* Param for constructor for default network */
-    int defaultNumberOfLayers;
+    private int defaultNumberOfLayers;
 
     @Override
     final public NetworkType getNNType() {

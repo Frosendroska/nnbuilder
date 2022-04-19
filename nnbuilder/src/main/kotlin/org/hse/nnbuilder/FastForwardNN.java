@@ -10,14 +10,23 @@ import org.hse.nnbuilder.Layer.LayerType;
  */
 class FastForwardNN extends AbstractNeuralNetwork {
 
-    final int defaultNumberOfLayers = 2;
+    /* Param for constructor for default network */
+    private static final int defaultNumberOfLayers = 2;
 
+    /* Create empty Fast Forward Neural Network */
     FastForwardNN() {
         layers = new ArrayList<>();
         nnType = NetworkType.FF;
-        layers.add(new Layer(2, LayerType.InputCell));
-        layers.add(new Layer(1, LayerType.OutputCell));
-        assert (layers.size() == defaultNumberOfLayers);
+    }
+
+    /* Build default Fast Forward Neural Network */
+    public static FastForwardNN buildDefaultFastForwardNN() {
+        FastForwardNN nn = new FastForwardNN();
+        nn.learningRate = 0.01f;
+        nn.layers.add(new Layer(2, LayerType.InputCell));
+        nn.layers.add(new Layer(1, LayerType.OutputCell));
+        assert (nn.layers.size() == defaultNumberOfLayers);
+        return nn;
     }
 
     @Override

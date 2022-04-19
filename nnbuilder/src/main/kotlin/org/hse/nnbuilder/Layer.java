@@ -1,9 +1,8 @@
 package org.hse.nnbuilder;
 
-import java.io.Serializable;
 import org.json.JSONObject;
 
-class Layer implements Serializable {
+class Layer {
     enum LayerType {
         InputCell,
         BackfedInputCell,

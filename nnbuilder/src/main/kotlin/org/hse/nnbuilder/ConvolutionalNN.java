@@ -15,27 +15,35 @@ import org.hse.nnbuilder.Layer.LayerType;
 public class ConvolutionalNN extends AbstractNeuralNetwork {
 
     /* Param for constructor for default network */
-    final int defaultNumberOfLayers = 8;
+    private static final int defaultNumberOfLayers = 8;
 
+    /* Create empty Convolutional Neural Network */
     ConvolutionalNN() {
         nnType = NetworkType.CNN;
         layers = new ArrayList<>();
-        layers.add(new Layer(5, LayerType.InputCell));
-        layers.add(new Layer(5, LayerType.Kernel));
-        layers.add(new Layer(4, LayerType.ConvolutionalOrPool));
-        layers.add(new Layer(3, LayerType.ConvolutionalOrPool));
-        layers.add(new Layer(2, LayerType.ConvolutionalOrPool));
-        layers.add(new Layer(4, LayerType.HiddenCell));
-        layers.add(new Layer(4, LayerType.HiddenCell));
-        layers.add(new Layer(3, LayerType.OutputCell));
-        assert (layers.size() == defaultNumberOfLayers);
+    }
+
+    /* Build default Convolutional Neural Network */
+    public static ConvolutionalNN buildDefaultConvolutionalNN() {
+        ConvolutionalNN nn = new ConvolutionalNN();
+        nn.learningRate = 0.01f;
+        nn.layers.add(new Layer(5, LayerType.InputCell));
+        nn.layers.add(new Layer(5, LayerType.Kernel));
+        nn.layers.add(new Layer(4, LayerType.ConvolutionalOrPool));
+        nn.layers.add(new Layer(3, LayerType.ConvolutionalOrPool));
+        nn.layers.add(new Layer(2, LayerType.ConvolutionalOrPool));
+        nn.layers.add(new Layer(4, LayerType.HiddenCell));
+        nn.layers.add(new Layer(4, LayerType.HiddenCell));
+        nn.layers.add(new Layer(3, LayerType.OutputCell));
+        assert (nn.layers.size() == defaultNumberOfLayers);
+        return nn;
     }
 
     @Override
     public void addLayer(int i, LayerType lType) throws IllegalArgumentException {
         // It is possible to add a layer with index [1...n-1]
         assert (0 < i && i < layers.size());
-        int j = 0; // TODO написать красиво стримом
+        int j = 0;
         for (; j < layers.size(); j++) {
             if (layers.get(j).lType == LayerType.HiddenCell) {
                 break;
