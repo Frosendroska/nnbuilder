@@ -1,8 +1,8 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.services;
 
 import java.io.Serializable;
 import java.util.List;
-import org.hse.nnbuilder.Layer.ActivationFunction;
+import org.hse.nnbuilder.services.Layer.ActivationFunction;
 
 /**
  * https://www.asimovinstitute.org/neural-network-zoo/
@@ -22,9 +22,14 @@ interface NeuralNetwork extends Serializable {
     abstract NetworkType getNNType();
 
     /**
-     * @return Type of network
+     * @return List of layers
      */
     abstract List<Layer> getLayers();
+
+    /**
+     * @return Learning rate
+     */
+    abstract float getLearningRate();
 
     /**
      * @return Get default number of layers

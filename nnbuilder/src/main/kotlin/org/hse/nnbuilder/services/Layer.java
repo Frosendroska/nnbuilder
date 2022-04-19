@@ -1,5 +1,6 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.services;
 
+import org.hse.nnbuilder.services.NeuralNetwork.NetworkType;
 import org.json.JSONObject;
 
 class Layer {
@@ -36,25 +37,37 @@ class Layer {
         Gaussian
     }
 
-    /* Layer type */
-    final LayerType lType;
-    /* Function for activation */
-    private ActivationFunction activationFunction;
     /* List of neurons on this layer */
     private int neurons;
+    /* Layer type */
+    private final LayerType lType;
+    /* Function for activation */
+    private ActivationFunction activationFunction;
 
-    Layer(ActivationFunction f, int n, LayerType t) {
+    Layer(int n, ActivationFunction f, LayerType t) {
+        neurons = n;
         lType = t;
         activationFunction = f;
-        neurons = n;
     }
 
-    Layer(int i, LayerType t) {
-        this(ActivationFunction.None, i, t);
+    Layer(int n, LayerType t) {
+        this(n, ActivationFunction.None, t);
     }
 
     Layer(LayerType t) {
-        this(ActivationFunction.None, 1, t);
+        this(1, ActivationFunction.None,  t);
+    }
+
+    LayerType getLayerType() {
+        return lType;
+    }
+
+    ActivationFunction getActivationFunction() {
+        return activationFunction;
+    }
+
+    int getNeurons() {
+        return neurons;
     }
 
     /**

@@ -1,8 +1,7 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.services;
 
 import java.util.ArrayList;
-import java.util.List;
-import org.hse.nnbuilder.Layer.LayerType;
+import org.hse.nnbuilder.services.Layer.LayerType;
 
 /**
  * Cells: [0]Input | [1]Kernel | [2..i]ConvolutionOrPool | [i...n-2]Hidden | [n-1]Output
@@ -45,7 +44,7 @@ public class ConvolutionalNN extends AbstractNeuralNetwork {
         assert (0 < i && i < layers.size());
         int j = 0;
         for (; j < layers.size(); j++) {
-            if (layers.get(j).lType == LayerType.HiddenCell) {
+            if (layers.get(j).getLayerType() == LayerType.HiddenCell) {
                 break;
             }
         }

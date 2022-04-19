@@ -1,9 +1,7 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.services;
 
 import java.util.ArrayList;
-import java.util.List;
-import org.hse.nnbuilder.Layer.ActivationFunction;
-import org.hse.nnbuilder.Layer.LayerType;
+import org.hse.nnbuilder.services.Layer.LayerType;
 
 /**
  * Cells: [0]Input | [1..n-2]Hidden | [n-1]Output

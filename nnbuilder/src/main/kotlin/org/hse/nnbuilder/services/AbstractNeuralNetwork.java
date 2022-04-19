@@ -1,7 +1,7 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.services;
 
 import java.util.List;
-import org.hse.nnbuilder.Layer.ActivationFunction;
+import org.hse.nnbuilder.services.Layer.ActivationFunction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,6 +28,11 @@ abstract class AbstractNeuralNetwork implements NeuralNetwork {
     @Override
     final public int getDefaultNumberOfLayers() {
         return defaultNumberOfLayers;
+    }
+
+    @Override
+    final public float getLearningRate() {
+        return learningRate;
     }
 
     @Override
