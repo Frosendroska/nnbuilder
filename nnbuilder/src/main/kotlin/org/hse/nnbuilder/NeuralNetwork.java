@@ -1,20 +1,17 @@
-package org.hse.nnbuilder.services;
+package org.hse.nnbuilder;
 
 import java.io.Serializable;
 import java.util.List;
-import org.hse.nnbuilder.services.Layer.ActivationFunction;
+import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
+import org.hse.nnbuilder.services.Nnmodification.NetworkType;
+import org.hse.nnbuilder.services.Nnmodification.LayerType;
+
 
 /**
  * https://www.asimovinstitute.org/neural-network-zoo/
  * Site that can help to specify Neural Network
  */
 interface NeuralNetwork extends Serializable {
-    enum NetworkType {
-        FF, // Feed Forward (Default is actually Perception)
-        RNN, // Recurrent Neural Network
-        LSTM, // Long Term Memory
-        CNN, // Deep Convolutional Network
-    }
 
     /**
      * @return Type of network
@@ -44,7 +41,7 @@ interface NeuralNetwork extends Serializable {
     /**
      * Add new layer
      */
-    abstract void addLayer(int i, Layer.LayerType lType) throws IllegalArgumentException;
+    abstract void addLayer(int i, LayerType lType) throws IllegalArgumentException;
 
     /**
      * @param i The index of layer to be deleted

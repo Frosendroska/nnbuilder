@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+enum LayerType {
+  InputCell = 0;
+  BackfedInputCell = 1;
+  NoisyInputCell = 2;
+  HiddenCell = 3;
+  ProbablisticHiddenCell = 4;
+  SpikingHiddenCell = 5;
+  CapculeCell = 6;
+  OutputCell = 7;
+  MatchInputOutputCell = 8;
+  RecurrentCell = 9;
+  MemoryCell = 10;
+  GatedMemoryCell = 11;
+  Kernel = 12;
+  ConvolutionalOrPool = 13;
+}
+
+enum NetworkType {
+  FF = 0; // Feed Forward (Default is actually Perception)
+  RNN = 1; // Recurrent Neural Network
+  LSTM = 2; // Long Term Memory
+  CNN = 3; // Deep Convolutional Network
+}
+
+/**
+ * https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6
+ * Site with most used Activation functions
+ */
+enum ActivationFunction {
+  None = 0;
+  Linear = 1;
+  Sigmoid = 2;
+  Tanh = 3;
+  ReLU = 4;
+  LeakyReLU = 5;
+  Max = 6;
+  BinaryStep = 7;
+  Gaussian = 8;
+}
+
+service NNModificationServices {
+  rpc nnmodification (NNModificationRequest) returns (NNModificationResponse);
+}
+
+message NNModificationRequest {
+  int64 NNId = 1;
+  oneof nnmodification {
+    AddLayer addLayer = 2;
+    DelLayer delLayer = 3;
+    ChangeActivationFunction changeActivationFunction = 4;
+    ChangeNumberOfNeuron changeNumberOfNeuron = 5;
+  }
+}
+
+/// LAYERS
+message NNModificationResponse {
+  string exception = 1;
+}
+
+message AddLayer {
+  int64 index = 1;
+  LayerType lType = 2;
+}
+
+message DelLayer {
+  int64 index = 1;
+}
+
+message ChangeActivationFunction {
+  int64 index = 1;
+  LayerType lType = 2;
+}
+
+message ChangeNumberOfNeuron {
+  int64 index = 1;
+  LayerType lType = 2;
+}

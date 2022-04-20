@@ -1,7 +1,8 @@
-package org.hse.nnbuilder.services;
+package org.hse.nnbuilder;
 
 import java.util.ArrayList;
-import org.hse.nnbuilder.services.Layer.LayerType;
+import org.hse.nnbuilder.services.Nnmodification.LayerType;
+import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 
 /**
  * Cells: [0]Input | [1]Kernel | [2..i]ConvolutionOrPool | [i...n-2]Hidden | [n-1]Output
@@ -13,13 +14,11 @@ import org.hse.nnbuilder.services.Layer.LayerType;
  */
 public class ConvolutionalNN extends AbstractNeuralNetwork {
 
-    /* Param for constructor for default network */
-    private static final int defaultNumberOfLayers = 8;
-
     /* Create empty Convolutional Neural Network */
     ConvolutionalNN() {
         nnType = NetworkType.CNN;
         layers = new ArrayList<>();
+        defaultNumberOfLayers = 8;
     }
 
     /* Build default Convolutional Neural Network */
@@ -34,7 +33,7 @@ public class ConvolutionalNN extends AbstractNeuralNetwork {
         nn.layers.add(new Layer(4, LayerType.HiddenCell));
         nn.layers.add(new Layer(4, LayerType.HiddenCell));
         nn.layers.add(new Layer(3, LayerType.OutputCell));
-        assert (nn.layers.size() == defaultNumberOfLayers);
+        assert (nn.layers.size() == nn.defaultNumberOfLayers);
         return nn;
     }
 

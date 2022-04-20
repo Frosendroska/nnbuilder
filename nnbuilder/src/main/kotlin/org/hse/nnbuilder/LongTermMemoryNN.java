@@ -1,7 +1,8 @@
-package org.hse.nnbuilder.services;
+package org.hse.nnbuilder;
 
 import java.util.ArrayList;
-import org.hse.nnbuilder.services.Layer.LayerType;
+import org.hse.nnbuilder.services.Nnmodification.LayerType;
+import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 
 /**
  * Cells: [0]Input | [1..n-2]Hidden | [n-1]Output
@@ -12,6 +13,7 @@ public class LongTermMemoryNN extends RecurrentNN {
     LongTermMemoryNN() {
         nnType = NetworkType.LSTM;
         layers = new ArrayList<>();
+        defaultNumberOfLayers = 4;
     }
 
     /* Build default Long Short Term Memory Neural Network */
@@ -22,7 +24,7 @@ public class LongTermMemoryNN extends RecurrentNN {
         nn.layers.add(new Layer(3, LayerType.MemoryCell));
         nn.layers.add(new Layer(3, LayerType.MemoryCell));
         nn.layers.add(new Layer(3, LayerType.OutputCell));
-        assert (nn.layers.size() == defaultNumberOfLayers);
+        assert (nn.layers.size() == nn.defaultNumberOfLayers);
         return nn;
     }
 }

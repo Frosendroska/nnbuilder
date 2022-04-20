@@ -1,59 +1,65 @@
 plugins {
-  id 'jacoco'
-  id 'org.jetbrains.kotlin.jvm'
-  id 'org.jetbrains.kotlin.plugin.spring'
-  id 'org.springframework.boot'
-  id 'io.spring.dependency-management'
+    id 'jacoco'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.spring'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 }
 
 dependencies {
-  implementation project(':nnbuilder-api')
+    implementation project(':nnbuilder-api')
 
-  implementation 'org.springframework.boot:spring-boot-starter-webflux'
-  implementation 'org.jetbrains.kotlin:kotlin-reflect'
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
-  implementation 'io.grpc:grpc-kotlin-stub:1.1.0'
-  implementation 'net.devh:grpc-server-spring-boot-starter:2.12.0.RELEASE'
-  implementation 'org.json:json:20210307'
+    implementation 'io.grpc:grpc-kotlin-stub:1.1.0'
+    implementation 'net.devh:grpc-server-spring-boot-starter:2.12.0.RELEASE'
+    implementation 'org.json:json:20210307'
 
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-  testImplementation 'org.assertj:assertj-core:3.22.0'
-  testImplementation 'org.mockito:mockito-core:4.4.0'
-  testImplementation 'org.mockito:mockito-junit-jupiter:4.4.0'
-  testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0'
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testImplementation 'org.assertj:assertj-core:3.22.0'
+    testImplementation 'org.mockito:mockito-core:4.4.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.4.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
-  runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
 }
 
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+}
+
+
 tasks.named('test') {
-  useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 jacocoTestReport {
-  reports {
-    xml.enabled = true
-    html.enabled = false
-  }
+    reports {
+        xml.enabled = true
+        html.enabled = false
+    }
 }
 test {
-  finalizedBy jacocoTestReport
+    finalizedBy jacocoTestReport
 }
 
 spotless {
-  java {
-    palantirJavaFormat()
-  }
-  kotlin {
-    ktlint()
-  }
+    java {
+        palantirJavaFormat()
+    }
+    kotlin {
+        ktlint()
+    }
 }
 
 bootJar {
-  dependsOn ':frontend:assemble'
-  from('../frontend/build/dist') {
-    into 'static'
-  }
+    dependsOn ':frontend:assemble'
+    from('../frontend/build/dist') {
+        into 'static'
+    }
 }

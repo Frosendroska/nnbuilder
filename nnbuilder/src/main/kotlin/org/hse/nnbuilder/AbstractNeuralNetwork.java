@@ -1,9 +1,10 @@
-package org.hse.nnbuilder.services;
+package org.hse.nnbuilder;
 
 import java.util.List;
-import org.hse.nnbuilder.services.Layer.ActivationFunction;
+import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 
 abstract class AbstractNeuralNetwork implements NeuralNetwork {
     /* Type of Neural Network */
@@ -13,7 +14,7 @@ abstract class AbstractNeuralNetwork implements NeuralNetwork {
     /* Learning rate */
     float learningRate;
     /* Param for constructor for default network */
-    private int defaultNumberOfLayers;
+    int defaultNumberOfLayers;
 
     @Override
     final public NetworkType getNNType() {
@@ -26,7 +27,7 @@ abstract class AbstractNeuralNetwork implements NeuralNetwork {
     }
 
     @Override
-    final public int getDefaultNumberOfLayers() {
+    public int getDefaultNumberOfLayers() {
         return defaultNumberOfLayers;
     }
 
@@ -68,6 +69,6 @@ abstract class AbstractNeuralNetwork implements NeuralNetwork {
         }
         // Put JsonArray to JSONObject
         jsonNeuralNetwork.put("Layers", jsonLayers);
-        return null;
+        return jsonNeuralNetwork.toString();
     }
 }

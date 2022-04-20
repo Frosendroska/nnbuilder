@@ -1,41 +1,11 @@
-package org.hse.nnbuilder.services;
+package org.hse.nnbuilder;
 
-import org.hse.nnbuilder.services.NeuralNetwork.NetworkType;
+import java.io.Serializable;
+import org.hse.nnbuilder.services.Nnmodification.LayerType;
+import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.json.JSONObject;
 
-class Layer {
-    enum LayerType {
-        InputCell,
-        BackfedInputCell,
-        NoisyInputCell,
-        HiddenCell,
-        ProbablisticHiddenCell,
-        SpikingHiddenCell,
-        CapculeCell,
-        OutputCell,
-        MatchInputOutputCell,
-        RecurrentCell,
-        MemoryCell,
-        GatedMemoryCell,
-        Kernel,
-        ConvolutionalOrPool
-    }
-
-    /**
-     * https://towardsdatascience.com/activation-functions-neural-networks-1cbd9f8d91d6
-     * Site with most used Activation functions
-     */
-    enum ActivationFunction {
-        None,
-        Linear,
-        Sigmoid,
-        Tanh,
-        ReLU,
-        LeakyReLU,
-        Max,
-        BinaryStep,
-        Gaussian
-    }
+class Layer implements Serializable {
 
     /* List of neurons on this layer */
     private int neurons;
@@ -55,7 +25,7 @@ class Layer {
     }
 
     Layer(LayerType t) {
-        this(1, ActivationFunction.None,  t);
+        this(1, ActivationFunction.None, t);
     }
 
     LayerType getLayerType() {
@@ -73,8 +43,14 @@ class Layer {
     /**
      * @return json string with full description of Layer
      */
-    JSONObject getLayerInformation() {
-        return new JSONObject(this);
+    String getLayerInformation() {
+//        FastForwardNN nn = FastForwardNN.buildDefaultFastForwardNN();
+        JSONObject jsonLayer = new JSONObject();
+        jsonLayer.put("Number Of Neurons", neurons);
+        jsonLayer.put("Type Of Layer", lType);
+        jsonLayer.put("Activation Function", activationFunction);
+
+        return jsonLayer.toString();
     }
 
     /**

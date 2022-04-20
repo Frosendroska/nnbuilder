@@ -1,20 +1,19 @@
-package org.hse.nnbuilder.services;
+package org.hse.nnbuilder;
 
 import java.util.ArrayList;
-import org.hse.nnbuilder.services.Layer.LayerType;
+import org.hse.nnbuilder.services.Nnmodification.LayerType;
+import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 
 /**
  * Cells: [0]Input | [1..n-2]Hidden | [n-1]Output
  */
 class FastForwardNN extends AbstractNeuralNetwork {
 
-    /* Param for constructor for default network */
-    private static final int defaultNumberOfLayers = 2;
-
     /* Create empty Fast Forward Neural Network */
     FastForwardNN() {
         layers = new ArrayList<>();
         nnType = NetworkType.FF;
+        defaultNumberOfLayers = 2;
     }
 
     /* Build default Fast Forward Neural Network */
@@ -23,7 +22,7 @@ class FastForwardNN extends AbstractNeuralNetwork {
         nn.learningRate = 0.01f;
         nn.layers.add(new Layer(2, LayerType.InputCell));
         nn.layers.add(new Layer(1, LayerType.OutputCell));
-        assert (nn.layers.size() == defaultNumberOfLayers);
+        assert (nn.layers.size() == nn.defaultNumberOfLayers);
         return nn;
     }
 
@@ -37,5 +36,10 @@ class FastForwardNN extends AbstractNeuralNetwork {
             throw new IllegalArgumentException("You can add only Hidden layer");
         }
         assert true;
+    }
+
+    @Override
+    final public int getDefaultNumberOfLayers() {
+        return defaultNumberOfLayers;
     }
 }

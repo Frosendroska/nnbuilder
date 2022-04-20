@@ -51,6 +51,7 @@ allprojects {
       endWithNewline()
     }
   }
+
 }
 
 task buildProxyConfig(type: Exec) {
