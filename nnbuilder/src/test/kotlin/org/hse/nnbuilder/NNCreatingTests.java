@@ -8,6 +8,7 @@ import org.hse.nnbuilder.FastForwardNN;
 import org.hse.nnbuilder.Layer;
 import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 import org.junit.jupiter.api.Test;
+import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 
 import org.hse.nnbuilder.services.Nnmodification.LayerType;
 
@@ -24,8 +25,8 @@ public class NNCreatingTests {
         assertEquals(nn.getLayers().get(1).getLayerType(), LayerType.OutputCell);
 
         // ACTIVATION FUNCTION
-        assertEquals(nn.getLayers().get(0).getActivationFunction(), Layer.ActivationFunction.None);
-        assertEquals(nn.getLayers().get(1).getActivationFunction(), Layer.ActivationFunction.None);
+        assertEquals(nn.getLayers().get(0).getActivationFunction(), ActivationFunction.None);
+        assertEquals(nn.getLayers().get(1).getActivationFunction(), ActivationFunction.None);
 
         // SIZE
         assertEquals(nn.getLayers().size(), nn.getDefaultNumberOfLayers());
@@ -84,7 +85,7 @@ public class NNCreatingTests {
 
         // ACTIVATION FUNCTION
         for (int i = 0; i < 8; i++) {
-            assertEquals(nn.getLayers().get(i).getActivationFunction(), Layer.ActivationFunction.None);
+            assertEquals(nn.getLayers().get(i).getActivationFunction(), ActivationFunction.None);
 
         }
 
@@ -148,7 +149,7 @@ public class NNCreatingTests {
 
         // ACTIVATION FUNCTION
         for (int i = 0; i < 4; i++) {
-            assertEquals(nn.getLayers().get(i).getActivationFunction(), Layer.ActivationFunction.None);
+            assertEquals(nn.getLayers().get(i).getActivationFunction(), ActivationFunction.None);
         }
 
         // SIZE
@@ -208,7 +209,7 @@ public class NNCreatingTests {
 
         // ACTIVATION FUNCTION
         for (int i = 0; i < 4; i++) {
-            assertEquals(nn.getLayers().get(i).getActivationFunction(), Layer.ActivationFunction.None);
+            assertEquals(nn.getLayers().get(i).getActivationFunction(), ActivationFunction.None);
         }
 
         // SIZE
