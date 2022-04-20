@@ -15,5 +15,4 @@ class UserService(
     fun findByEmail(email: String): User {
         return userRepository.findByEmail(email) ?: throw UserNotFoundException("User with email $email is not found.")
     }
-
 }

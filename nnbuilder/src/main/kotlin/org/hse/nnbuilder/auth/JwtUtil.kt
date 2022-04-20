@@ -13,7 +13,7 @@ import java.security.SignatureException
 import java.util.Date
 
 @Component
-class JwtToken {
+class JwtUtil {
     @Value("\${JWT_SIGNING_KEY}")
     lateinit var jwtSigningKey: String
 
@@ -30,7 +30,7 @@ class JwtToken {
             .compact()
     }
 
-    //TODO обработать ошибки
+    // TODO обработать ошибки
     fun parseJwtToken(jwt: String): Authentication? {
         val claims = try {
             Jwts.parser().setSigningKey(jwtSigningKey).parseClaimsJws(jwt).body
@@ -50,5 +50,4 @@ class JwtToken {
             .build()
         return PreAuthenticatedAuthenticationToken(userDetails, jwt, userDetails.authorities)
     }
-
 }

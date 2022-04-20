@@ -1,8 +1,13 @@
 package org.hse.nnbuilder.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import javax.persistence.*
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
 @Table(name = "users")
@@ -25,7 +30,7 @@ class User() {
         }
 
     constructor(name: String, email: String, password: String) : this() {
-        this.name = name;
+        this.name = name
         this.email = email
         this.password = password
     }
@@ -41,5 +46,4 @@ class User() {
     fun getPassword(): String {
         return password
     }
-
 }

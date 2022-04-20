@@ -10,7 +10,6 @@ import org.springframework.security.authentication.ProviderManager
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
@@ -20,10 +19,10 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 open class SecurityConfiguration {
 
     @Autowired
-    private lateinit var userDetailsService: UserDetailsServiceImpl // or UserDetailsService?
+    private lateinit var userDetailsService: UserDetailsServiceImpl
 
     @Autowired
-    private lateinit var jwtToken: JwtToken
+    private lateinit var jwtToken: JwtUtil
 
     @Bean
     open fun authenticationManager(): AuthenticationManager {
@@ -39,9 +38,14 @@ open class SecurityConfiguration {
         return ProviderManager(daoAuthenticationProvider, preAuthenticatedAuthenticationProvider)
     }
 
-    //Reads the authentication data from the ServerCall
+    // Reads the authentication data from the ServerCall
     @Bean
     open fun authenticationReader(): GrpcAuthenticationReader {
         return BearerAuthenticationReader { token -> jwtToken.parseJwtToken(token) }
+    }
+
+    @Bean
+    open fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
+        return BCryptPasswordEncoder(10)
     }
 }

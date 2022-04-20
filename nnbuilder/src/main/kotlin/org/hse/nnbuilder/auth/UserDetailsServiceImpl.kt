@@ -11,20 +11,20 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 open class UserDetailsServiceImpl : UserDetailsService {
 
-        @Autowired
-        lateinit var userService: UserService
+    @Autowired
+    lateinit var userService: UserService
 
-        @Transactional
-        override fun loadUserByUsername(username: String): UserDetails {
-                val user = userService.findByEmail(username)
-                return User.builder()
-                    .username(user.getEmail())
-                    .password(user.getPassword())
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .disabled(false)
-                    .authorities("USER")
-                    .build()
-            }
+    @Transactional
+    override fun loadUserByUsername(username: String): UserDetails {
+        val user = userService.findByEmail(username)
+        return User.builder()
+            .username(user.getEmail())
+            .password(user.getPassword())
+            .accountExpired(false)
+            .accountLocked(false)
+            .credentialsExpired(false)
+            .disabled(false)
+            .authorities("ROLE_USER")
+            .build()
     }
+}
