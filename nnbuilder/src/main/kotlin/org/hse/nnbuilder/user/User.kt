@@ -20,23 +20,26 @@ class User() {
     @Column
     @JsonIgnore
     private var password = ""
-        get() = field
         set(value) {
             field = BCryptPasswordEncoder().encode(value)
         }
 
-    constructor(name: String, email:String, password:String) : this() {
-    this.name = name;
-    this.email = email
-    this.password = password
+    constructor(name: String, email: String, password: String) : this() {
+        this.name = name;
+        this.email = email
+        this.password = password
     }
 
-    fun checkPassword(enteredPassword: String): Boolean {
-        return BCryptPasswordEncoder().matches(enteredPassword, password)
-    }
-
-    fun getId() : Long {
+    fun getId(): Long {
         return id
+    }
+
+    fun getEmail(): String {
+        return email
+    }
+
+    fun getPassword(): String {
+        return password
     }
 
 }
