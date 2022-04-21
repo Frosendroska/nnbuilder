@@ -37,6 +37,8 @@ dependencies {
 
   implementation "io.grpc:grpc-stub:${grpcVersion}"
   implementation "io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}"
+
+  implementation 'org.json:json:20220320'
 }
 
 sourceSets {
