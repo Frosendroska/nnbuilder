@@ -39,6 +39,12 @@ dependencies {
   implementation "io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}"
 }
 
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+}
+
+
 tasks.named('test') {
   useJUnitPlatform()
 }

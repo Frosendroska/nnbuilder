@@ -2,6 +2,8 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.0
+  envsubst: sawadashota/envsubst@1.1.0
+  docker: circleci/docker@2.0.3
   codecov: codecov/codecov@3.2.2
 
 jobs:
@@ -17,24 +19,25 @@ jobs:
       - node/install:
           node-version: "17.6.0"
       - restore_cache:
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          key: gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
+          key: build-gradle-cache-v1-{{ checksum "build.gradle" }}
       - run:
           name: Build
           command: ./gradlew build -x test -x check
       - save_cache:
+          key: gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
           paths:
             - ~/.gradle/wrapper
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - save_cache:
+          key: build-gradle-cache-v1-{{ checksum "build.gradle" }}
           paths:
             - ~/.gradle/caches
-          key: v1-gradle-cache-{{ checksum "build.gradle" }}
       - persist_to_workspace:
-          root: .
+          root: /home/circleci
           paths:
-            - build
+            - project
+            - .gradle/init.gradle
   test:
     environment:
       _JAVA_OPTIONS: "-Xmx3g"
@@ -43,14 +46,21 @@ jobs:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci
+      - restore_cache:
+          key: gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: test-gradle-cache-v1-{{ checksum "build.gradle" }}
       - node/install:
           node-version: "17.6.0"
-      - attach_workspace:
-          at: .
       - run:
           name: Run tests
           command: ./gradlew test -x check
+      - save_cache:
+          key: test-gradle-cache-v1-{{ checksum "build.gradle" }}
+          paths:
+            - ~/.gradle/caches
       - codecov/upload
 
   check:
@@ -61,14 +71,50 @@ jobs:
       - image: cimg/openjdk:17.0.1
     resource_class: medium
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci
+      - restore_cache:
+          key: gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: check-gradle-cache-v1-{{ checksum "build.gradle" }}
       - node/install:
           node-version: "17.6.0"
-      - attach_workspace:
-          at: .
       - run:
           name: Run style validator
           command: ./gradlew check -x test
+      - save_cache:
+          key: check-gradle-cache-v1-{{ checksum "build.gradle" }}
+          paths:
+            - ~/.gradle/caches
+
+  docker-compose:
+    environment:
+      _JAVA_OPTIONS: "-Xmx3g"
+      GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
+      GRPC_SERVER_PORT: 9090
+      GRPC_PROXY_PORT: 8080
+      ENVOY_ADMIN_PORT: 9091
+      ENVOY_PROXY_ENDPOINT_ADDRESS: 0.0.0.0
+      ENVOY_DOCKER_NETWORK_MODE: host
+    machine:
+      image: ubuntu-2004:202111-02
+    resource_class: medium
+    steps:
+      - checkout
+      - restore_cache:
+          key: gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+      - restore_cache:
+          key: docker-compose-gradle-cache-v1-{{ checksum "build.gradle" }}
+      - envsubst/install
+      - docker/install-docker-compose
+      - run:
+          command: ./gradlew dockerComposeUp
+          no_output_timeout: 10m
+      - run: ./gradlew dockerComposeDown
+      - save_cache:
+          key: docker-compose-gradle-cache-v1-{{ checksum "build.gradle" }}
+          paths:
+            - ~/.gradle/caches
 
 workflows:
   workflow:
@@ -80,3 +126,4 @@ workflows:
       - check:
           requires:
             - build
+      - docker-compose
