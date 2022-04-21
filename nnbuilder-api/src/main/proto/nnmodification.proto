@@ -47,7 +47,7 @@ service NNModificationServices {
 }
 
 message NNModificationRequest {
-  int64 NNId = 1;
+  int64 nnId = 1;
   oneof nnmodification {
     AddLayer addLayer = 2;
     DelLayer delLayer = 3;
@@ -72,10 +72,10 @@ message DelLayer {
 
 message ChangeActivationFunction {
   int64 index = 1;
-  LayerType lType = 2;
+  ActivationFunction f = 2;
 }
 
 message ChangeNumberOfNeuron {
   int64 index = 1;
-  LayerType lType = 2;
+  int64 number = 2;
 }

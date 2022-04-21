@@ -1,8 +1,7 @@
 package org.hse.nnbuilder;
 
 import java.io.Serializable;
-import org.hse.nnbuilder.services.Nnmodification.LayerType;
-import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
+import org.hse.nnbuilder.services.Nnmodification.*;
 import org.json.JSONObject;
 
 class Layer implements Serializable {
@@ -44,7 +43,6 @@ class Layer implements Serializable {
      * @return json string with full description of Layer
      */
     String getLayerInformation() {
-//        FastForwardNN nn = FastForwardNN.buildDefaultFastForwardNN();
         JSONObject jsonLayer = new JSONObject();
         jsonLayer.put("Number Of Neurons", neurons);
         jsonLayer.put("Type Of Layer", lType);

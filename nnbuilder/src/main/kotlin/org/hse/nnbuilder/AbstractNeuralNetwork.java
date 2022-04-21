@@ -1,6 +1,8 @@
 package org.hse.nnbuilder;
 
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.json.JSONArray;
 import org.json.JSONObject;
