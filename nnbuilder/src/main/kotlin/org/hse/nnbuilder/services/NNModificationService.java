@@ -5,7 +5,7 @@ import static org.hse.nnbuilder.services.NNModificationServicesGrpc.getNnmodific
 import io.grpc.stub.StreamObserver;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationResponse;
 
-public class NNModificationServices extends NNModificationServicesGrpc.NNModificationServicesImplBase {
+public class NNModificationService extends NNModificationServicesGrpc.NNModificationServicesImplBase {
 
     @Override
     public void nnmodification(Nnmodification.NNModificationRequest request,

@@ -1,11 +1,9 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.nn;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.FileWriter;
-import org.hse.nnbuilder.FastForwardNN;
-import org.hse.nnbuilder.Layer;
 import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 import org.junit.jupiter.api.Test;
 import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
@@ -55,7 +53,7 @@ public class NNCreatingTests {
     public void jsonForwardNNTest() throws Exception {
         FastForwardNN nn = FastForwardNN.buildDefaultFastForwardNN();
 
-        String nnJson = nn.getNeuralNetworkInformation();
+        String nnJson = nn.NeuralNetworkInformation();
 
         File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonForwardNNTest.json");
         // TODO (нормальный путь к папке)
@@ -122,7 +120,7 @@ public class NNCreatingTests {
     public void jsonConvolutionalNNTest() throws Exception {
         ConvolutionalNN nn = ConvolutionalNN.buildDefaultConvolutionalNN();
 
-        String nnJson = nn.getNeuralNetworkInformation();
+        String nnJson = nn.NeuralNetworkInformation();
 
         File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonConvolutionalNNTest.json");
         // TODO (нормальный путь к папке)
@@ -181,7 +179,7 @@ public class NNCreatingTests {
     public void jsonRecurrentNNTest() throws Exception {
         RecurrentNN nn = RecurrentNN.buildDefaultRecurrentNN();
 
-        String nnJson = nn.getNeuralNetworkInformation();
+        String nnJson = nn.NeuralNetworkInformation();
 
         File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonRecurrentNNTest.json");
         // TODO (нормальный путь к папке)
@@ -241,7 +239,7 @@ public class NNCreatingTests {
     public void jsonLongTermMemoryNNTest() throws Exception {
         RecurrentNN nn = RecurrentNN.buildDefaultRecurrentNN();
 
-        String nnJson = nn.getNeuralNetworkInformation();
+        String nnJson = nn.NeuralNetworkInformation();
 
         File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonLongTermMemoryNNTest.json");
         // TODO (нормальный путь к папке)

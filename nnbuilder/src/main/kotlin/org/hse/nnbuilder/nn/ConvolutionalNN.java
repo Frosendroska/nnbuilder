@@ -1,4 +1,4 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.nn;
 
 import java.util.ArrayList;
 import org.hse.nnbuilder.services.Nnmodification.LayerType;

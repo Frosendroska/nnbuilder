@@ -17,6 +17,7 @@ enum LayerType {
   GatedMemoryCell = 11;
   Kernel = 12;
   ConvolutionalOrPool = 13;
+  Undefined = 14;
 }
 
 enum NetworkType {

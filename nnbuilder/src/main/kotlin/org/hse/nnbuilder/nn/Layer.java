@@ -1,31 +1,56 @@
-package org.hse.nnbuilder;
+package org.hse.nnbuilder.nn;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hse.nnbuilder.services.Nnmodification.*;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
+@Entity
 class Layer implements Serializable {
 
     /* List of neurons on this layer */
+    @Transient
     private int neurons;
     /* Layer type */
+    @Transient
     private final LayerType lType;
     /* Function for activation */
+    @Transient
     private ActivationFunction activationFunction;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    Layer(int n, ActivationFunction f, LayerType t) {
+    public Layer() {
+        this.lType = LayerType.Undefined;
+    }
+
+    public Layer(int n, ActivationFunction f, LayerType t) {
         neurons = n;
         lType = t;
         activationFunction = f;
     }
 
-    Layer(int n, LayerType t) {
+    public Layer(int n, LayerType t) {
         this(n, ActivationFunction.None, t);
     }
 
-    Layer(LayerType t) {
+    public Layer(LayerType t) {
         this(1, ActivationFunction.None, t);
     }
+
 
     LayerType getLayerType() {
         return lType;
@@ -66,5 +91,14 @@ class Layer implements Serializable {
      */
     void setActivationFunction(ActivationFunction f) {
         activationFunction = f;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
+    public Long getId() {
+        return id;
     }
 }
