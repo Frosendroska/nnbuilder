@@ -14,8 +14,8 @@ import org.hse.nnbuilder.services.Nnmodification.NetworkType;
         property = "nntype")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ConvolutionalNN.class, name = "CNN"),
-        @JsonSubTypes.Type(value = FastForwardNN.class, name = "FF"),
-        @JsonSubTypes.Type(value = LongTermMemoryNN.class, name = "LSTM"),
+        @JsonSubTypes.Type(value = FeedForwardNN.class, name = "FF"),
+        @JsonSubTypes.Type(value = LongShortTermMemoryNN.class, name = "LSTM"),
         @JsonSubTypes.Type(value = RecurrentNN.class, name = "RNN"),
 })
 public abstract class AbstractNeuralNetwork implements NeuralNetwork {
@@ -64,7 +64,7 @@ public abstract class AbstractNeuralNetwork implements NeuralNetwork {
     }
 
     @Override
-    public final void changeNumberOfNeuron(int i, int n) {
+    public final void changeNumberOfNeuron(int i, long n) {
         // Neuron can be added everywhere (input is fixed)
         assert (0 < i && i < layers.size());
         layers.get(i).changeNumberOfNeuron(n);

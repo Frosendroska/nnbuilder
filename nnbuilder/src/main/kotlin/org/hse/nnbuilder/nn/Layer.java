@@ -7,7 +7,7 @@ import org.hse.nnbuilder.services.Nnmodification.LayerType;
 public final class Layer implements Serializable {
 
     /* List of neurons on this layer */
-    private int neurons;
+    private long neurons;
     /* Layer type */
     private final LayerType layerType;
     /* Function for activation */
@@ -39,7 +39,7 @@ public final class Layer implements Serializable {
         return activationFunction;
     }
 
-    public int getNeurons() {
+    public long getNeurons() {
         return neurons;
     }
 
@@ -47,7 +47,7 @@ public final class Layer implements Serializable {
      * @param n Current number of neurons in this layer
      * Set new number if neurons
      */
-    public void changeNumberOfNeuron(int n) {
+    public void changeNumberOfNeuron(long n) {
         assert (n > 0);
         neurons = n;
     }

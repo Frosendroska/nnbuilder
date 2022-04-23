@@ -7,18 +7,18 @@ import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 /**
  * Cells: [0]Input | [1..n-2]Hidden | [n-1]Output
  */
-public class FastForwardNN extends AbstractNeuralNetwork {
+public class FeedForwardNN extends AbstractNeuralNetwork {
 
     /* Create empty Fast Forward Neural Network */
-    FastForwardNN() {
+    FeedForwardNN() {
         layers = new ArrayList<>();
         nnType = NetworkType.FF;
         defaultNumberOfLayers = 2;
     }
 
     /* Build default Fast Forward Neural Network */
-    public static FastForwardNN buildDefaultFastForwardNN() {
-        FastForwardNN nn = new FastForwardNN();
+    public static FeedForwardNN buildDefaultFastForwardNN() {
+        FeedForwardNN nn = new FeedForwardNN();
         nn.learningRate = 0.01f;
         nn.layers.add(new Layer(2, LayerType.InputCell));
         nn.layers.add(new Layer(1, LayerType.OutputCell));

@@ -4,7 +4,7 @@ package org.hse.nnbuilder.services;
 import "nnmodification.proto";
 
 service NNBuilderServices {
-  rpc nnmodification (NNBuildingRequest) returns (NNBuildingResponse);
+  rpc nnbuilder (NNBuildingRequest) returns (NNBuildingResponse);
 }
 
 message NNBuildingRequest {

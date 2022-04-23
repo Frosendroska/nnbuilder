@@ -1,9 +1,8 @@
 package org.hse.nnbuilder.nn.store;
 
-import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface NeuralNetworkRepository extends JpaRepository<NeuralNetworkStored, UUID> {
+public interface NeuralNetworkRepository extends JpaRepository<NeuralNetworkStored, Long> {
 }

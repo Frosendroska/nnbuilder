@@ -56,5 +56,5 @@ interface NeuralNetwork extends Serializable {
      * @param n New number of neurons
      * Add neuron to i'th layer
      */
-    void changeNumberOfNeuron(int i, int n);
+    void changeNumberOfNeuron(int i, long n);
 }

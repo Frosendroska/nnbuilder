@@ -12,7 +12,7 @@ public class NNCreatingTests {
     //////////////////////////// FastForwardNN
     @Test
     public void buildDefaultFastForwardNNTest() throws Exception {
-        FastForwardNN nn = FastForwardNN.buildDefaultFastForwardNN();
+        FeedForwardNN nn = FeedForwardNN.buildDefaultFastForwardNN();
 
         // TYPE
         assertEquals(nn.getNNType(), NetworkType.FF);
@@ -33,7 +33,7 @@ public class NNCreatingTests {
 
     @Test
     public void buildEmptyForwardNNTest() throws Exception {
-        FastForwardNN nn = new FastForwardNN();
+        FeedForwardNN nn = new FeedForwardNN();
 
         // TYPE
         assertEquals(nn.getNNType(), NetworkType.FF);
@@ -144,7 +144,7 @@ public class NNCreatingTests {
     //////////////////////////// LongTermMemoryNN
     @Test
     public void buildDefaultLongTermMemoryNNTest() throws Exception {
-        LongTermMemoryNN nn = LongTermMemoryNN.buildDefaultLongTermMemoryNN();
+        LongShortTermMemoryNN nn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
 
         // TYPE
         assertEquals(nn.getNNType(), NetworkType.LSTM);
@@ -171,7 +171,7 @@ public class NNCreatingTests {
 
     @Test
     public void buildLongTermMemoryNNTest() throws Exception {
-        LongTermMemoryNN nn = new LongTermMemoryNN();
+        LongShortTermMemoryNN nn = new LongShortTermMemoryNN();
 
         // TYPE
         assertEquals(nn.getNNType(), NetworkType.LSTM);
