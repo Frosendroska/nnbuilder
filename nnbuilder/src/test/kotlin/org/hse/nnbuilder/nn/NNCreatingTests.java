@@ -1,14 +1,11 @@
 package org.hse.nnbuilder.nn;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
-import java.io.FileWriter;
+import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
+import org.hse.nnbuilder.services.Nnmodification.LayerType;
 import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 import org.junit.jupiter.api.Test;
-import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
-
-import org.hse.nnbuilder.services.Nnmodification.LayerType;
 
 public class NNCreatingTests {
 
@@ -47,22 +44,6 @@ public class NNCreatingTests {
         // NUMBER OF NEURONS
         assertEquals(nn.getDefaultNumberOfLayers(), 2);
 
-    }
-
-    @Test
-    public void jsonForwardNNTest() throws Exception {
-        FastForwardNN nn = FastForwardNN.buildDefaultFastForwardNN();
-
-        String nnJson = nn.NeuralNetworkInformation();
-
-        File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonForwardNNTest.json");
-        // TODO (нормальный путь к папке)
-        f.createNewFile();
-
-        FileWriter writer = new FileWriter(f, false);
-        // запись всей строки
-        writer.write(nnJson);
-        writer.flush();
     }
 
     //////////////////////////// ConvolutionalNN
@@ -116,22 +97,6 @@ public class NNCreatingTests {
 
     }
 
-    @Test
-    public void jsonConvolutionalNNTest() throws Exception {
-        ConvolutionalNN nn = ConvolutionalNN.buildDefaultConvolutionalNN();
-
-        String nnJson = nn.NeuralNetworkInformation();
-
-        File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonConvolutionalNNTest.json");
-        // TODO (нормальный путь к папке)
-        f.createNewFile();
-
-        FileWriter writer = new FileWriter(f, false);
-        // запись всей строки
-        writer.write(nnJson);
-        writer.flush();
-    }
-
     //////////////////////////// RecurrentNN
     @Test
     public void buildDefaultRecurrentNNTest() throws Exception {
@@ -173,22 +138,6 @@ public class NNCreatingTests {
         // NUMBER OF NEURONS
         assertEquals(nn.getDefaultNumberOfLayers(), 4);
 
-    }
-
-    @Test
-    public void jsonRecurrentNNTest() throws Exception {
-        RecurrentNN nn = RecurrentNN.buildDefaultRecurrentNN();
-
-        String nnJson = nn.NeuralNetworkInformation();
-
-        File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonRecurrentNNTest.json");
-        // TODO (нормальный путь к папке)
-        f.createNewFile();
-
-        FileWriter writer = new FileWriter(f, false);
-        // запись всей строки
-        writer.write(nnJson);
-        writer.flush();
     }
 
 
@@ -233,22 +182,6 @@ public class NNCreatingTests {
         // NUMBER OF NEURONS
         assertEquals(nn.getDefaultNumberOfLayers(), 4);
 
-    }
-
-    @Test
-    public void jsonLongTermMemoryNNTest() throws Exception {
-        RecurrentNN nn = RecurrentNN.buildDefaultRecurrentNN();
-
-        String nnJson = nn.NeuralNetworkInformation();
-
-        File f = new File("/Users/katya/Desktop/University/Coding/Java/nnbuilder/artifacts/jsonLongTermMemoryNNTest.json");
-        // TODO (нормальный путь к папке)
-        f.createNewFile();
-
-        FileWriter writer = new FileWriter(f, false);
-        // запись всей строки
-        writer.write(nnJson);
-        writer.flush();
     }
 
 }
