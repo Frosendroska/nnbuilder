@@ -26,28 +26,28 @@ public class NNModificationService extends NNModificationServicesGrpc.NNModifica
             if (request.hasAddLayer()) {
                 NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
                 loaded.getNeuralNetwork().addLayer(
-                        request.getAddLayer().getIndex(),
-                        request.getAddLayer().getLType()
+                        request.getAddLayer().getIndex(), // i
+                        request.getAddLayer().getLType() // lType
                 );
             }
             if (request.hasDelLayer()) {
                 NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
                 loaded.getNeuralNetwork().delLayer(
-                        request.getDelLayer().getIndex()
+                        request.getDelLayer().getIndex() // i
                 );
             }
             if (request.hasChangeActivationFunction()) {
                 NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
                 loaded.getNeuralNetwork().changeActivationFunction(
-                        request.getChangeActivationFunction().getIndex(),
-                        request.getChangeActivationFunction().getF()
+                        request.getChangeActivationFunction().getIndex(), // i
+                        request.getChangeActivationFunction().getF() // f
                 );
             }
             if (request.hasChangeNumberOfNeuron()) {
                 NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
                 loaded.getNeuralNetwork().changeNumberOfNeuron(
-                        request.getChangeNumberOfNeuron().getIndex(),
-                        request.getChangeNumberOfNeuron().getNumber()
+                        request.getChangeNumberOfNeuron().getIndex(), // i
+                        request.getChangeNumberOfNeuron().getNumber() // n
                 );
             }
         } catch (IllegalArgumentException e) {
@@ -58,6 +58,7 @@ public class NNModificationService extends NNModificationServicesGrpc.NNModifica
             responseObserver.onNext(responseWithError);
             responseObserver.onCompleted();
         }
+
         NNModificationResponse responseWithOk = NNModificationResponse
                 .newBuilder()
                 .build();
