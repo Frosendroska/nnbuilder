@@ -1,25 +1,32 @@
 package org.hse.nnbuilder.services;
 
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.hse.nnbuilder.nn.ConvolutionalNN;
+import org.hse.nnbuilder.nn.FeedForwardNN;
+import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
+import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.nn.store.*;
 
-import static org.hse.nnbuilder.services.NNModificationServicesGrpc.getNnmodificationMethod;
+import static org.hse.nnbuilder.services.NNModificationServiceGrpc.getCreatennMethod;
+import static org.hse.nnbuilder.services.NNModificationServiceGrpc.getModifynnMethod;
 
 import io.grpc.stub.StreamObserver;
+import org.hse.nnbuilder.services.Nnmodification.NNBuildingResponse;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationResponse;
+import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @GrpcService
-public class NNModificationService extends NNModificationServicesGrpc.NNModificationServicesImplBase {
+public class NNModificationService extends NNModificationServiceGrpc.NNModificationServiceImplBase {
 
     @Autowired
     private NeuralNetworkRepository neuralNetworkRepository;
 
     @Override
-    public void nnmodification(Nnmodification.NNModificationRequest request,
-                               StreamObserver<NNModificationResponse> responseObserver) {
+    public void modifynn(Nnmodification.NNModificationRequest request,
+                         StreamObserver<NNModificationResponse> responseObserver) {
 
-        io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getNnmodificationMethod(), responseObserver);
+        io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getModifynnMethod(), responseObserver);
 
         try {
             Long nnId = request.getNnId();
@@ -61,6 +68,48 @@ public class NNModificationService extends NNModificationServicesGrpc.NNModifica
 
         NNModificationResponse responseWithOk = NNModificationResponse
                 .newBuilder()
+                .build();
+        responseObserver.onNext(responseWithOk);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void createnn(Nnmodification.NNBuildingRequest request,
+                         StreamObserver<Nnmodification.NNBuildingResponse> responseObserver) {
+
+        io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreatennMethod(), responseObserver);
+
+        long nnId = 0;
+
+        if (request.getNnType() == NetworkType.FF) {
+            FeedForwardNN ffnn = FeedForwardNN.buildDefaultFastForwardNN();
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(ffnn);
+            neuralNetworkRepository.save(nnStored);
+            nnId = nnStored.getId();
+
+        } else if (request.getNnType() == NetworkType.RNN) {
+            RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(rnn);
+            neuralNetworkRepository.save(nnStored);
+            nnId = nnStored.getId();
+
+        } else if (request.getNnType() == NetworkType.LSTM) {
+            LongShortTermMemoryNN lstmnn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(lstmnn);
+            neuralNetworkRepository.save(nnStored);
+            nnId = nnStored.getId();
+
+        } else if (request.getNnType() == NetworkType.CNN) {
+            ConvolutionalNN cnn = ConvolutionalNN.buildDefaultConvolutionalNN();
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(cnn);
+            neuralNetworkRepository.save(nnStored);
+            nnId = nnStored.getId();
+
+        }
+
+        NNBuildingResponse responseWithOk = NNBuildingResponse
+                .newBuilder()
+                .setNnId(nnId)
                 .build();
         responseObserver.onNext(responseWithOk);
         responseObserver.onCompleted();
