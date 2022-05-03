@@ -15,6 +15,7 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
+  string exception = 1;
 }
 
 message LoginRequest {
@@ -24,4 +25,5 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
+  string exception = 2;
 }
