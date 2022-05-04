@@ -7,11 +7,8 @@ import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.nn.store.*;
 
-import static org.hse.nnbuilder.services.NNModificationServiceGrpc.getCreatennMethod;
-import static org.hse.nnbuilder.services.NNModificationServiceGrpc.getModifynnMethod;
-
 import io.grpc.stub.StreamObserver;
-import org.hse.nnbuilder.services.Nnmodification.NNBuildingResponse;
+import org.hse.nnbuilder.services.Nnmodification.NNCreationResponse;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationResponse;
 import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +22,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
     @Override
     public void modifynn(Nnmodification.NNModificationRequest request,
                          StreamObserver<NNModificationResponse> responseObserver) {
-
-        io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getModifynnMethod(), responseObserver);
 
         try {
             Long nnId = request.getNnId();
@@ -64,6 +59,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .build();
             responseObserver.onNext(responseWithError);
             responseObserver.onCompleted();
+//            return;
         }
 
         NNModificationResponse responseWithOk = NNModificationResponse
@@ -74,10 +70,10 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
     }
 
     @Override
-    public void createnn(Nnmodification.NNBuildingRequest request,
-                         StreamObserver<Nnmodification.NNBuildingResponse> responseObserver) {
+    public void createnn(Nnmodification.NNCreationRequest request,
+                         StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
 
-        io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreatennMethod(), responseObserver);
+//        io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreatennMethod(), responseObserver);
 
         long nnId = 0;
 
@@ -107,7 +103,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
 
         }
 
-        NNBuildingResponse responseWithOk = NNBuildingResponse
+        NNCreationResponse responseWithOk = NNCreationResponse
                 .newBuilder()
                 .setNnId(nnId)
                 .build();
