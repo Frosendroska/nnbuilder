@@ -37,7 +37,6 @@ class SecurityCoroutineContext(
 class SecurityCoroutineContextInterceptor : CoroutineContextServerInterceptor() {
     // return a CoroutineContext in which to execute call and headers. Function will be called each time a call is executed.
     override fun coroutineContext(call: ServerCall<*, *>, headers: Metadata): CoroutineContext {
-        println("Interceptor!!")
         return Dispatchers.Default + SecurityCoroutineContext()
     }
 }
