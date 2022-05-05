@@ -17,11 +17,16 @@ import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 class GeneralNeuralNetwork(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        public val id: Long
+        private val id: Long
 ) {
-
-
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "generalNeuralNetwork")
-    public var nnversions: Set<NeuralNetworkStored> = LinkedHashSet()
+    private var nnversions: Set<NeuralNetworkStored> = LinkedHashSet()
 
+    fun getId(): Long {
+        return id
+    }
+
+    fun getNNVersions(): Set<NeuralNetworkStored> {
+        return nnversions
+    }
 }
