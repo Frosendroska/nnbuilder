@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+enum TaskName {
+  LearnNN = 0;
+  ApplyToData = 1;
+}
+
+enum TaskStatus {
+  HaveNotStarted = 0;
+  Processing = 1;
+  Done = 2;
+}
+
+service TasksQueueService {
+  rpc createtask (TaskCreationRequest) returns (TaskCreationResponse);
+}
+
+message TaskCreationRequest {
+  string name = 1;
+  int64 nnId = 2;
+  int64 dataId = 3;
+}
+
+message TaskCreationResponse {
+  int64 taskId = 1;
+}

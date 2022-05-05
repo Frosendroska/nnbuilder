@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.nn.store;
 
 import java.util.Random;
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -27,6 +26,7 @@ public final class NeuralNetworkStored {
         this.neuralNetwork = neuralNetwork;
     }
 
+    // Id
     public Long getId() {
         return id;
     }
@@ -35,6 +35,7 @@ public final class NeuralNetworkStored {
         this.id = id;
     }
 
+    // Abstract Neural Network
     public AbstractNeuralNetwork getNeuralNetwork() {
         return neuralNetwork;
     }
@@ -42,5 +43,4 @@ public final class NeuralNetworkStored {
     private void setNeuralNetwork(AbstractNeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
     }
-
 }
