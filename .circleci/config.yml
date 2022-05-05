@@ -44,6 +44,16 @@ jobs:
       GRADLE_OPTS: "--add-opens=java.prefs/java.util.prefs=ALL-UNNAMED -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dorg.gradle.parallel=true -Dorg.gradle.project.isCi=true"
     docker:
       - image: cimg/openjdk:17.0.1
+        environment:
+          ENV: CIRCLE
+          DATABASE_URL: postgresql://circleci@localhost/circle_test
+      - image: circleci/postgres:14.0
+        environment:
+          PGHOST: localhost
+          PGUSER: circleci
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circle_test
+          POSTGRES_HOST_AUTH_METHOD: trust
     resource_class: medium
     steps:
       - attach_workspace:
@@ -54,6 +64,9 @@ jobs:
           key: test-gradle-cache-v1-{{ checksum "build.gradle" }}
       - node/install:
           node-version: "17.6.0"
+      - run:
+          name: Wait for db to run
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Run tests
           command: ./gradlew test -x check
