@@ -52,21 +52,21 @@ public abstract class AbstractNeuralNetwork implements NeuralNetwork {
     @Override
     public final void delLayer(int i) {
         // It is possible to delete only hidden layers
-        assert (0 < i && i < layers.size() - 1);
+        /* assert (0 < i && i < layers.size() - 1); */
         layers.remove(i);
     }
 
     @Override
     public final void changeActivationFunction(int i, ActivationFunction f) {
         // Activation function exists only in Hidden layers
-        assert (0 < i && i < layers.size() - 1);
+        /* assert (0 < i && i < layers.size() - 1); */
         layers.get(i).setActivationFunction(f);
     }
 
     @Override
     public final void changeNumberOfNeuron(int i, long n) {
         // Neuron can be added everywhere (input is fixed)
-        assert (0 < i && i < layers.size());
+        /* assert (0 < i && i < layers.size()); */
         layers.get(i).changeNumberOfNeuron(n);
     }
 }
