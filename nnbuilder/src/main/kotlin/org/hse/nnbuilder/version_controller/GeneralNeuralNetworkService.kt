@@ -19,4 +19,12 @@ class GeneralNeuralNetworkService(
         return generalNeuralNetworkRepository.getById(id)
     }
 
+    /**
+     * Add new version - snapshot of neural network with given id
+     * @param id
+     */
+    fun addNewVersion(id: Long) {
+
+    }
+
 }
