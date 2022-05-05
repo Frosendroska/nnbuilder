@@ -1,13 +1,12 @@
 package org.hse.nnbuilder.services;
 
+import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.hse.nnbuilder.nn.ConvolutionalNN;
 import org.hse.nnbuilder.nn.FeedForwardNN;
 import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.nn.store.*;
-
-import io.grpc.stub.StreamObserver;
 import org.hse.nnbuilder.services.Nnmodification.NNCreationResponse;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationResponse;
 import org.hse.nnbuilder.services.Nnmodification.NetworkType;
@@ -21,41 +20,43 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
 
     @Override
     public void modifynn(
-            Nnmodification.NNModificationRequest request,
-            StreamObserver<NNModificationResponse> responseObserver) {
+            Nnmodification.NNModificationRequest request, StreamObserver<NNModificationResponse> responseObserver) {
 
         Long nnId = request.getNnId();
         if (request.hasAddLayer()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-            loaded.getNeuralNetwork().addLayer(
-                    request.getAddLayer().getIndex(), // i
-                    request.getAddLayer().getLType() // lType
-            );
+            loaded.getNeuralNetwork()
+                    .addLayer(
+                            request.getAddLayer().getIndex(), // i
+                            request.getAddLayer().getLType() // lType
+                            );
         }
         if (request.hasDelLayer()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-            loaded.getNeuralNetwork().delLayer(
-                    request.getDelLayer().getIndex() // i
-            );
+            loaded.getNeuralNetwork()
+                    .delLayer(
+                            request.getDelLayer().getIndex() // i
+                            );
         }
         if (request.hasChangeActivationFunction()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-            loaded.getNeuralNetwork().changeActivationFunction(
-                    request.getChangeActivationFunction().getIndex(), // i
-                    request.getChangeActivationFunction().getF() // f
-            );
+            loaded.getNeuralNetwork()
+                    .changeActivationFunction(
+                            request.getChangeActivationFunction().getIndex(), // i
+                            request.getChangeActivationFunction().getF() // f
+                            );
         }
         if (request.hasChangeNumberOfNeuron()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-            loaded.getNeuralNetwork().changeNumberOfNeuron(
-                    request.getChangeNumberOfNeuron().getIndex(), // i
-                    request.getChangeNumberOfNeuron().getNumber() // n
-            );
+            loaded.getNeuralNetwork()
+                    .changeNumberOfNeuron(
+                            request.getChangeNumberOfNeuron().getIndex(), // i
+                            request.getChangeNumberOfNeuron().getNumber() // n
+                            );
         }
 
-        NNModificationResponse responseWithOk = NNModificationResponse
-                .newBuilder()
-                .build();
+        NNModificationResponse responseWithOk =
+                NNModificationResponse.newBuilder().build();
         responseObserver.onNext(responseWithOk);
         responseObserver.onCompleted();
     }
@@ -89,10 +90,8 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             nnId = nnStored.getId();
         }
 
-        NNCreationResponse responseWithOk = NNCreationResponse
-                .newBuilder()
-                .setNnId(nnId)
-                .build();
+        NNCreationResponse responseWithOk =
+                NNCreationResponse.newBuilder().setNnId(nnId).build();
         responseObserver.onNext(responseWithOk);
         responseObserver.onCompleted();
     }

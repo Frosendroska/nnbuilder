@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.nn.store;
 
 import java.util.Random;
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -20,8 +19,7 @@ public final class NeuralNetworkStored {
     @Column(name = "content", columnDefinition = "text")
     private AbstractNeuralNetwork neuralNetwork = null;
 
-    public NeuralNetworkStored() {
-    }
+    public NeuralNetworkStored() {}
 
     public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
@@ -42,5 +40,4 @@ public final class NeuralNetworkStored {
     private void setNeuralNetwork(AbstractNeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
     }
-
 }

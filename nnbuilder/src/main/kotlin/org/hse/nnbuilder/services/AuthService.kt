@@ -29,8 +29,8 @@ open class AuthService : AuthServiceGrpcKt.AuthServiceCoroutineImplBase() {
             exception = e.message
         }
         return Auth.RegisterResponse.newBuilder()
-                .setException(exception)
-                .build()
+            .setException(exception)
+            .build()
     }
 
     @Override
@@ -39,7 +39,7 @@ open class AuthService : AuthServiceGrpcKt.AuthServiceCoroutineImplBase() {
         var jwt = ""
         try {
             val authentication = authenticationManager.authenticate(
-                    UsernamePasswordAuthenticationToken(request.email, request.password) // principal, credentials
+                UsernamePasswordAuthenticationToken(request.email, request.password) // principal, credentials
             )
             jwt = jwtToken.generateJwtToken(authentication)
         } catch (e: Exception) {
@@ -47,8 +47,8 @@ open class AuthService : AuthServiceGrpcKt.AuthServiceCoroutineImplBase() {
         }
 
         return Auth.LoginResponse.newBuilder()
-                .setToken(jwt)
-                .setException(exception)
-                .build()
+            .setToken(jwt)
+            .setException(exception)
+            .build()
     }
 }

@@ -1,5 +1,7 @@
+import net.ltgt.gradle.errorprone.CheckSeverity
+
 plugins {
-  id 'com.palantir.baseline' version '4.74.0'
+  id 'com.palantir.baseline' version '4.126.0' apply false
   id 'org.inferred.processors' version '3.6.0'
 
   id 'java'
@@ -22,6 +24,8 @@ allprojects {
 
   apply plugin: 'java'
   apply plugin: 'com.diffplug.spotless'
+  apply plugin: 'com.palantir.baseline-idea'
+  apply plugin: 'com.palantir.baseline-error-prone'
 
   sourceCompatibility = '17'
 
@@ -54,6 +58,17 @@ allprojects {
     }
   }
 
+  java {
+    tasks.withType(JavaCompile) {
+      options.errorprone {
+        check("Slf4jLogsafeArgs", CheckSeverity.OFF)
+        check("PreferSafeLoggableExceptions", CheckSeverity.OFF)
+        check("PreferSafeLogger", CheckSeverity.OFF)
+        check("PreferSafeLoggingPreconditions", CheckSeverity.OFF)
+        check("PreconditionsConstantMessage", CheckSeverity.OFF)
+      }
+    }
+  }
 }
 
 task buildProxyConfig(type: Exec) {
