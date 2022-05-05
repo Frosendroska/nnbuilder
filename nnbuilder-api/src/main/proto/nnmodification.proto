@@ -44,10 +44,11 @@ enum ActivationFunction {
 }
 
 service NNModificationService {
+  rpc createnn (NNCreationRequest) returns (NNCreationResponse);
   rpc modifynn (NNModificationRequest) returns (NNModificationResponse);
-  rpc createnn (NNBuildingRequest) returns (NNBuildingResponse);
 }
 
+// Modification neural network
 message NNModificationRequest {
   int64 nnId = 1;
   oneof nnmodification {
@@ -58,7 +59,6 @@ message NNModificationRequest {
   }
 }
 
-/// LAYERS
 message NNModificationResponse {
   string exception = 1;
 }
@@ -82,10 +82,11 @@ message ChangeNumberOfNeuron {
   int64 number = 2;
 }
 
-message NNBuildingRequest {
+// Creating new neural network
+message NNCreationRequest {
   NetworkType nnType = 1;
 }
 
-message NNBuildingResponse {
+message NNCreationResponse {
   int64 nnId = 1;
 }

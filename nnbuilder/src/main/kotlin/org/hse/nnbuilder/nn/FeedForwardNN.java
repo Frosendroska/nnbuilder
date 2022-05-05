@@ -22,19 +22,18 @@ public class FeedForwardNN extends AbstractNeuralNetwork {
         nn.learningRate = 0.01f;
         nn.layers.add(new Layer(2, LayerType.InputCell));
         nn.layers.add(new Layer(1, LayerType.OutputCell));
-        assert (nn.layers.size() == nn.defaultNumberOfLayers);
+        /* assert (nn.layers.size() == nn.defaultNumberOfLayers); */
         return nn;
     }
 
     @Override
     public void addLayer(int i, LayerType lType) throws IllegalArgumentException {
         // It is possible to add a layer with index [1...n-1]
-        assert (0 < i && i < layers.size());
+        /* assert (0 < i && i < layers.size()); */
         if (lType == LayerType.HiddenCell) {
             layers.add(i, new Layer(lType));
         } else {
             throw new IllegalArgumentException("You can add only Hidden layer");
         }
-        assert true;
     }
 }

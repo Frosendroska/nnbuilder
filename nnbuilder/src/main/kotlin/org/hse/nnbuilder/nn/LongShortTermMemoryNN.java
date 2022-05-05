@@ -24,7 +24,7 @@ public class LongShortTermMemoryNN extends RecurrentNN {
         nn.layers.add(new Layer(3, LayerType.MemoryCell));
         nn.layers.add(new Layer(3, LayerType.MemoryCell));
         nn.layers.add(new Layer(3, LayerType.OutputCell));
-        assert (nn.layers.size() == nn.defaultNumberOfLayers);
+        /* assert (nn.layers.size() == nn.defaultNumberOfLayers); */
         return nn;
     }
 }

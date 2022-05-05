@@ -48,7 +48,7 @@ public final class Layer implements Serializable {
      * Set new number if neurons
      */
     public void changeNumberOfNeuron(long n) {
-        assert (n > 0);
+        /* assert (n > 0); */
         neurons = n;
     }
 

@@ -33,14 +33,14 @@ public class ConvolutionalNN extends AbstractNeuralNetwork {
         nn.layers.add(new Layer(4, LayerType.HiddenCell));
         nn.layers.add(new Layer(4, LayerType.HiddenCell));
         nn.layers.add(new Layer(3, LayerType.OutputCell));
-        assert (nn.layers.size() == nn.defaultNumberOfLayers);
+        /* assert (nn.layers.size() == nn.defaultNumberOfLayers); */
         return nn;
     }
 
     @Override
     public void addLayer(int i, LayerType lType) throws IllegalArgumentException {
         // It is possible to add a layer with index [1...n-1]
-        assert (0 < i && i < layers.size());
+        /* assert (0 < i && i < layers.size()); */
         int j = 0;
         for (; j < layers.size(); j++) {
             if (layers.get(j).getLayerType() == LayerType.HiddenCell) {
@@ -62,7 +62,6 @@ public class ConvolutionalNN extends AbstractNeuralNetwork {
         } else {
             throw new IllegalArgumentException("You can add only Hidden and Convolutional layer");
         }
-        assert true;
     }
 
 }
