@@ -20,46 +20,37 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
     private NeuralNetworkRepository neuralNetworkRepository;
 
     @Override
-    public void modifynn(Nnmodification.NNModificationRequest request,
-                         StreamObserver<NNModificationResponse> responseObserver) {
+    public void modifynn(
+            Nnmodification.NNModificationRequest request,
+            StreamObserver<NNModificationResponse> responseObserver) {
 
-        try {
-            Long nnId = request.getNnId();
-            if (request.hasAddLayer()) {
-                NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-                loaded.getNeuralNetwork().addLayer(
-                        request.getAddLayer().getIndex(), // i
-                        request.getAddLayer().getLType() // lType
-                );
-            }
-            if (request.hasDelLayer()) {
-                NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-                loaded.getNeuralNetwork().delLayer(
-                        request.getDelLayer().getIndex() // i
-                );
-            }
-            if (request.hasChangeActivationFunction()) {
-                NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-                loaded.getNeuralNetwork().changeActivationFunction(
-                        request.getChangeActivationFunction().getIndex(), // i
-                        request.getChangeActivationFunction().getF() // f
-                );
-            }
-            if (request.hasChangeNumberOfNeuron()) {
-                NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
-                loaded.getNeuralNetwork().changeNumberOfNeuron(
-                        request.getChangeNumberOfNeuron().getIndex(), // i
-                        request.getChangeNumberOfNeuron().getNumber() // n
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            NNModificationResponse responseWithError = NNModificationResponse
-                    .newBuilder()
-                    .setException(e.toString())
-                    .build();
-            responseObserver.onNext(responseWithError);
-            responseObserver.onCompleted();
-//            return;
+        Long nnId = request.getNnId();
+        if (request.hasAddLayer()) {
+            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
+            loaded.getNeuralNetwork().addLayer(
+                    request.getAddLayer().getIndex(), // i
+                    request.getAddLayer().getLType() // lType
+            );
+        }
+        if (request.hasDelLayer()) {
+            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
+            loaded.getNeuralNetwork().delLayer(
+                    request.getDelLayer().getIndex() // i
+            );
+        }
+        if (request.hasChangeActivationFunction()) {
+            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
+            loaded.getNeuralNetwork().changeActivationFunction(
+                    request.getChangeActivationFunction().getIndex(), // i
+                    request.getChangeActivationFunction().getF() // f
+            );
+        }
+        if (request.hasChangeNumberOfNeuron()) {
+            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
+            loaded.getNeuralNetwork().changeNumberOfNeuron(
+                    request.getChangeNumberOfNeuron().getIndex(), // i
+                    request.getChangeNumberOfNeuron().getNumber() // n
+            );
         }
 
         NNModificationResponse responseWithOk = NNModificationResponse
@@ -70,10 +61,9 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
     }
 
     @Override
-    public void createnn(Nnmodification.NNCreationRequest request,
-                         StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
-
-//        io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreatennMethod(), responseObserver);
+    public void createnn(
+            Nnmodification.NNCreationRequest request,
+            StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
 
         long nnId = 0;
 
@@ -82,25 +72,21 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             NeuralNetworkStored nnStored = new NeuralNetworkStored(ffnn);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-
         } else if (request.getNnType() == NetworkType.RNN) {
             RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(rnn);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-
         } else if (request.getNnType() == NetworkType.LSTM) {
             LongShortTermMemoryNN lstmnn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(lstmnn);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-
         } else if (request.getNnType() == NetworkType.CNN) {
             ConvolutionalNN cnn = ConvolutionalNN.buildDefaultConvolutionalNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(cnn);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-
         }
 
         NNCreationResponse responseWithOk = NNCreationResponse
