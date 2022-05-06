@@ -16,6 +16,10 @@ public class RecurrentNN extends AbstractNeuralNetwork {
         defaultNumberOfLayers = 4;
     }
 
+    public RecurrentNN(RecurrentNN other) {
+        init(other);
+    }
+
     /* Build default Recurrent Neural Network */
     public static RecurrentNN buildDefaultRecurrentNN() {
         RecurrentNN nn = new RecurrentNN();

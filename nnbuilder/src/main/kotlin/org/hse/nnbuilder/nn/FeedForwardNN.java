@@ -16,6 +16,10 @@ public class FeedForwardNN extends AbstractNeuralNetwork {
         defaultNumberOfLayers = 2;
     }
 
+    public FeedForwardNN(FeedForwardNN other) {
+        init(other);
+    }
+
     /* Build default Fast Forward Neural Network */
     public static FeedForwardNN buildDefaultFastForwardNN() {
         FeedForwardNN nn = new FeedForwardNN();

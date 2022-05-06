@@ -10,21 +10,36 @@ import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.EXISTING_PROPERTY, property = "nntype")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = ConvolutionalNN.class, name = "CNN"),
-    @JsonSubTypes.Type(value = FeedForwardNN.class, name = "FF"),
-    @JsonSubTypes.Type(value = LongShortTermMemoryNN.class, name = "LSTM"),
-    @JsonSubTypes.Type(value = RecurrentNN.class, name = "RNN"),
+        @JsonSubTypes.Type(value = ConvolutionalNN.class, name = "CNN"),
+        @JsonSubTypes.Type(value = FeedForwardNN.class, name = "FF"),
+        @JsonSubTypes.Type(value = LongShortTermMemoryNN.class, name = "LSTM"),
+        @JsonSubTypes.Type(value = RecurrentNN.class, name = "RNN"),
 })
 public abstract class AbstractNeuralNetwork implements NeuralNetwork {
-    /** Type of Neural Network */
+    /**
+     * Type of Neural Network
+     */
     @JsonProperty("nntype")
     NetworkType nnType;
-    /** List of layers */
+    /**
+     * List of layers
+     */
     List<Layer> layers;
-    /** Learning rate */
+    /**
+     * Learning rate
+     */
     float learningRate;
-    /** Param for constructor for default network */
+    /**
+     * Param for constructor for default network
+     */
     int defaultNumberOfLayers;
+
+    protected void init(AbstractNeuralNetwork other) {
+        this.nnType = other.getNNType();
+        this.layers = other.getLayers();
+        this.learningRate = other.getLearningRate();
+        this.defaultNumberOfLayers = other.getDefaultNumberOfLayers();
+    }
 
     @Override
     public final NetworkType getNNType() {

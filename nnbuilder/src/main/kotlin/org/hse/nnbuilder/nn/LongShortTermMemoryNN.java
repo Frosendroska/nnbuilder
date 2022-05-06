@@ -16,6 +16,10 @@ public class LongShortTermMemoryNN extends RecurrentNN {
         defaultNumberOfLayers = 4;
     }
 
+    public LongShortTermMemoryNN(LongShortTermMemoryNN other) {
+        init(other);
+    }
+
     /* Build default Long Short Term Memory Neural Network */
     public static LongShortTermMemoryNN buildDefaultLongTermMemoryNN() {
         LongShortTermMemoryNN nn = new LongShortTermMemoryNN();
