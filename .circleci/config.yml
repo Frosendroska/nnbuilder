@@ -119,7 +119,8 @@ jobs:
       - restore_cache:
           key: docker-compose-gradle-cache-v1-{{ checksum "build.gradle" }}
       - envsubst/install
-      - docker/install-docker-compose
+      - docker/install-docker-compose:
+          version: v2.4.1
       - run:
           command: ./gradlew dockerComposeUp
           no_output_timeout: 10m
