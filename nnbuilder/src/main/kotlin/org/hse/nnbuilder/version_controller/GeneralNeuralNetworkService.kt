@@ -9,13 +9,9 @@ class GeneralNeuralNetworkService(
         private val neuralNetworkService: NeuralNetworkService
 ) {
 
-
     fun create(): GeneralNeuralNetwork {
         val generalNeuralNetwork = GeneralNeuralNetwork(id = 0)
-        //GeneralNeuralNetwork generalNeuralNetwork = generalNeuralNetworkRepository.getById(27L);
         generalNeuralNetworkRepository.save(generalNeuralNetwork)
-        println("correct ID: " + generalNeuralNetwork.getId())
-
         return generalNeuralNetwork
     }
 

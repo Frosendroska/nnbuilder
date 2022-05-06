@@ -7,6 +7,9 @@ import org.hse.nnbuilder.nn.FeedForwardNN;
 import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.services.Nnmodification.LayerType;
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,20 @@ public class NeuralNetworkRepositoryTest {
     @Autowired
     private NeuralNetworkRepository neuralNetworkRepository;
 
+    @Autowired
+    private GeneralNeuralNetworkService generalNeuralNetworkService;
+
+    private GeneralNeuralNetwork testingGeneralNeuralNetwork;
+
+    @BeforeAll
+    void prepare() {
+        testingGeneralNeuralNetwork = generalNeuralNetworkService.create();
+    }
+
     @Test
     void testFF() {
         FeedForwardNN nn = FeedForwardNN.buildDefaultFastForwardNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
@@ -39,7 +52,7 @@ public class NeuralNetworkRepositoryTest {
             nn.addLayer(1, LayerType.HiddenCell);
         }
 
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
@@ -50,7 +63,7 @@ public class NeuralNetworkRepositoryTest {
     @Test
     void testCNN() {
         ConvolutionalNN nn = ConvolutionalNN.buildDefaultConvolutionalNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
@@ -61,7 +74,7 @@ public class NeuralNetworkRepositoryTest {
     @Test
     void testRNN() {
         RecurrentNN nn = RecurrentNN.buildDefaultRecurrentNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
@@ -72,7 +85,7 @@ public class NeuralNetworkRepositoryTest {
     @Test
     void testLSTM() {
         LongShortTermMemoryNN nn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
