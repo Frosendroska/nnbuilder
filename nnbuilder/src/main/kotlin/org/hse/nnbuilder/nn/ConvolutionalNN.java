@@ -63,5 +63,4 @@ public class ConvolutionalNN extends AbstractNeuralNetwork {
             throw new IllegalArgumentException("You can add only Hidden and Convolutional layer");
         }
     }
-
 }

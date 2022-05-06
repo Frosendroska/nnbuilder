@@ -56,5 +56,4 @@ public final class NeuralNetworkStored {
     private void setNeuralNetwork(AbstractNeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
     }
-
 }

@@ -38,5 +38,4 @@ public class RecurrentNN extends AbstractNeuralNetwork {
             throw new IllegalArgumentException("You can add only Recurrent or Memory layer");
         }
     }
-
 }

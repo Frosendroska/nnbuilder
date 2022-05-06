@@ -43,7 +43,6 @@ public class NNCreatingTests {
 
         // NUMBER OF NEURONS
         assertEquals(nn.getDefaultNumberOfLayers(), 2);
-
     }
 
     //////////////////////////// ConvolutionalNN
@@ -65,7 +64,6 @@ public class NNCreatingTests {
         // ACTIVATION FUNCTION
         for (int i = 0; i < 8; i++) {
             assertEquals(nn.getLayers().get(i).getActivationFunction(), ActivationFunction.None);
-
         }
 
         // SIZE
@@ -94,7 +92,6 @@ public class NNCreatingTests {
 
         // NUMBER OF NEURONS
         assertEquals(nn.getDefaultNumberOfLayers(), 8);
-
     }
 
     //////////////////////////// RecurrentNN
@@ -108,7 +105,6 @@ public class NNCreatingTests {
         assertEquals(nn.getLayers().get(1).getLayerType(), LayerType.RecurrentCell);
         assertEquals(nn.getLayers().get(2).getLayerType(), LayerType.RecurrentCell);
         assertEquals(nn.getLayers().get(3).getLayerType(), LayerType.OutputCell);
-
 
         // ACTIVATION FUNCTION
         for (int i = 0; i < 4; i++) {
@@ -137,9 +133,7 @@ public class NNCreatingTests {
 
         // NUMBER OF NEURONS
         assertEquals(nn.getDefaultNumberOfLayers(), 4);
-
     }
-
 
     //////////////////////////// LongTermMemoryNN
     @Test
@@ -152,7 +146,6 @@ public class NNCreatingTests {
         assertEquals(nn.getLayers().get(1).getLayerType(), LayerType.MemoryCell);
         assertEquals(nn.getLayers().get(2).getLayerType(), LayerType.MemoryCell);
         assertEquals(nn.getLayers().get(3).getLayerType(), LayerType.OutputCell);
-
 
         // ACTIVATION FUNCTION
         for (int i = 0; i < 4; i++) {
@@ -181,7 +174,5 @@ public class NNCreatingTests {
 
         // NUMBER OF NEURONS
         assertEquals(nn.getDefaultNumberOfLayers(), 4);
-
     }
-
 }

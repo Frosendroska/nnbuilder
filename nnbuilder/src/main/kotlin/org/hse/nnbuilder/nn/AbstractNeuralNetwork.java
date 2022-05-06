@@ -8,15 +8,12 @@ import java.util.List;
 import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = As.EXISTING_PROPERTY,
-        property = "nntype")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.EXISTING_PROPERTY, property = "nntype")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ConvolutionalNN.class, name = "CNN"),
-        @JsonSubTypes.Type(value = FeedForwardNN.class, name = "FF"),
-        @JsonSubTypes.Type(value = LongShortTermMemoryNN.class, name = "LSTM"),
-        @JsonSubTypes.Type(value = RecurrentNN.class, name = "RNN"),
+    @JsonSubTypes.Type(value = ConvolutionalNN.class, name = "CNN"),
+    @JsonSubTypes.Type(value = FeedForwardNN.class, name = "FF"),
+    @JsonSubTypes.Type(value = LongShortTermMemoryNN.class, name = "LSTM"),
+    @JsonSubTypes.Type(value = RecurrentNN.class, name = "RNN"),
 })
 public abstract class AbstractNeuralNetwork implements NeuralNetwork {
     /** Type of Neural Network */
