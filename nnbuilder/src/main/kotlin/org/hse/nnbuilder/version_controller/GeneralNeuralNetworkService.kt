@@ -1,5 +1,6 @@
 package org.hse.nnbuilder.version_controller
 
+import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
 import org.springframework.stereotype.Service
 
@@ -16,7 +17,7 @@ class GeneralNeuralNetworkService(
     }
 
     fun getById(id: Long): GeneralNeuralNetwork {
-        return generalNeuralNetworkRepository.getById(id)
+        return generalNeuralNetworkRepository.findById(id).orElseThrow { NeuralNetworkNotFoundException("GeneralNeuralNetwork with id $id does not exist.") }
     }
 
     /**
@@ -31,9 +32,9 @@ class GeneralNeuralNetworkService(
      * Add new neural network version - snapshot of neural network with given id
      * @param id
      */
-    fun addNewVersion(id: Long) {
+    fun addNewVersion(id: Long): Long {
         val generalNeuralNetwork = getByIdOfNNVersion(id)
-        neuralNetworkService.addNewVersion(id, generalNeuralNetwork)
+        return neuralNetworkService.addNewVersion(id, generalNeuralNetwork)
     }
 
 }

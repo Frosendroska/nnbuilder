@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+service NNVersionService {
+  rpc makeNNSnapshot (makeNNSnapshotRequest) returns (makeNNSnapshotResponse);
+}
+
+message makeNNSnapshotRequest {
+  int64 nnId = 1; //id of neural network to copy
+}
+
+message makeNNSnapshotResponse {
+  int64 nnId = 1; //id of created snapshot
+  string exception = 2;
+}

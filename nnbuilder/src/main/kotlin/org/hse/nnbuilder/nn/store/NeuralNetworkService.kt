@@ -1,5 +1,7 @@
 package org.hse.nnbuilder.nn.store
 
+import javax.persistence.EntityNotFoundException
+import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.ConvolutionalNN
 import org.hse.nnbuilder.nn.FeedForwardNN
@@ -17,7 +19,7 @@ class NeuralNetworkService(
      * Get NeuralNetworkStored by id
      */
     fun getById(id: Long): NeuralNetworkStored {
-        return neuralNetworkRepository.getById(id)
+        return neuralNetworkRepository.findById(id).orElseThrow { NeuralNetworkNotFoundException("Neural Network with id $id does not exist.") }
     }
 
     /**
@@ -30,9 +32,10 @@ class NeuralNetworkService(
     /**
      * Create NeuralNetworkStored from AbstractNeuralNetwork and GeneralNeuralNetwork (project that should contain new NNStored)
      */
-    private fun createNeuralNetworkStored(abstractNeuralNetwork: AbstractNeuralNetwork, generalNeuralNetwork: GeneralNeuralNetwork) {
+    private fun createNeuralNetworkStored(abstractNeuralNetwork: AbstractNeuralNetwork, generalNeuralNetwork: GeneralNeuralNetwork): Long {
         val nnStored = NeuralNetworkStored(abstractNeuralNetwork, generalNeuralNetwork)
-        neuralNetworkRepository.save(nnStored);
+        neuralNetworkRepository.save(nnStored)
+        return nnStored.id
     }
 
     /**
@@ -40,23 +43,23 @@ class NeuralNetworkService(
      * @param id
      * @param generalNeuralNetwork
      */
-    fun addNewVersion(id: Long, generalNeuralNetwork: GeneralNeuralNetwork) {
+    fun addNewVersion(id: Long, generalNeuralNetwork: GeneralNeuralNetwork): Long {
         val oldNNVersion = getNeuralNetworkById(id)
 
         if (oldNNVersion.nnType == Nnmodification.NetworkType.FF) {
             val ffnn = FeedForwardNN(oldNNVersion as FeedForwardNN)
-            createNeuralNetworkStored(ffnn, generalNeuralNetwork)
+            return createNeuralNetworkStored(ffnn, generalNeuralNetwork)
         } else if (oldNNVersion.nnType == Nnmodification.NetworkType.RNN) {
             val rnn = RecurrentNN(oldNNVersion as RecurrentNN)
-            createNeuralNetworkStored(rnn, generalNeuralNetwork)
+            return createNeuralNetworkStored(rnn, generalNeuralNetwork)
         } else if (oldNNVersion.nnType == Nnmodification.NetworkType.LSTM) {
             val lstmnn = LongShortTermMemoryNN(oldNNVersion as LongShortTermMemoryNN)
-            createNeuralNetworkStored(lstmnn, generalNeuralNetwork)
+            return createNeuralNetworkStored(lstmnn, generalNeuralNetwork)
         } else if (oldNNVersion.nnType == Nnmodification.NetworkType.CNN) {
             val cnn = ConvolutionalNN(oldNNVersion as ConvolutionalNN)
-            createNeuralNetworkStored(cnn, generalNeuralNetwork)
+            return createNeuralNetworkStored(cnn, generalNeuralNetwork)
         }
-
+        return 0
     }
 
 
