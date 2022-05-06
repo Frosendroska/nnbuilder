@@ -34,14 +34,14 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
                             request.getAddLayer().getLType() // lType
-                            );
+                    );
         }
         if (request.hasDelLayer()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
             loaded.getNeuralNetwork()
                     .delLayer(
                             request.getDelLayer().getIndex() // i
-                            );
+                    );
         }
         if (request.hasChangeActivationFunction()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
@@ -49,7 +49,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .changeActivationFunction(
                             request.getChangeActivationFunction().getIndex(), // i
                             request.getChangeActivationFunction().getF() // f
-                            );
+                    );
         }
         if (request.hasChangeNumberOfNeuron()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
@@ -57,7 +57,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .changeNumberOfNeuron(
                             request.getChangeNumberOfNeuron().getIndex(), // i
                             request.getChangeNumberOfNeuron().getNumber() // n
-                            );
+                    );
         }
 
         NNModificationResponse responseWithOk =
@@ -81,14 +81,14 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             NeuralNetworkStored nnStored = new NeuralNetworkStored(ffnn, generalNeuralNetwork);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-            // System.out.println("NeuralNetworkStored in general..:");
-            // GeneralNeuralNetwork temp = generalNeuralNetworkService.getById(generalNeuralNetwork.getId());
-            // if(temp.getNNVersions() != null && !temp.getNNVersions().isEmpty()) {
-            //     for (NeuralNetworkStored i : temp.getNNVersions()) {
-            //         System.out.println(i.getId());
-            //     }
-            // }
-            // System.out.println("General in new stored: " + nnStored.generalNeuralNetwork.getId());
+            System.out.println("NeuralNetworkStored in general..:");
+            GeneralNeuralNetwork temp = generalNeuralNetworkService.getById(generalNeuralNetwork.getId());
+            if(temp.getNNVersions() != null && !temp.getNNVersions().isEmpty()) {
+                for (NeuralNetworkStored i : temp.getNNVersions()) {
+                    System.out.println(i.getId());
+                }
+            }
+            System.out.println("General in new stored: " + nnStored.generalNeuralNetwork.getId());
 
         } else if (request.getNnType() == NetworkType.RNN) {
             RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
