@@ -27,8 +27,11 @@ class NeuralNetworkService(
         return neuralNetworkRepository.getById(id).neuralNetwork
     }
 
+    /**
+     * Create NeuralNetworkStored from AbstractNeuralNetwork and GeneralNeuralNetwork (project that should contain new NNStored)
+     */
     private fun createNeuralNetworkStored(abstractNeuralNetwork: AbstractNeuralNetwork, generalNeuralNetwork: GeneralNeuralNetwork) {
-        val nnStored: NeuralNetworkStored = NeuralNetworkStored(abstractNeuralNetwork, generalNeuralNetwork)
+        val nnStored = NeuralNetworkStored(abstractNeuralNetwork, generalNeuralNetwork)
         neuralNetworkRepository.save(nnStored);
     }
 
