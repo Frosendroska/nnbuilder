@@ -7,6 +7,8 @@ import org.hse.nnbuilder.nn.FeedForwardNN;
 import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.services.Nnmodification.LayerType;
+import org.hse.nnbuilder.user.User;
+import org.hse.nnbuilder.user.UserService;
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +24,9 @@ import org.springframework.test.context.ActiveProfiles;
 public class NeuralNetworkRepositoryTest {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private NeuralNetworkRepository neuralNetworkRepository;
 
     @Autowired
@@ -31,7 +36,8 @@ public class NeuralNetworkRepositoryTest {
 
     @BeforeAll
     void prepare() {
-        testingGeneralNeuralNetwork = generalNeuralNetworkService.create();
+        User user = userService.save("Ivan", "ivan@gmail.com", "password");
+        testingGeneralNeuralNetwork = generalNeuralNetworkService.create(user);
     }
 
     @Test
