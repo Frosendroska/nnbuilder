@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.version_controller
 
 import javax.persistence.CascadeType
-import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -27,7 +26,7 @@ class GeneralNeuralNetwork() {
     @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH])
     @JoinColumn(name = "owner_id", nullable = false)
     lateinit var owner: User
-    
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "generalNeuralNetwork")
     private var nnversions: Set<NeuralNetworkStored> = LinkedHashSet()
 

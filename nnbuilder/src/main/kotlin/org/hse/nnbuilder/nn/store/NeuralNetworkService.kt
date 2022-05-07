@@ -10,16 +10,28 @@ import org.hse.nnbuilder.nn.RecurrentNN
 import org.hse.nnbuilder.services.Nnmodification
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class NeuralNetworkService(
         private val neuralNetworkRepository: NeuralNetworkRepository
 ) {
+    private fun checkExistsById(id: Long): Boolean {
+        return neuralNetworkRepository.findById(id).isPresent
+    }
+
     /**
      * Get NeuralNetworkStored by id
      */
     fun getById(id: Long): NeuralNetworkStored {
         return neuralNetworkRepository.findById(id).orElseThrow { NeuralNetworkNotFoundException("Neural Network with id $id does not exist.") }
+    }
+
+    @Transactional
+    fun deleteById(id: Long) {
+        if (checkExistsById(id)) {
+            neuralNetworkRepository.deleteById(id)
+        }
     }
 
     /**
@@ -32,6 +44,7 @@ class NeuralNetworkService(
     /**
      * Create NeuralNetworkStored from AbstractNeuralNetwork and GeneralNeuralNetwork (project that should contain new NNStored)
      */
+    @Transactional
     private fun createNeuralNetworkStored(abstractNeuralNetwork: AbstractNeuralNetwork, generalNeuralNetwork: GeneralNeuralNetwork): Long {
         val nnStored = NeuralNetworkStored(abstractNeuralNetwork, generalNeuralNetwork)
         neuralNetworkRepository.save(nnStored)

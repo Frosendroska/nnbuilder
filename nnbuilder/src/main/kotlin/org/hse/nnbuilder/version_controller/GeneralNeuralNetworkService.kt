@@ -1,7 +1,9 @@
 package org.hse.nnbuilder.version_controller
 
+import javax.transaction.Transactional
 import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
+import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 import org.hse.nnbuilder.user.User
 import org.springframework.stereotype.Service
 
@@ -11,14 +13,26 @@ class GeneralNeuralNetworkService(
         private val neuralNetworkService: NeuralNetworkService
 ) {
 
+    @Transactional
     fun create(user: User): GeneralNeuralNetwork {
         val generalNeuralNetwork = GeneralNeuralNetwork(user)
         generalNeuralNetworkRepository.save(generalNeuralNetwork)
         return generalNeuralNetwork
     }
 
+    private fun checkExistsById(id: Long): Boolean {
+        return generalNeuralNetworkRepository.findById(id).isPresent
+    }
+
     fun getById(id: Long): GeneralNeuralNetwork {
         return generalNeuralNetworkRepository.findById(id).orElseThrow { NeuralNetworkNotFoundException("GeneralNeuralNetwork with id $id does not exist.") }
+    }
+
+    @Transactional
+    fun deleteById(id: Long) {
+        if (checkExistsById(id)) {
+            generalNeuralNetworkRepository.deleteById(id)
+        }
     }
 
     /**
