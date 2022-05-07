@@ -3,7 +3,6 @@ package org.hse.nnbuilder.version_controller
 import javax.transaction.Transactional
 import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 import org.hse.nnbuilder.user.User
 import org.springframework.stereotype.Service
 
