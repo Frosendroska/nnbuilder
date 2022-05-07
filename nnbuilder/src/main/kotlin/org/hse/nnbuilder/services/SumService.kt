@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 open class SumService : SumServiceGrpcKt.SumServiceCoroutineImplBase() {
 
     @Secured("ROLE_USER")
+    @Override
     override suspend fun getSum(request: Sum.GetSumRequest): Sum.GetSumResponse {
         println("user:" + SecurityContextHolder.getContext().authentication)
 
