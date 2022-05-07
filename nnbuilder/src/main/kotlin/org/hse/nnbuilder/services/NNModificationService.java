@@ -40,14 +40,14 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
                             request.getAddLayer().getLType() // lType
-                    );
+                            );
         }
         if (request.hasDelLayer()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
             loaded.getNeuralNetwork()
                     .delLayer(
                             request.getDelLayer().getIndex() // i
-                    );
+                            );
         }
         if (request.hasChangeActivationFunction()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
@@ -55,7 +55,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .changeActivationFunction(
                             request.getChangeActivationFunction().getIndex(), // i
                             request.getChangeActivationFunction().getF() // f
-                    );
+                            );
         }
         if (request.hasChangeNumberOfNeuron()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
@@ -63,7 +63,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .changeNumberOfNeuron(
                             request.getChangeNumberOfNeuron().getIndex(), // i
                             request.getChangeNumberOfNeuron().getNumber() // n
-                    );
+                            );
         }
 
         NNModificationResponse responseWithOk =
@@ -72,18 +72,18 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         responseObserver.onCompleted();
     }
 
-   // @Secured("ROLE_USER")
+    // @Secured("ROLE_USER")
     @Override
     public void createnn(
             Nnmodification.NNCreationRequest request,
             StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
-        //String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        // String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         String userEmail = "d";
         User user = userService.findByEmail(userEmail);
 
         long nnId = 0;
 
-        //creating new project
+        // creating new project
         GeneralNeuralNetwork generalNeuralNetwork = generalNeuralNetworkService.create(user);
 
         if (request.getNnType() == NetworkType.FF) {

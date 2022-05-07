@@ -1,5 +1,7 @@
 package org.hse.nnbuilder.version_controller
 
+import org.hse.nnbuilder.nn.store.NeuralNetworkStored
+import org.hse.nnbuilder.user.User
 import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.FetchType
@@ -10,8 +12,6 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
-import org.hse.nnbuilder.user.User
 
 /**
  * All versions of one Neural Network.

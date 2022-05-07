@@ -21,8 +21,8 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
             exception = e.message
         }
         return Nnversion.makeNNSnapshotResponse.newBuilder()
-                .setNnId(newVersionId)
-                .setException(exception)
-                .build()
+            .setNnId(newVersionId)
+            .setException(exception)
+            .build()
     }
 }

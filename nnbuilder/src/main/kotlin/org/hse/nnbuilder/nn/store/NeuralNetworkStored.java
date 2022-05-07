@@ -24,12 +24,13 @@ public final class NeuralNetworkStored {
     @Column(name = "content", columnDefinition = "text")
     private AbstractNeuralNetwork neuralNetwork = null;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.ALL})
     @JoinColumn(name = "general_neural_network_id", nullable = false)
     public GeneralNeuralNetwork generalNeuralNetwork;
 
-    public NeuralNetworkStored() {
-    }
+    public NeuralNetworkStored() {}
 
     // //FOR TESTS
     // public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {

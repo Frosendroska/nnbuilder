@@ -1,6 +1,7 @@
 package org.hse.nnbuilder.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -10,8 +11,6 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.persistence.Table
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
-import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork
 
 @Entity
 @Table(name = "users")

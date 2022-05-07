@@ -1,6 +1,5 @@
 package org.hse.nnbuilder.nn.store
 
-import javax.persistence.EntityNotFoundException
 import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.ConvolutionalNN
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class NeuralNetworkService(
-        private val neuralNetworkRepository: NeuralNetworkRepository
+    private val neuralNetworkRepository: NeuralNetworkRepository
 ) {
     private fun checkExistsById(id: Long): Boolean {
         return neuralNetworkRepository.findById(id).isPresent
@@ -74,6 +73,4 @@ class NeuralNetworkService(
         }
         return 0
     }
-
-
 }
