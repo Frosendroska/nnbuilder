@@ -2,6 +2,7 @@ package org.hse.nnbuilder.version_controller
 
 import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
+import org.hse.nnbuilder.user.User
 import org.springframework.stereotype.Service
 
 @Service
@@ -10,8 +11,8 @@ class GeneralNeuralNetworkService(
         private val neuralNetworkService: NeuralNetworkService
 ) {
 
-    fun create(): GeneralNeuralNetwork {
-        val generalNeuralNetwork = GeneralNeuralNetwork(id = 0)
+    fun create(user: User): GeneralNeuralNetwork {
+        val generalNeuralNetwork = GeneralNeuralNetwork(user)
         generalNeuralNetworkRepository.save(generalNeuralNetwork)
         return generalNeuralNetwork
     }
