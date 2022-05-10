@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-from torchvision import datasets, transforms
 from tqdm import tqdm
 
 
@@ -40,9 +39,9 @@ class CustomDataset(torch.utils.data.Dataset):
         return torch.FloatTensor(self.vectors[index]), torch.FloatTensor(self.targets[index])
 
 
-class MyNeuralNetwork(nn.Module):
+class NeuralNetwork(nn.Module):
     def __init__(self, info):
-        super(MyNeuralNetwork, self).__init__()
+        super(NeuralNetwork, self).__init__()
         self.array = []
 
         for i in range(info.count_hidden_layers - 1):
