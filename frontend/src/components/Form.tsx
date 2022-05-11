@@ -1,33 +1,32 @@
-import { SetStateAction, useState} from 'react';
-import './Form.scss';
+import {SetStateAction, useCallback, useState} from 'react';
 import * as api from 'nnbuilder-api'
 
-export default function Form() {
+type FormProps = {
+    authService: api.AuthServicePromiseClient
+}
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+function Form(props: FormProps): JSX.Element{
 
-    const handleName = (e: { target: { value: SetStateAction<string>; }; }) => {
-        setName(e.target.value);
-    };
+    const [name, setUsername] = useState<string | undefined>();
+    const [email, setToken] = useState<string | undefined>();
+    const [password, setPassword] = useState<string | undefined>();
 
-    const handleEmail = (e: { target: { value: SetStateAction<string>; }; }) => {
-        setEmail(e.target.value);
-    };
+    const onLoginSubmit = useCallback((event) => {
+        event.preventDefault()
+        if (name === undefined || password === undefined || email == undefined) return
 
-    const handlePassword = (e: { target: { value: SetStateAction<string>; }; }) => {
-        setPassword(e.target.value);
-    };
+        const request = new api.LoginRequest()
+            .setEmail(name)
+            .setPassword(password)
+        alert("name submitted" + name)
+        props.authService.login(request).then((value: api.LoginResponse) => {
+            setToken(value.getToken())
+        })
+    }, [name, password])
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
     };
-
-    const handleSubmitted = (e: { preventDefault: () => void; }) => {
-        alert('A name was submitted: ' + name);
-        e.preventDefault();
-    }
 
     return (
         <div className="form">
@@ -37,21 +36,23 @@ export default function Form() {
 
             <form>
                 <label className="label">Name</label>
-                <input onChange={handleName} className="input"
+                <input onChange={onLoginSubmit} className="input"
                        value={name} type="text" />
 
                 <label className="label">Email</label>
-                <input onChange={handleEmail} className="input"
+                <input onChange={onLoginSubmit} className="input"
                        value={email} type="email" />
 
                 <label className="label">Password</label>
-                <input onChange={handlePassword} className="input"
+                <input onChange={onLoginSubmit} className="input"
                        value={password} type="password" />
 
-                <button onClick={handleSubmit} className="btn" type="submit">
+                <button onClick={onLoginSubmit} className="btn" type="submit">
                     Submit
                 </button>
             </form>
         </div>
     );
 }
+
+export default Form;
