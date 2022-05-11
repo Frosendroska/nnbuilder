@@ -1,30 +1,28 @@
 import torch
 import torch.nn as nn
+from torchvision import datasets, transforms
 from tqdm import tqdm
-
 
 class Information():
     def __init__(self, json_file):
-        self.count_hidden_layers = json_file['cnt']
-        self.type_module = json_file['type']
-        self.layers_size = json_file['layers_info']
-        self.output_layer = json_file['output']
-        self.func_activation = json_file['active_f']
-        self.rate = json_file['rate']
-
+      self.count_hidden_layers = json_file['cnt']
+      self.type_module = json_file['type']
+      self.layers_size = json_file['layers_info']
+      self.output_layer = json_file['output']
+      self.func_activation = json_file['active_f']
+      self.rate = json_file['rate']
 
 activations = nn.ModuleDict([
-    ['prelu', nn.RReLU()],
-    ['lrelu', nn.LeakyReLU()],
-    ['relu', nn.ReLU()],
-    ['sigmoid', nn.Sigmoid()],
-    ['softmax', nn.Softmax()],
-    ['logsoftmax', nn.LogSoftmax()],
-    ['elu', nn.ELU()],
-])
+                ['prelu', nn.RReLU()],
+                ['lrelu', nn.LeakyReLU()],
+                ['relu', nn.ReLU()],
+                ['sigmoid', nn.Sigmoid()],
+                ['softmax', nn.Softmax()],
+                ['logsoftmax', nn.LogSoftmax()],
+                ['elu', nn.ELU()],
+    ])
 
 loss_functions = {'regression': torch.nn.MSELoss(), 'classification': torch.nn.CrossEntropyLoss()}
-
 
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, df, target_list):
@@ -38,10 +36,9 @@ class CustomDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         return torch.FloatTensor(self.vectors[index]), torch.FloatTensor(self.targets[index])
 
-
-class NeuralNetwork(nn.Module):
+class MyNeuralNetwork(nn.Module):
     def __init__(self, info):
-        super(NeuralNetwork, self).__init__()
+        super(MyNeuralNetwork, self).__init__()
         self.array = []
 
         for i in range(info.count_hidden_layers - 1):
@@ -55,20 +52,19 @@ class NeuralNetwork(nn.Module):
     def forward(self, x):
         return self.layers(x)
 
-
 def train_loop(data, target, model, loss_fn, optimizer):
-    prediction = model(data)
-    loss = loss_fn(prediction, target)
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
-
+        prediction = model(data)
+        loss = loss_fn(prediction, target)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 
 def study(my_model, train_x, train_y, test_x, test_y, criterion1, optimizer, epochs, history):
-    for ep in tqdm(range(epochs)):
+    history = []
+    for ep in range(epochs):
+        print(f"Epoch {ep + 1} \n-------------------------------")
         train_loop(train_x, train_y, my_model, criterion1, optimizer)
         test_loop(test_x, test_y, my_model, criterion1, history)
-
 
 def test_loop(data, target, model, loss_fn, history):
     size = len(data)
@@ -79,20 +75,24 @@ def test_loop(data, target, model, loss_fn, history):
 
     test_loss /= size
     history.append(test_loss)
-
+    print(f"Avg loss: {test_loss:>8f}")
 
 def save(file, network):
     torch.save(network, file)
-
 
 def restore_net(file, network):
     network = torch.load(file)
     return network
 
-
 def get_prediction(network, x, type):
-    pred = network(x)
     if (type == 'regression'):
-        return pred.data.numpy()
-    prediction = torch.max(pred, 1)[1]
-    return prediction.data.numpy()
+        return network(x)
+
+def accuracy(model, type, data, target):
+    total = 0
+    correct = 0
+    for X, y in (zip(data, target)):
+        res = model(X)
+        total += 1
+        correct += (abs(res - y) <= 0.5).sum()
+    return correct / total
