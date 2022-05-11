@@ -17,6 +17,7 @@ enum LayerType {
   GatedMemoryCell = 11;
   Kernel = 12;
   ConvolutionalOrPool = 13;
+  Undefined = 14;
 }
 
 enum NetworkType {
@@ -42,10 +43,12 @@ enum ActivationFunction {
   Gaussian = 8;
 }
 
-service NNModificationServices {
-  rpc nnmodification (NNModificationRequest) returns (NNModificationResponse);
+service NNModificationService {
+  rpc createnn (NNCreationRequest) returns (NNCreationResponse);
+  rpc modifynn (NNModificationRequest) returns (NNModificationResponse);
 }
 
+// Modification neural network
 message NNModificationRequest {
   int64 nnId = 1;
   oneof nnmodification {
@@ -56,26 +59,34 @@ message NNModificationRequest {
   }
 }
 
-/// LAYERS
 message NNModificationResponse {
   string exception = 1;
 }
 
 message AddLayer {
-  int64 index = 1;
+  int32 index = 1;
   LayerType lType = 2;
 }
 
 message DelLayer {
-  int64 index = 1;
+  int32 index = 1;
 }
 
 message ChangeActivationFunction {
-  int64 index = 1;
+  int32 index = 1;
   ActivationFunction f = 2;
 }
 
 message ChangeNumberOfNeuron {
-  int64 index = 1;
+  int32 index = 1;
   int64 number = 2;
+}
+
+// Creating new neural network
+message NNCreationRequest {
+  NetworkType nnType = 1;
+}
+
+message NNCreationResponse {
+  int64 nnId = 1;
 }

@@ -25,7 +25,7 @@
 * `sudo -u postgres psql` start postgresql
 * `postgres=# create database nnbuilder;` make a database
 * `postgres=# create user nnbuilder with encrypted password 'nnbuilder';` set a password
-* `postgres=# grant all privileges on database mydb to nnbuilder;` grant all privileges
+* `postgres=# grant all privileges on database nnbuilder to nnbuilder;` grant all privileges
 * Then go to IDEA and tab on `database`->`+` and add new database with created password and username
 
 ### Helpful commands:
