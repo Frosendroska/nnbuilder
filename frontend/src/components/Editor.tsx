@@ -4,7 +4,7 @@ import * as api from 'nnbuilder-api'
 import { NetworkType } from 'nnbuilder-api';
 type EditorProps = {
     buildService: api.NNBuilderServicesPromiseClient
-    modificationService: api.NNModificationServicesPromiseClient
+    modificationService: api.NNModificationServicePromiseClient
 }
 function Editor(props: EditorProps): JSX.Element {
     const [nntype, setNNtype] = useState("FF")

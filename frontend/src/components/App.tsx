@@ -6,7 +6,7 @@ import Editor from "./Editor"
 type AppProps = {
     authService: api.AuthServicePromiseClient
     buildService: api.NNBuilderServicesPromiseClient
-    modificationService: api.NNModificationServicesPromiseClient
+    modificationService: api.NNModificationServicePromiseClient
 }
 
 export default function App(props: AppProps): JSX.Element {
