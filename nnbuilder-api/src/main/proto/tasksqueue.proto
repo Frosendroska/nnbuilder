@@ -15,14 +15,29 @@ enum TaskStatus {
 
 service TasksQueueService {
   rpc createtask (TaskCreationRequest) returns (TaskCreationResponse);
+  rpc getinformation(GettingInformationRequest) returns (GettingInformationResponse);
 }
 
+// Creating new task
 message TaskCreationRequest {
-  string name = 1;
+  TaskName name = 1;
   int64 nnId = 2;
   int64 dataId = 3;
 }
 
 message TaskCreationResponse {
   int64 taskId = 1;
+}
+
+// Asking information about a task
+message GettingInformationRequest {
+  int64 taskId = 1;
+}
+
+message GettingInformationResponse {
+  TaskName taskName = 1;
+  int64 nnId = 2;
+  int64 dataId = 3;
+  string startTime = 4;
+  TaskStatus taskStatus = 5;
 }

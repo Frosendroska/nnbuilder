@@ -27,7 +27,7 @@ public class NeuralNetworkRepositoryTest {
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(2);
     }
@@ -42,7 +42,7 @@ public class NeuralNetworkRepositoryTest {
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(102);
     }
@@ -53,7 +53,7 @@ public class NeuralNetworkRepositoryTest {
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(8);
     }
@@ -64,7 +64,7 @@ public class NeuralNetworkRepositoryTest {
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(4);
     }
@@ -75,7 +75,7 @@ public class NeuralNetworkRepositoryTest {
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(4);
     }

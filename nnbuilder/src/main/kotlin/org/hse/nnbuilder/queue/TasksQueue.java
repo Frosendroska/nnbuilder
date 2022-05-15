@@ -12,27 +12,20 @@ import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
 @Entity
 @Table(name = "tasksqueue")
 public final class TasksQueue {
-
     @Id
-    private Long id = new Random().nextLong();
-
+    private Long taskId = new Random().nextLong();
     @Column
     TaskName taskName;
-
     @Column
     Long nnId;
-
     @Column
     Long dataId;
-
     @Column
     Timestamp startTime;
-
     @Column
     TaskStatus taskStatus;
 
-    TasksQueue() {
-    }
+    TasksQueue() {}
 
     private TasksQueue(TaskName taskName, Long nnId, Long dataId, Timestamp startTime, TaskStatus taskStatus) {
         this.taskName = taskName;
@@ -42,23 +35,27 @@ public final class TasksQueue {
         this.taskStatus = taskStatus;
     }
 
-    TasksQueue(TaskName taskName, Long nnId, Long dataId) {
+    public TasksQueue(TaskName taskName, Long nnId, Long dataId) {
         this(taskName, nnId, dataId, new Timestamp(System.currentTimeMillis()), TaskStatus.HaveNotStarted);
     }
 
     // ID
-    public Long getId() {
-        return id;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     // StartTime
-    public void setStartTime(Timestamp startTime) {this.startTime = startTime;}
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
 
-    public Timestamp getStartTime() {return startTime;}
+    public Timestamp getStartTime() {
+        return startTime;
+    }
 
     // TaskName
     public void setTaskName(TaskName taskName) {
@@ -74,7 +71,7 @@ public final class TasksQueue {
         this.taskStatus = taskStatus;
     }
 
-    public TaskStatus getTaskStatus(TaskStatus taskStatus) {
+    public TaskStatus getTaskStatus() {
         return taskStatus;
     }
 
@@ -83,16 +80,16 @@ public final class TasksQueue {
         this.nnId = nnId;
     }
 
-    public Long getNnId(Long nnId) {
+    public Long getNnId() {
         return nnId;
     }
 
     // Data Set Id
-    public void setDataSetId(Long dataId) {
+    public void setDataId(Long dataId) {
         this.dataId = dataId;
     }
 
-    public Long getDataId(Long dataId) {
+    public Long getDataId() {
         return dataId;
     }
 }

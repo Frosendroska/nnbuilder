@@ -17,6 +17,7 @@ public class TasksQueueRepositoryTest {
 
     @Autowired
     private TasksQueueRepository tasksQueueRepository;
+
     @Autowired
     private NeuralNetworkRepository neuralNetworkRepository;
 
@@ -32,8 +33,8 @@ public class TasksQueueRepositoryTest {
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
         neuralNetworkRepository.save(nnStored);
 
-        TasksQueue tq = new TasksQueue(TaskName.LearnNN, nnStored.getId(),
-                12L /*TODO вообще нужно сделать join в табличку с задачами*/);
+        TasksQueue tq = new TasksQueue(
+                TaskName.LearnNN, nnStored.getNnId(), 12L /*TODO вообще нужно сделать join в табличку с задачами*/);
         tasksQueueRepository.save(tq);
     }
 }

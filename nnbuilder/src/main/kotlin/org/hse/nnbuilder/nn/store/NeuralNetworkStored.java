@@ -13,26 +13,25 @@ import org.hse.nnbuilder.nn.AbstractNeuralNetwork;
 public final class NeuralNetworkStored {
 
     @Id
-    private Long id = new Random().nextLong();
+    private Long nnId = new Random().nextLong();
 
     @Convert(converter = AbstractNeuralNetworkConverter.class)
     @Column(name = "content", columnDefinition = "text")
     private AbstractNeuralNetwork neuralNetwork = null;
 
-    public NeuralNetworkStored() {
-    }
+    public NeuralNetworkStored() {}
 
     public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
     }
 
     // Id
-    public Long getId() {
-        return id;
+    public Long getNnId() {
+        return nnId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNnId(Long nnId) {
+        this.nnId = nnId;
     }
 
     // Abstract Neural Network

@@ -1,20 +1,14 @@
 package org.hse.nnbuilder.services
 
 import kotlinx.coroutines.test.runBlockingTest
-import org.aspectj.lang.annotation.Before
 import org.hse.nnbuilder.exception.UserNotFoundException
-import org.hse.nnbuilder.user.UserRepository
 import org.hse.nnbuilder.user.UserService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.transaction.annotation.Transactional
-import org.assertj.core.api.Assertions.assertThat
 import org.springframework.test.context.ActiveProfiles
-
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
@@ -41,7 +35,6 @@ class AuthServiceTest {
         } catch (e: UserNotFoundException) {
             fail(e.message)
         }
-        //delete this user
+        // delete this user
     }
-
 }
