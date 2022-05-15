@@ -3,7 +3,6 @@ import EditorWindow from './EditorWindow'
 import * as api from 'nnbuilder-api'
 import { NetworkType } from 'nnbuilder-api';
 type EditorProps = {
-    buildService: api.NNBuilderServicesPromiseClient
     modificationService: api.NNModificationServicePromiseClient
 }
 function Editor(props: EditorProps): JSX.Element {
@@ -14,7 +13,7 @@ function Editor(props: EditorProps): JSX.Element {
         if (nntype == 'RNN') type = NetworkType.RNN
         if (nntype == 'LSTM') type = NetworkType.LSTM
         if (nntype == 'CNN') type = NetworkType.CNN
-        props.buildService.nnmodification(new api.NNBuildingRequest().setNntype(type)).then((value: api.NNBuildingResponse) => {
+        props.modificationService.createnn(new api.NNCreationRequest().setNntype(type)).then((value: api.NNBuildingResponse) => {
             console.log(JSON.stringify(value))
         })
     }, [nntype])

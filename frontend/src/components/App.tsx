@@ -5,7 +5,6 @@ import Editor from "./Editor"
 
 type AppProps = {
     authService: api.AuthServicePromiseClient
-    buildService: api.NNBuilderServicesPromiseClient
     modificationService: api.NNModificationServicePromiseClient
 }
 
@@ -13,7 +12,7 @@ export default function App(props: AppProps): JSX.Element {
     return (
         <>
         <Form authService={props.authService} />
-        <Editor buildService={props.buildService} modificationService = {props.modificationService}/>
+        <Editor modificationService = {props.modificationService}/>
         </>
     );
 }
