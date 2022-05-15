@@ -15,6 +15,7 @@ public final class NeuralNetworkStored {
     @Id
     private Long nnId = new Random().nextLong();
 
+
     @Convert(converter = AbstractNeuralNetworkConverter.class)
     @Column(name = "content", columnDefinition = "text")
     private AbstractNeuralNetwork neuralNetwork = null;
