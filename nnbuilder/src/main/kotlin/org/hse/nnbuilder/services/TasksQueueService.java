@@ -32,6 +32,8 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
         long taskId = tq.getTaskId();
 
+        // TODO вообще тут нужно мутить что-то со скриптом
+
         TaskCreationResponse responseWithTaskId = TaskCreationResponse.newBuilder().setTaskId(taskId).build();
         responseObserver.onNext(responseWithTaskId);
         responseObserver.onCompleted();
