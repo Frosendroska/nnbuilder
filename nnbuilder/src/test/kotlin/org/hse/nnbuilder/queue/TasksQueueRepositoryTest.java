@@ -24,6 +24,7 @@ public class TasksQueueRepositoryTest {
     @Test
     void testAddEmptyTask() {
         TasksQueue tq = new TasksQueue();
+        // TODO why i can not save  inside test notation
         tasksQueueRepository.save(tq);
     }
 

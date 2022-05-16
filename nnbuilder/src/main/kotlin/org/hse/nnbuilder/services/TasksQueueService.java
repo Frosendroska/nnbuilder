@@ -23,17 +23,17 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
             TaskCreationRequest request,
             StreamObserver<TaskCreationResponse> responseObserver) {
 
+        // Get data from request
         TaskName name = request.getName();
         long nnId = request.getNnId();
         long dataId = request.getDataId();
 
+        // Make a task in DB
         TasksQueue tq = new TasksQueue(name, nnId, dataId);
         tasksQueueRepository.save(tq);
 
+        // Response with id on task
         long taskId = tq.getTaskId();
-
-        // TODO вообще тут нужно мутить что-то со скриптом
-
         TaskCreationResponse responseWithTaskId = TaskCreationResponse.newBuilder().setTaskId(taskId).build();
         responseObserver.onNext(responseWithTaskId);
         responseObserver.onCompleted();
@@ -44,15 +44,16 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
             GettingInformationRequest request,
             StreamObserver<GettingInformationResponse> responseObserver) {
 
+        // Get data and task from request
         long taskId = request.getTaskId();
         TasksQueue tq = tasksQueueRepository.getById(taskId);
 
+        // Response with info of task
         TaskName taskName = tq.getTaskName();
         long nnId = tq.getNnId();
         long dataId = tq.getDataId();
         String startTime = tq.getStartTime().toString();
         TaskStatus taskStatus = tq.getTaskStatus();
-
         GettingInformationResponse responseWithInfo =
                 GettingInformationResponse.newBuilder().setTaskName(taskName)
                         .setNnId(nnId)
