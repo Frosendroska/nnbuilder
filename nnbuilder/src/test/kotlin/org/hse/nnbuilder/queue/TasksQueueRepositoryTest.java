@@ -23,18 +23,55 @@ public class TasksQueueRepositoryTest {
 
     @Test
     void testAddEmptyTask() {
-        TasksQueue tq = new TasksQueue();
+        QueuedTask tq = new QueuedTask();
         tasksQueueRepository.save(tq);
     }
 
     @Test
-    void testAddLearningTask() {
+    void testAddLearningTaskFFNN() {
+        // Neural Network
         FeedForwardNN nn = FeedForwardNN.buildDefaultFastForwardNN();
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
-        neuralNetworkRepository.save(nnStored);
 
-        TasksQueue tq = new TasksQueue(
-                TaskType.TrainNN, nnStored.getNnId(), 12L /*TODO вообще нужно сделать join в табличку с задачами*/);
+        // Task
+        QueuedTask tq = new QueuedTask(
+                TaskType.TrainNN, nnStored, 1L /*TODO вообще нужно инстанс датасета*/);
+
+        nnStored.getTasks().add(tq);
+        tq.setNeuralNetworkStored(nnStored);
+
+        neuralNetworkRepository.save(nnStored);
         tasksQueueRepository.save(tq);
+
     }
+
+    // @Test
+    // void testAddLearningTaskCNN() {
+    //     ConvolutionalNN nn = ConvolutionalNN.buildDefaultConvolutionalNN();
+    //     NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+    //     neuralNetworkRepository.save(nnStored);
+    //
+    //     QueuedTask tq = new QueuedTask(
+    //             TaskType.TrainNN, nnStored, 2L /*TODO вообще нужно айди датасета*/);
+    //     tasksQueueRepository.save(tq);
+    // }
+    //
+    // @Test
+    // void testAddLearningTasks() {
+    //     ConvolutionalNN cnn = ConvolutionalNN.buildDefaultConvolutionalNN();
+    //     NeuralNetworkStored cnnStored = new NeuralNetworkStored(cnn);
+    //     neuralNetworkRepository.save(cnnStored);
+    //
+    //     QueuedTask ctq = new QueuedTask(
+    //             TaskType.TrainNN, cnnStored, 2L /*TODO вообще нужно айди датасета*/);
+    //     tasksQueueRepository.save(ctq);
+    //
+    //     FeedForwardNN ffnn = FeedForwardNN.buildDefaultFastForwardNN();
+    //     NeuralNetworkStored ffnnStored = new NeuralNetworkStored(ffnn);
+    //     neuralNetworkRepository.save(ffnnStored);
+    //
+    //     QueuedTask fftq = new QueuedTask(
+    //             TaskType.TrainNN, ffnnStored, 1L /*TODO вообще нужно айди датасета*/);
+    //     tasksQueueRepository.save(fftq);
+    // }
 }

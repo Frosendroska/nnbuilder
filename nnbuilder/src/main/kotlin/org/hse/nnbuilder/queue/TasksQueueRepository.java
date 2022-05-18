@@ -4,4 +4,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TasksQueueRepository extends JpaRepository<TasksQueue, Long> {}
+public interface TasksQueueRepository extends JpaRepository<QueuedTask, Long> {}

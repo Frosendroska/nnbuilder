@@ -3,7 +3,9 @@ package org.hse.nnbuilder.services;
 import com.google.protobuf.Timestamp;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.hse.nnbuilder.queue.TasksQueue;
+import org.hse.nnbuilder.nn.store.NeuralNetworkRepository;
+import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
+import org.hse.nnbuilder.queue.QueuedTask;
 import org.hse.nnbuilder.queue.TasksQueueRepository;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationRequest;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationResponse;
@@ -19,6 +21,9 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
     @Autowired
     private TasksQueueRepository tasksQueueRepository;
 
+    @Autowired
+    private NeuralNetworkRepository neuralNetworkRepository;
+
     @Override
     public void createtask(
             TaskCreationRequest request,
@@ -30,7 +35,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         long dataId = request.getDataId();
 
         // Make a task in DB
-        TasksQueue tq = new TasksQueue(name, nnId, dataId);
+        QueuedTask tq = new QueuedTask(name, neuralNetworkRepository.getById(nnId), dataId);
         tasksQueueRepository.save(tq);
 
         // Response with id on task
@@ -47,17 +52,17 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
         // Get data and task from request
         long taskId = request.getTaskId();
-        TasksQueue tq = tasksQueueRepository.getById(taskId);
+        QueuedTask tq = tasksQueueRepository.getById(taskId);
 
         // Response with info of task
         TaskType taskName = tq.getTaskName();
-        long nnId = tq.getNnId();
+        NeuralNetworkStored nnId = tq.getNeuralNetworkStored();
         long dataId = tq.getDataId();
         Timestamp startTime = tq.getStartTime();
         TaskStatus taskStatus = tq.getTaskStatus();
         GettingInformationResponse responseWithInfo =
                 GettingInformationResponse.newBuilder().setTaskName(taskName)
-                        .setNnId(nnId)
+                        // .setNnId(nnId)
                         .setDataId(dataId)
                         .setStartTime(startTime)
                         .setTaskStatus(taskStatus).build();

@@ -4,23 +4,28 @@ import com.google.protobuf.Timestamp;
 import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
 import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 
 @Entity
 @Table(name = "tasksqueue")
-public final class TasksQueue {
+public final class QueuedTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
     @Column
     TaskType taskName;
-    @Column
-    Long nnId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nnId")
+    NeuralNetworkStored neuralNetworkStored;
     @Column
     Long dataId;
     @Column
@@ -28,22 +33,22 @@ public final class TasksQueue {
     @Column
     TaskStatus taskStatus;
 
-    TasksQueue() {}
+    QueuedTask() {}
 
-    private TasksQueue(TaskType taskName, Long nnId, Long dataId, TaskStatus taskStatus) {
+    private QueuedTask(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId, TaskStatus taskStatus) {
         Instant now = Instant.now();
         Timestamp timestamp =
                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
                         .setNanos(now.getNano()).build();
         this.taskName = taskName;
-        this.nnId = nnId;
+        this.neuralNetworkStored = neuralNetworkStored;
         this.dataId = dataId;
         this.startTime = timestamp;
         this.taskStatus = taskStatus;
     }
 
-    public TasksQueue(TaskType taskName, Long nnId, Long dataId) {
-        this(taskName, nnId, dataId, TaskStatus.HaveNotStarted);
+    public QueuedTask(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId) {
+        this(taskName, neuralNetworkStored, dataId, TaskStatus.HaveNotStarted);
     }
 
     // ID
@@ -83,12 +88,12 @@ public final class TasksQueue {
     }
 
     // Neural Network Id
-    public void setNnId(Long nnId) {
-        this.nnId = nnId;
+    public void setNeuralNetworkStored(NeuralNetworkStored neuralNetworkStored) {
+        this.neuralNetworkStored = neuralNetworkStored;
     }
 
-    public Long getNnId() {
-        return nnId;
+    public NeuralNetworkStored getNeuralNetworkStored() {
+        return neuralNetworkStored;
     }
 
     // Data Set Id
