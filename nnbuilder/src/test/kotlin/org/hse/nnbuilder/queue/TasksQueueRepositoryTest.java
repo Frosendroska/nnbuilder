@@ -3,7 +3,7 @@ package org.hse.nnbuilder.queue;
 import org.hse.nnbuilder.nn.FeedForwardNN;
 import org.hse.nnbuilder.nn.store.NeuralNetworkRepository;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
-import org.hse.nnbuilder.services.Tasksqueue.TaskName;
+import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ public class TasksQueueRepositoryTest {
     @Test
     void testAddEmptyTask() {
         TasksQueue tq = new TasksQueue();
-        // TODO why i can not save  inside test notation
         tasksQueueRepository.save(tq);
     }
 
@@ -35,7 +34,7 @@ public class TasksQueueRepositoryTest {
         neuralNetworkRepository.save(nnStored);
 
         TasksQueue tq = new TasksQueue(
-                TaskName.LearnNN, nnStored.getNnId(), 12L /*TODO вообще нужно сделать join в табличку с задачами*/);
+                TaskType.TrainNN, nnStored, 12L /*TODO вообще нужно сделать join в табличку с задачами*/);
         tasksQueueRepository.save(tq);
     }
 }

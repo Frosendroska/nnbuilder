@@ -1,9 +1,10 @@
 syntax = "proto3";
 
 package org.hse.nnbuilder.services;
+import "google/protobuf/timestamp.proto";
 
-enum TaskName {
-  LearnNN = 0;
+enum TaskType {
+  TrainNN = 0;
   ApplyToData = 1;
 }
 
@@ -20,7 +21,7 @@ service TasksQueueService {
 
 // Creating new task
 message TaskCreationRequest {
-  TaskName name = 1;
+  TaskType name = 1;
   int64 nnId = 2;
   int64 dataId = 3;
 }
@@ -35,9 +36,9 @@ message GettingInformationRequest {
 }
 
 message GettingInformationResponse {
-  TaskName taskName = 1;
+  TaskType taskName = 1;
   int64 nnId = 2;
   int64 dataId = 3;
-  string startTime = 4;
+  google.protobuf.Timestamp startTime = 4;
   TaskStatus taskStatus = 5;
 }

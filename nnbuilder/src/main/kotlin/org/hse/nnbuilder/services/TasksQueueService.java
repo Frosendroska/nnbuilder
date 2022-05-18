@@ -1,15 +1,18 @@
 package org.hse.nnbuilder.services;
 
 import io.grpc.stub.StreamObserver;
+import java.sql.Timestamp;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.hse.nnbuilder.nn.store.NeuralNetworkRepository;
+import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.queue.TasksQueue;
 import org.hse.nnbuilder.queue.TasksQueueRepository;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationRequest;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationResponse;
 import org.hse.nnbuilder.services.Tasksqueue.TaskCreationRequest;
 import org.hse.nnbuilder.services.Tasksqueue.TaskCreationResponse;
-import org.hse.nnbuilder.services.Tasksqueue.TaskName;
 import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
+import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @GrpcService
@@ -17,19 +20,21 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
     @Autowired
     private TasksQueueRepository tasksQueueRepository;
-
+    @Autowired
+    private NeuralNetworkRepository neuralNetworkRepository;
     @Override
     public void createtask(
             TaskCreationRequest request,
             StreamObserver<TaskCreationResponse> responseObserver) {
 
         // Get data from request
-        TaskName name = request.getName();
+        TaskType name = request.getName();
         long nnId = request.getNnId();
+        NeuralNetworkStored neuralNetwork = neuralNetworkRepository.getById(nnId);
         long dataId = request.getDataId();
 
         // Make a task in DB
-        TasksQueue tq = new TasksQueue(name, nnId, dataId);
+        TasksQueue tq = new TasksQueue(name, neuralNetwork, dataId);
         tasksQueueRepository.save(tq);
 
         // Response with id on task
@@ -49,16 +54,16 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         TasksQueue tq = tasksQueueRepository.getById(taskId);
 
         // Response with info of task
-        TaskName taskName = tq.getTaskName();
-        long nnId = tq.getNnId();
+        TaskType taskName = tq.getTaskName();
+        NeuralNetworkStored nnId = tq.getNnId();
         long dataId = tq.getDataId();
-        String startTime = tq.getStartTime().toString();
+        Timestamp startTime = tq.getStartTime();
         TaskStatus taskStatus = tq.getTaskStatus();
         GettingInformationResponse responseWithInfo =
                 GettingInformationResponse.newBuilder().setTaskName(taskName)
-                        .setNnId(nnId)
+                        // .setNnId(nnId)
                         .setDataId(dataId)
-                        .setStartTime(startTime)
+                        // .setStartTime(startTime)
                         .setTaskStatus(taskStatus).build();
         responseObserver.onNext(responseWithInfo);
         responseObserver.onCompleted();
