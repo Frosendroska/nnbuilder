@@ -1,10 +1,8 @@
 package org.hse.nnbuilder.services;
 
+import com.google.protobuf.Timestamp;
 import io.grpc.stub.StreamObserver;
-import java.sql.Timestamp;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.hse.nnbuilder.nn.store.NeuralNetworkRepository;
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.queue.TasksQueue;
 import org.hse.nnbuilder.queue.TasksQueueRepository;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationRequest;
@@ -20,8 +18,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
     @Autowired
     private TasksQueueRepository tasksQueueRepository;
-    @Autowired
-    private NeuralNetworkRepository neuralNetworkRepository;
+
     @Override
     public void createtask(
             TaskCreationRequest request,
@@ -30,11 +27,10 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         // Get data from request
         TaskType name = request.getName();
         long nnId = request.getNnId();
-        NeuralNetworkStored neuralNetwork = neuralNetworkRepository.getById(nnId);
         long dataId = request.getDataId();
 
         // Make a task in DB
-        TasksQueue tq = new TasksQueue(name, neuralNetwork, dataId);
+        TasksQueue tq = new TasksQueue(name, nnId, dataId);
         tasksQueueRepository.save(tq);
 
         // Response with id on task
@@ -55,15 +51,15 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
         // Response with info of task
         TaskType taskName = tq.getTaskName();
-        NeuralNetworkStored nnId = tq.getNnId();
+        long nnId = tq.getNnId();
         long dataId = tq.getDataId();
         Timestamp startTime = tq.getStartTime();
         TaskStatus taskStatus = tq.getTaskStatus();
         GettingInformationResponse responseWithInfo =
                 GettingInformationResponse.newBuilder().setTaskName(taskName)
-                        // .setNnId(nnId)
+                        .setNnId(nnId)
                         .setDataId(dataId)
-                        // .setStartTime(startTime)
+                        .setStartTime(startTime)
                         .setTaskStatus(taskStatus).build();
         responseObserver.onNext(responseWithInfo);
         responseObserver.onCompleted();

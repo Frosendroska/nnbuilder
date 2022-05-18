@@ -34,7 +34,7 @@ public class TasksQueueRepositoryTest {
         neuralNetworkRepository.save(nnStored);
 
         TasksQueue tq = new TasksQueue(
-                TaskType.TrainNN, nnStored, 12L /*TODO вообще нужно сделать join в табличку с задачами*/);
+                TaskType.TrainNN, nnStored.getNnId(), 12L /*TODO вообще нужно сделать join в табличку с задачами*/);
         tasksQueueRepository.save(tq);
     }
 }
