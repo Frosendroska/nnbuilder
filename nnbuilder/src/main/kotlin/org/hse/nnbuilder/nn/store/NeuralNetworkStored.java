@@ -27,7 +27,6 @@ public final class NeuralNetworkStored {
     private AbstractNeuralNetwork neuralNetwork;
 
     @OneToMany(
-            // mappedBy = "neuralNetworkStored",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
