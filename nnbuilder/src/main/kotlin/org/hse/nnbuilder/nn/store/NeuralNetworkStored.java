@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork;
-import org.hse.nnbuilder.queue.QueuedTask;
+import org.hse.nnbuilder.queue.TaskQueued;
 
 @Entity
 @Table(name = "neuralnetworks")
@@ -24,14 +24,14 @@ public final class NeuralNetworkStored {
 
     @Convert(converter = AbstractNeuralNetworkConverter.class)
     @Column(name = "content", columnDefinition = "text")
-    private AbstractNeuralNetwork neuralNetwork = null;
+    private AbstractNeuralNetwork neuralNetwork;
 
     @OneToMany(
             // mappedBy = "neuralNetworkStored",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    List<QueuedTask> tasks=new ArrayList<>();
+    List<TaskQueued> tasks = new ArrayList<>();
 
     public NeuralNetworkStored() {}
 
@@ -58,19 +58,21 @@ public final class NeuralNetworkStored {
     }
 
     // Tasks
-    public List<QueuedTask> getTasks() {
+    public List<TaskQueued> getTasks() {
         return tasks;
     }
-    public void setTasks(List<QueuedTask> tasks) {
+
+    public void setTasks(List<TaskQueued> tasks) {
         this.tasks = tasks;
     }
 
     //
-    public void addTask(QueuedTask task) {
+    public void addTask(TaskQueued task) {
         tasks.add(task);
         task.setNeuralNetworkStored(this);
     }
-    public void removeTask(QueuedTask task) {
+
+    public void removeTask(TaskQueued task) {
         tasks.remove(task);
         task.setNeuralNetworkStored(null);
     }

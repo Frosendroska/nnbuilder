@@ -5,7 +5,7 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.hse.nnbuilder.nn.store.NeuralNetworkRepository;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
-import org.hse.nnbuilder.queue.QueuedTask;
+import org.hse.nnbuilder.queue.TaskQueued;
 import org.hse.nnbuilder.queue.TasksQueueRepository;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationRequest;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationResponse;
@@ -35,7 +35,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         long dataId = request.getDataId();
 
         // Make a task in DB
-        QueuedTask tq = new QueuedTask(name, neuralNetworkRepository.getById(nnId), dataId);
+        TaskQueued tq = new TaskQueued(name, neuralNetworkRepository.getById(nnId), dataId);
         tasksQueueRepository.save(tq);
 
         // Response with id on task
@@ -52,7 +52,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
         // Get data and task from request
         long taskId = request.getTaskId();
-        QueuedTask tq = tasksQueueRepository.getById(taskId);
+        TaskQueued tq = tasksQueueRepository.getById(taskId);
 
         // Response with info of task
         TaskType taskName = tq.getTaskName();

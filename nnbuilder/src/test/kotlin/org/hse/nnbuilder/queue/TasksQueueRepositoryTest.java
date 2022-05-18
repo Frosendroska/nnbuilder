@@ -23,7 +23,7 @@ public class TasksQueueRepositoryTest {
 
     @Test
     void testAddEmptyTask() {
-        QueuedTask tq = new QueuedTask();
+        TaskQueued tq = new TaskQueued();
         tasksQueueRepository.save(tq);
     }
 
@@ -34,7 +34,7 @@ public class TasksQueueRepositoryTest {
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
 
         // Task
-        QueuedTask tq = new QueuedTask(
+        TaskQueued tq = new TaskQueued(
                 TaskType.TrainNN, nnStored, 1L /*TODO вообще нужно инстанс датасета*/);
 
         nnStored.getTasks().add(tq);

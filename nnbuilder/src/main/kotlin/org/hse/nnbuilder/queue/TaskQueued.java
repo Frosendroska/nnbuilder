@@ -17,25 +17,25 @@ import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 
 @Entity
 @Table(name = "tasksqueue")
-public final class QueuedTask {
+public final class TaskQueued {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
     @Column
-    TaskType taskName;
+    private TaskType taskName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nnId")
-    NeuralNetworkStored neuralNetworkStored;
+    private NeuralNetworkStored neuralNetworkStored;
     @Column
-    Long dataId;
+    private Long dataId;
     @Column
-    Timestamp startTime;
+    private Timestamp startTime; // TODO на самом деле два времени
     @Column
-    TaskStatus taskStatus;
+    private TaskStatus taskStatus;
 
-    QueuedTask() {}
+    TaskQueued() {}
 
-    private QueuedTask(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId, TaskStatus taskStatus) {
+    private TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId, TaskStatus taskStatus) {
         Instant now = Instant.now();
         Timestamp timestamp =
                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
@@ -47,7 +47,7 @@ public final class QueuedTask {
         this.taskStatus = taskStatus;
     }
 
-    public QueuedTask(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId) {
+    public TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId) {
         this(taskName, neuralNetworkStored, dataId, TaskStatus.HaveNotStarted);
     }
 
