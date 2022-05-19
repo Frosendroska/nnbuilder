@@ -1,7 +1,6 @@
 # nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/hse-mentorship/nnbuilder?style=flat-square) ![Lines of Code](https://img.shields.io/tokei/lines/github/hse-mentorship/nnbuilder?style=flat-square)
 
-
-[![Frosendroska's GitHub stats](https://github-readme-stats.vercel.app/api?username=Frosendroska)](https://github.com/hse-mentorship/nnbuilder)
+![](https://tokei.rs/b1/github/XAMPPRocky/tokei?category=lines)](https://github.com/hse-mentorship/nnbuilder.git)
 
 
 ## Development setup
