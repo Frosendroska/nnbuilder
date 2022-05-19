@@ -57,7 +57,7 @@
 //         // Response with info of task
 //         TaskType taskName = tq.getTaskName();
 //         NeuralNetworkStored nnId = tq.getNeuralNetworkStored();
-//         long dataId = tq.getDataId();
+//         long dataId = tq.getDatasetStored();
 //         Timestamp startTime = tq.getStartTime();
 //         TaskStatus taskStatus = tq.getTaskStatus();
 //         GettingInformationResponse responseWithInfo =
