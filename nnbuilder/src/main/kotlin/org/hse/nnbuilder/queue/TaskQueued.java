@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hse.nnbuilder.dataset.DatasetStored;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
 import org.hse.nnbuilder.services.Tasksqueue.TaskType;
@@ -26,8 +27,9 @@ public final class TaskQueued {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nnId")
     private NeuralNetworkStored neuralNetworkStored;
-    @Column
-    private Long dataId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "datasetId")
+    private DatasetStored datasetStored;
     @Column
     private Timestamp startTime; // TODO на самом деле два времени
     @Column
@@ -35,20 +37,21 @@ public final class TaskQueued {
 
     TaskQueued() {}
 
-    private TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId, TaskStatus taskStatus) {
+    private TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, DatasetStored datasetStored,
+            TaskStatus taskStatus) {
         Instant now = Instant.now();
         Timestamp timestamp =
                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
                         .setNanos(now.getNano()).build();
         this.taskName = taskName;
         this.neuralNetworkStored = neuralNetworkStored;
-        this.dataId = dataId;
+        this.datasetStored = datasetStored;
         this.startTime = timestamp;
         this.taskStatus = taskStatus;
     }
 
-    public TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, Long dataId) {
-        this(taskName, neuralNetworkStored, dataId, TaskStatus.HaveNotStarted);
+    public TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, DatasetStored datasetStored) {
+        this(taskName, neuralNetworkStored, datasetStored, TaskStatus.HaveNotStarted);
     }
 
     // ID
@@ -97,11 +100,11 @@ public final class TaskQueued {
     }
 
     // Data Set Id
-    public void setDataId(Long dataId) {
-        this.dataId = dataId;
+    public void setDataId(DatasetStored datasetStored) {
+        this.datasetStored = dataId;
     }
 
-    public Long getDataId() {
-        return dataId;
+    public DatasetStored getDataId() {
+        return datasetStored;
     }
 }
