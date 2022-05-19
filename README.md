@@ -1,5 +1,9 @@
 # nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/hse-mentorship/nnbuilder?style=flat-square) ![Lines of Code](https://img.shields.io/tokei/lines/github/hse-mentorship/nnbuilder?style=flat-square)
 
+
+[![Frosendroska's GitHub stats](https://github-readme-stats.vercel.app/api?username=Frosendroska)](https://github.com/hse-mentorship/nnbuilder)
+
+
 ## Development setup
 
 0. Install JDK 17, Gradle, Node, Docker; alias `./gradlew` to `gw`
