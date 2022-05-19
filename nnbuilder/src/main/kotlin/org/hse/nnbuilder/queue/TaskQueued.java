@@ -38,6 +38,7 @@ public final class TaskQueued {
     TaskQueued() {}
 
     private TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, DatasetStored datasetStored,
+
             TaskStatus taskStatus) {
         Instant now = Instant.now();
         Timestamp timestamp =
@@ -100,11 +101,12 @@ public final class TaskQueued {
     }
 
     // Data Set Id
-    public void setDataId(DatasetStored datasetStored) {
-        this.datasetStored = dataId;
+
+    public void setDatasetStored(DatasetStored datasetStored) {
+        this.datasetStored = datasetStored;
     }
 
-    public DatasetStored getDataId() {
+    public DatasetStored getDatasetStored() {
         return datasetStored;
     }
 }

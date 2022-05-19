@@ -52,7 +52,7 @@ public final class NeuralNetworkStored {
         return neuralNetwork;
     }
 
-    private void setNeuralNetwork(AbstractNeuralNetwork neuralNetwork) {
+    public void setNeuralNetwork(AbstractNeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
     }
 
