@@ -26,7 +26,6 @@ class NeuralNetworkService(
         return neuralNetworkRepository.findById(id).orElseThrow { NeuralNetworkNotFoundException("Neural Network with id $id does not exist.") }
     }
 
-    @Transactional
     fun deleteById(id: Long) {
         if (checkExistsById(id)) {
             neuralNetworkRepository.deleteById(id)
@@ -43,7 +42,6 @@ class NeuralNetworkService(
     /**
      * Create NeuralNetworkStored from AbstractNeuralNetwork and GeneralNeuralNetwork (project that should contain new NNStored)
      */
-    @Transactional
     private fun createNeuralNetworkStored(abstractNeuralNetwork: AbstractNeuralNetwork, generalNeuralNetwork: GeneralNeuralNetwork): Long {
         val nnStored = NeuralNetworkStored(abstractNeuralNetwork, generalNeuralNetwork)
         neuralNetworkRepository.save(nnStored)

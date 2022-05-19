@@ -12,7 +12,6 @@ class GeneralNeuralNetworkService(
     private val neuralNetworkService: NeuralNetworkService
 ) {
 
-    @Transactional
     fun create(user: User): GeneralNeuralNetwork {
         val generalNeuralNetwork = GeneralNeuralNetwork(user)
         generalNeuralNetworkRepository.save(generalNeuralNetwork)
@@ -27,7 +26,6 @@ class GeneralNeuralNetworkService(
         return generalNeuralNetworkRepository.findById(id).orElseThrow { NeuralNetworkNotFoundException("GeneralNeuralNetwork with id $id does not exist.") }
     }
 
-    @Transactional
     fun deleteById(id: Long) {
         if (checkExistsById(id)) {
             generalNeuralNetworkRepository.deleteById(id)
