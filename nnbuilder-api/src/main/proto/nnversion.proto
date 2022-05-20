@@ -5,6 +5,7 @@ package org.hse.nnbuilder.services;
 service NNVersionService {
   rpc makeNNSnapshot (makeNNSnapshotRequest) returns (makeNNSnapshotResponse);
   rpc deleteNNVersion (deleteNNVersionRequest) returns (deleteNNVersionResponse);
+  rpc deleteProject (deleteProjectRequest) returns (deleteProjectResponse);
 }
 
 message makeNNSnapshotRequest {
@@ -21,3 +22,10 @@ message deleteNNVersionRequest {
 }
 
 message deleteNNVersionResponse {}
+
+//delete all versions of neural network
+message deleteProjectRequest {
+  int64 projectId = 1;
+}
+
+message deleteProjectResponse {}

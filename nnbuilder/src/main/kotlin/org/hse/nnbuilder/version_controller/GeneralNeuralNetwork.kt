@@ -27,7 +27,7 @@ class GeneralNeuralNetwork() {
     @JoinColumn(name = "owner_id", nullable = false)
     lateinit var owner: User
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "generalNeuralNetwork")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "generalNeuralNetwork", cascade = [CascadeType.REMOVE])
     private var nnversions: Set<NeuralNetworkStored> = LinkedHashSet()
 
     constructor(owner: User) : this() {
@@ -44,7 +44,7 @@ class GeneralNeuralNetwork() {
 
     fun checkVersionsExists(): Boolean {
         println(nnversions)
-        for(i in nnversions) {
+        for (i in nnversions) {
             println("id: " + i.id)
         }
         return nnversions.isNotEmpty()
