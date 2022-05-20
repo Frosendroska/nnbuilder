@@ -1,5 +1,7 @@
+import net.ltgt.gradle.errorprone.CheckSeverity
+
 plugins {
-  id 'com.palantir.baseline' version '4.74.0'
+  id 'com.palantir.baseline' version '4.126.0' apply false
   id 'org.inferred.processors' version '3.6.0'
 
   id 'java'
@@ -7,9 +9,11 @@ plugins {
   id 'com.diffplug.spotless' version '6.3.0'
   id 'com.palantir.docker-compose' version '0.32.0'
 
-  id 'org.jetbrains.kotlin.jvm' version '1.6.10' apply false
-  id 'com.google.protobuf' version '0.8.14' apply false
-  id 'org.jetbrains.kotlin.plugin.spring' version '1.6.10' apply false
+  id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}" apply false
+  id 'org.jetbrains.kotlin.plugin.spring' version "${kotlinVersion}" apply false
+  id 'org.jetbrains.kotlin.plugin.jpa' version "${kotlinVersion}" apply false
+
+  id 'com.google.protobuf' version '0.8.18' apply false
   id 'org.springframework.boot' version '2.6.4' apply false
   id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
 }
@@ -20,6 +24,8 @@ allprojects {
 
   apply plugin: 'java'
   apply plugin: 'com.diffplug.spotless'
+  apply plugin: 'com.palantir.baseline-idea'
+  apply plugin: 'com.palantir.baseline-error-prone'
 
   sourceCompatibility = '17'
 
@@ -49,6 +55,18 @@ allprojects {
       trimTrailingWhitespace()
       indentWithSpaces()
       endWithNewline()
+    }
+  }
+
+  java {
+    tasks.withType(JavaCompile) {
+      options.errorprone {
+        check("Slf4jLogsafeArgs", CheckSeverity.OFF)
+        check("PreferSafeLoggableExceptions", CheckSeverity.OFF)
+        check("PreferSafeLogger", CheckSeverity.OFF)
+        check("PreferSafeLoggingPreconditions", CheckSeverity.OFF)
+        check("PreconditionsConstantMessage", CheckSeverity.OFF)
+      }
     }
   }
 }

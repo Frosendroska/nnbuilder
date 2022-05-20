@@ -4,6 +4,6 @@ import App from './components/App'
 import * as api from './clients'
 
 ReactDOM.render(
-    <App sumService={api.sumService} />,
+    <App authService={api.authService} sumService={api.sumService} />,
     document.getElementById('root'),
 )
