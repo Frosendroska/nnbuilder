@@ -40,3 +40,7 @@ con = psycopg2.connect(
 )
 
 cur = con.cursor()
+
+generate_task_in_db(10, 100)
+
+con.commit()
