@@ -78,7 +78,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             Nnmodification.NNCreationRequest request,
             StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
         // String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        String userEmail = "d";
+        String userEmail = "c";
         User user = userService.findByEmail(userEmail);
 
         long nnId = 0;

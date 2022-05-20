@@ -23,7 +23,7 @@ class GeneralNeuralNetwork() {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private val id: Long = 0
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH])
+    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE, CascadeType.REFRESH])
     @JoinColumn(name = "owner_id", nullable = false)
     lateinit var owner: User
 
@@ -40,5 +40,13 @@ class GeneralNeuralNetwork() {
 
     fun getNNVersions(): Set<NeuralNetworkStored> {
         return nnversions
+    }
+
+    fun checkVersionsExists(): Boolean {
+        println(nnversions)
+        for(i in nnversions) {
+            println("id: " + i.id)
+        }
+        return nnversions.isNotEmpty()
     }
 }

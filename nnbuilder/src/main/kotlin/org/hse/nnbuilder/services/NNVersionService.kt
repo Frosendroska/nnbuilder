@@ -21,8 +21,30 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
             exception = e.message
         }
         return Nnversion.makeNNSnapshotResponse.newBuilder()
-            .setNnId(newVersionId)
-            .setException(exception)
-            .build()
+                .setNnId(newVersionId)
+                .setException(exception)
+                .build()
+    }
+
+    @Override
+    override suspend fun deleteNNVersion(request: Nnversion.deleteNNVersionRequest): Nnversion.deleteNNVersionResponse {
+        val nnId = request.nnId
+//        var generalNN = generalNeuralNetworkService.getByIdOfNNVersion(nnId)
+//        for (i in generalNN.getNNVersions()) {
+//            println(i.id)
+//        }
+        println("-----------------")
+
+        generalNeuralNetworkService.deleteNNVersionById(nnId)
+
+        try {
+//            generalNN = generalNeuralNetworkService.getByIdOfNNVersion(-1856894684170175216)
+//            for (i in generalNN.getNNVersions()) {
+//                println(i.id)
+//            }
+        } catch (e: Exception) {
+        }
+
+        return Nnversion.deleteNNVersionResponse.newBuilder().build()
     }
 }
