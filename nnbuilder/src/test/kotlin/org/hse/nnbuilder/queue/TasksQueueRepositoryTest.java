@@ -40,7 +40,7 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStored = new DatasetStored(ds);
 
         // Task
-        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNN, nnStored, dsStored);
+        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored);
 
         // TaskQueuedStorage tqs = new TaskQueuedStorage();
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);

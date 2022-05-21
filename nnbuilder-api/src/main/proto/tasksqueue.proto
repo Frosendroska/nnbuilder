@@ -37,9 +37,6 @@ message GettingInformationRequest {
 }
 
 message GettingInformationResponse {
-  TaskType taskName = 1;
-  int64 nnId = 2;
-  int64 dataId = 3;
-  google.protobuf.Timestamp startTime = 4;
-  TaskStatus taskStatus = 5;
+  int64 timeDeltaSeconds = 1;
+  TaskStatus taskStatus = 2;
 }

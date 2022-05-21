@@ -23,7 +23,7 @@ public final class TaskQueued {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
     @Column
-    private TaskType taskName;
+    private TaskType taskType;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nnId")
     private NeuralNetworkStored neuralNetworkStored;
@@ -31,7 +31,7 @@ public final class TaskQueued {
     @JoinColumn(name = "dsId")
     private DatasetStored datasetStored;
     @Column
-    private long epochAmount;
+    private Long epochAmount;
     @Column
     private Timestamp addTaskTime;
     @Column
@@ -42,12 +42,12 @@ public final class TaskQueued {
     TaskQueued() {}
 
     private TaskQueued(
-            TaskType taskName, NeuralNetworkStored neuralNetworkStored,
+            TaskType taskType, NeuralNetworkStored neuralNetworkStored,
             DatasetStored datasetStored, TaskStatus taskStatus
     ) {
         Instant now = Instant.now();
         Timestamp timestamp = Timestamp.newBuilder().setSeconds(now.getEpochSecond()).setNanos(now.getNano()).build();
-        this.taskName = taskName;
+        this.taskType = taskType;
         this.neuralNetworkStored = neuralNetworkStored;
         this.datasetStored = datasetStored;
         this.addTaskTime = timestamp;
@@ -87,12 +87,12 @@ public final class TaskQueued {
     }
 
     // TaskName
-    public void setTaskName(TaskType taskName) {
-        this.taskName = taskName;
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
     }
 
-    public TaskType getTaskName() {
-        return taskName;
+    public TaskType getTaskType() {
+        return taskType;
     }
 
     // Task Status
