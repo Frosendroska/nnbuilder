@@ -38,6 +38,10 @@ public class DatasetStored {
         content = convertFileToBytes(datasetFile);
     }
 
+    public DatasetStored(byte[] content) {
+        this.content = content;
+    }
+
     private byte[] convertFileToBytes(File datasetFile) throws DatasetNotFoundException {
         try {
             return Files.readAllBytes(datasetFile.toPath());
