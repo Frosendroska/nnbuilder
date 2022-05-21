@@ -1,10 +1,9 @@
 package org.hse.nnbuilder.queue;
 
 import java.io.File;
-import org.hse.nnbuilder.dataset.DatasetRepository;
 import org.hse.nnbuilder.dataset.DatasetStored;
+import org.hse.nnbuilder.exception.DatasetNotFoundException;
 import org.hse.nnbuilder.nn.FeedForwardNN;
-import org.hse.nnbuilder.nn.store.NeuralNetworkRepository;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 import org.junit.jupiter.api.Test;
@@ -22,10 +21,7 @@ public class TasksQueueRepositoryTest {
     private TasksQueueRepository tasksQueueRepository;
 
     @Autowired
-    private NeuralNetworkRepository neuralNetworkRepository;
-
-    @Autowired
-    private DatasetRepository datasetRepository;
+    private TaskQueuedStorage taskQueuedStorage;
 
     @Test
     void testAddEmptyTask() {
@@ -34,25 +30,20 @@ public class TasksQueueRepositoryTest {
     }
 
     @Test
-    void testAddLearningTaskFFNN() {
+    void testAddLearningTaskFFNN() throws DatasetNotFoundException {
         // Neural Network
         FeedForwardNN nn = FeedForwardNN.buildDefaultFastForwardNN();
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
-        File datasetFile = new File("Resourses/2022_forbes_billionaires.csv");
-        DatasetStored datasetStored = new DatasetStored(datasetFile);
+
+        // Dataset
+        File ds = new File("../Resources/2022_forbes_billionaires.csv");
+        DatasetStored dsStored = new DatasetStored(ds);
 
         // Task
-        TaskQueued tq = new TaskQueued(
-                TaskType.TrainNN, nnStored, datasetStored);
+        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNN, nnStored, dsStored);
 
-        nnStored.getTasks().add(tq);
-        tq.setNeuralNetworkStored(nnStored);
-        tq.setDatasetStored(datasetStored);
-
-
-        datasetRepository.save(datasetStored);
-        neuralNetworkRepository.save(nnStored);
-        tasksQueueRepository.save(tq);
+        // TaskQueuedStorage tqs = new TaskQueuedStorage();
+        taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 
     // @Test

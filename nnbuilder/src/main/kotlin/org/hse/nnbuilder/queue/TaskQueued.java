@@ -28,26 +28,30 @@ public final class TaskQueued {
     @JoinColumn(name = "nnId")
     private NeuralNetworkStored neuralNetworkStored;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "datasetId")
+    @JoinColumn(name = "dsId")
     private DatasetStored datasetStored;
     @Column
-    private Timestamp startTime; // TODO на самом деле два времени
+    private long epochAmount;
+    @Column
+    private Timestamp addTaskTime;
+    @Column
+    private Timestamp startTaskTime;
     @Column
     private TaskStatus taskStatus;
 
     TaskQueued() {}
 
-    private TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, DatasetStored datasetStored,
-
-            TaskStatus taskStatus) {
+    private TaskQueued(
+            TaskType taskName, NeuralNetworkStored neuralNetworkStored,
+            DatasetStored datasetStored, TaskStatus taskStatus
+    ) {
         Instant now = Instant.now();
-        Timestamp timestamp =
-                Timestamp.newBuilder().setSeconds(now.getEpochSecond())
-                        .setNanos(now.getNano()).build();
+        Timestamp timestamp = Timestamp.newBuilder().setSeconds(now.getEpochSecond()).setNanos(now.getNano()).build();
         this.taskName = taskName;
         this.neuralNetworkStored = neuralNetworkStored;
         this.datasetStored = datasetStored;
-        this.startTime = timestamp;
+        this.addTaskTime = timestamp;
+        this.startTaskTime = null; // Will set is after status will be "Processing"
         this.taskStatus = taskStatus;
     }
 
@@ -65,12 +69,21 @@ public final class TaskQueued {
     }
 
     // StartTime
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
+    public void setAddTaskTime(Timestamp addTaskTime) {
+        this.addTaskTime = addTaskTime;
     }
 
-    public Timestamp getStartTime() {
-        return startTime;
+    public Timestamp getAddTaskTime() {
+        return addTaskTime;
+    }
+
+    // StartTime
+    public void setStartTaskTime(Timestamp startTaskTime) {
+        this.startTaskTime = startTaskTime;
+    }
+
+    public Timestamp getStartTaskTime() {
+        return startTaskTime;
     }
 
     // TaskName
@@ -101,12 +114,20 @@ public final class TaskQueued {
     }
 
     // Data Set Id
-
     public void setDatasetStored(DatasetStored datasetStored) {
         this.datasetStored = datasetStored;
     }
 
     public DatasetStored getDatasetStored() {
         return datasetStored;
+    }
+
+    // Epoch amount
+    public Long getEpochAmount() {
+        return epochAmount;
+    }
+
+    public void setEpochAmount(Long epochAmount) {
+        this.epochAmount = epochAmount;
     }
 }

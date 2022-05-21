@@ -4,8 +4,9 @@ package org.hse.nnbuilder.services;
 import "google/protobuf/timestamp.proto";
 
 enum TaskType {
-  TrainNN = 0;
-  ApplyToData = 1;
+  TrainNNClassification = 0;
+  TrainNNRegression = 1;
+  ApplyToData = 2;
 }
 
 enum TaskStatus {

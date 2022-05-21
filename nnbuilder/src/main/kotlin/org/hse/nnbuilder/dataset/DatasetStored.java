@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hse.nnbuilder.exception.DatasetNotFoundException;
 import org.hse.nnbuilder.queue.TaskQueued;
 
 @Entity
@@ -20,10 +21,10 @@ import org.hse.nnbuilder.queue.TaskQueued;
 public class DatasetStored {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long datasetId;
+    private Long dsId;
 
     @Column
-    private byte[] data;
+    private byte[] content;
 
     @OneToMany(
             cascade = CascadeType.ALL,
@@ -33,36 +34,34 @@ public class DatasetStored {
 
     public DatasetStored() {}
 
-    public DatasetStored(File datasetFile) {
-        data = convertFileToBytes(datasetFile);
+    public DatasetStored(File datasetFile) throws DatasetNotFoundException {
+        content = convertFileToBytes(datasetFile);
     }
 
-    private byte[] convertFileToBytes(File datasetFile) {
-        // TODO как сделать правильнее?
+    private byte[] convertFileToBytes(File datasetFile) throws DatasetNotFoundException {
         try {
             return Files.readAllBytes(datasetFile.toPath());
         } catch (IOException e) {
-            System.out.println("Impossible to readAllBytes");
-            return null;
+           throw new DatasetNotFoundException(e, "Error in converting dataset to the array of bytes");
         }
     }
 
     // Dataset Id
-    public Long getDatasetId() {
-        return datasetId;
+    public Long getDsId() {
+        return dsId;
     }
 
-    void setDatasetId(Long datasetId) {
-        this.datasetId = datasetId;
+    void setDsId(Long dsId) {
+        this.dsId = dsId;
     }
 
     // Data
-    public byte[] getData() {
-        return data;
+    public byte[] getContent() {
+        return content;
     }
 
-    void setData(byte[] data) {
-        this.data = data;
+    void setContent(byte[] content) {
+        this.content = content;
     }
 
     // Tasks
@@ -75,13 +74,13 @@ public class DatasetStored {
     }
 
     //
-    // public void addTask(TaskQueued task) {
-    //     tasks.add(task);
-    //     task.setDatasetStored(this);
-    // }
-    //
-    // public void removeTask(TaskQueued task) {
-    //     tasks.remove(task);
-    //     task.setDatasetStored(null);
-    // }
+    public void addTask(TaskQueued task) {
+        tasks.add(task);
+        task.setDatasetStored(this);
+    }
+
+    public void removeTask(TaskQueued task) {
+        tasks.remove(task);
+        task.setDatasetStored(null);
+    }
 }
