@@ -7,7 +7,9 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.hse.nnbuilder.dataset.DatasetRepository;
 import org.hse.nnbuilder.dataset.DatasetStored;
 import org.hse.nnbuilder.nn.store.NeuralNetworkRepository;
+import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.queue.TaskQueued;
+import org.hse.nnbuilder.queue.TaskQueuedStorage;
 import org.hse.nnbuilder.queue.TasksQueueRepository;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationRequest;
 import org.hse.nnbuilder.services.Tasksqueue.GettingInformationResponse;
@@ -29,6 +31,9 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
     @Autowired
     private DatasetRepository datasetRepository;
 
+    @Autowired
+    private TaskQueuedStorage taskQueuedStorage;
+
     @Override
     public void createtask(
             TaskCreationRequest request,
@@ -36,12 +41,12 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
         // Get data from request
         TaskType name = request.getName();
-        long nnId = request.getNnId();
+        NeuralNetworkStored nnStored = neuralNetworkRepository.getById(request.getNnId());
         DatasetStored dsStored = datasetRepository.getById(request.getDataId());
 
         // Make a task in DB
-        TaskQueued taskQueued = new TaskQueued(name, neuralNetworkRepository.getById(nnId), dsStored);
-        tasksQueueRepository.save(taskQueued);
+        TaskQueued taskQueued = new TaskQueued(name, nnStored, dsStored);
+        taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
 
         // Response with id on task
         long taskId = taskQueued.getTaskId();

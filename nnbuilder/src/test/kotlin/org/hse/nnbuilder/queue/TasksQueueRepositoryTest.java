@@ -42,7 +42,6 @@ public class TasksQueueRepositoryTest {
         // Task
         TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored);
 
-        // TaskQueuedStorage tqs = new TaskQueuedStorage();
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 
