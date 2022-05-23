@@ -55,7 +55,6 @@ public class NeuralNetworkRepositoryTest {
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
-
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(8);
     }
 
@@ -67,7 +66,6 @@ public class NeuralNetworkRepositoryTest {
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
-
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(4);
     }
 
@@ -78,7 +76,6 @@ public class NeuralNetworkRepositoryTest {
         neuralNetworkRepository.save(nnStored);
 
         NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
-
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(4);
     }

@@ -1,8 +1,8 @@
 package org.hse.nnbuilder.queue;
 
-import java.io.File;
+import java.io.IOException;
+import org.hse.nnbuilder.DatasetUtil;
 import org.hse.nnbuilder.dataset.DatasetStored;
-import org.hse.nnbuilder.exception.DatasetNotFoundException;
 import org.hse.nnbuilder.nn.FeedForwardNN;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.services.Tasksqueue.TaskType;
@@ -30,18 +30,17 @@ public class TasksQueueRepositoryTest {
     }
 
     @Test
-    void testAddLearningTaskFFNN() throws DatasetNotFoundException {
+    void testAddLearningTaskFFNN() throws IOException {
         // Neural Network
         FeedForwardNN nn = FeedForwardNN.buildDefaultFastForwardNN();
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
 
-        // Dataset
-        File ds = new File("../Resources/2022_forbes_billionaires.csv");
-        DatasetStored dsStored = new DatasetStored(ds);
+        DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile());
 
         // Task
         TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored);
 
+        // TaskQueuedStorage tqs = new TaskQueuedStorage();
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 

@@ -1,19 +1,8 @@
 package org.hse.nnbuilder.dataset;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import org.hse.nnbuilder.exception.DatasetNotFoundException;
+import javax.persistence.*;
 import org.hse.nnbuilder.queue.TaskQueued;
 
 @Entity
@@ -26,28 +15,13 @@ public class DatasetStored {
     @Column
     private byte[] content;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<TaskQueued> tasks = new ArrayList<>();
 
     public DatasetStored() {}
 
-    public DatasetStored(File datasetFile) throws DatasetNotFoundException {
-        content = convertFileToBytes(datasetFile);
-    }
-
     public DatasetStored(byte[] content) {
         this.content = content;
-    }
-
-    private byte[] convertFileToBytes(File datasetFile) throws DatasetNotFoundException {
-        try {
-            return Files.readAllBytes(datasetFile.toPath());
-        } catch (IOException e) {
-           throw new DatasetNotFoundException(e, "Error in converting dataset to the array of bytes");
-        }
     }
 
     // Dataset Id

@@ -26,10 +26,7 @@ public final class NeuralNetworkStored {
     @Column(name = "content", columnDefinition = "text")
     private AbstractNeuralNetwork neuralNetwork;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     List<TaskQueued> tasks = new ArrayList<>();
 
     public NeuralNetworkStored() {}
