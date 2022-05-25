@@ -41,9 +41,9 @@ class AuthServiceTest {
 
     @BeforeAll
     @AfterEach
-            /**
-             * Clear database
-             */
+    /**
+     * Clear database
+     */
     fun resetData() {
         try {
             JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "users")
@@ -54,16 +54,16 @@ class AuthServiceTest {
 
     @Test
     fun resisterTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val name = "Ivan"
         val email = "Ivan@mail.ru"
         val password = "ivanpassword"
         val request = createRegisterRequest(name, email, password)
 
-        //Action
+        // Action
         authService.register(request)
 
-        //Assert
+        // Assert
         try {
             userService.findByEmail(email)
         } catch (e: UserNotFoundException) {
@@ -73,47 +73,47 @@ class AuthServiceTest {
 
     @Test
     fun registerAlreadyExistingUser() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val name = "name"
         val email = "email@mail.ru"
         val password = "password"
         val request = createRegisterRequest(name, email, password)
 
-        //Action
+        // Action
         authService.register(request)
         val response = authService.register(request)
 
-        //Assert
+        // Assert
         assertTrue(response.exception.isNotEmpty())
     }
 
     @Test
     fun loginTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val name = "name"
         val email = "email@mail.ru"
         val password = "password"
         val registerRequest = createRegisterRequest(name, email, password)
         val loginRequest = createLoginRequest(email, password)
 
-        //Action
+        // Action
         authService.register(registerRequest)
         val loginResponse = authService.login(loginRequest)
 
-        //Prepare data
+        // Prepare data
         val authentication = authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(email, password) // principal, credentials
+            UsernamePasswordAuthenticationToken(email, password) // principal, credentials
         )
         val jwt = jwtToken.generateJwtToken(authentication)
 
-        //Assert
+        // Assert
         assertTrue(loginResponse.exception.isEmpty())
         assertEquals(jwt, loginResponse.token)
     }
 
     @Test
     fun loginWithBadCredentials() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val name = "name"
         val email = "email@mail.ru"
         val invalidEmail = "invalidEmail"
@@ -123,12 +123,12 @@ class AuthServiceTest {
         val invalidLoginRequest1 = createLoginRequest(invalidEmail, password)
         val invalidLoginRequest2 = createLoginRequest(email, invalidPassword)
 
-        //Action
+        // Action
         authService.register(registerRequest)
         val loginResponse1 = authService.login(invalidLoginRequest1)
         val loginResponse2 = authService.login(invalidLoginRequest2)
 
-        //Assert
+        // Assert
         assertTrue(loginResponse1.exception.isNotEmpty())
         assertTrue(loginResponse1.token.isEmpty())
         assertTrue(loginResponse2.exception.isNotEmpty())
@@ -137,37 +137,37 @@ class AuthServiceTest {
 
     @Test
     fun loginNotExistingUser() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val name = "name"
         val email = "email@mail.ru"
         val password = "password"
         val loginRequest = createLoginRequest(email, password)
 
-        //Action
+        // Action
         val loginResponse = authService.login(loginRequest)
 
-        //Assert
+        // Assert
         assertTrue(loginResponse.exception.isNotEmpty())
     }
 
     private fun createRegisterRequest(name: String, email: String, password: String): Auth.RegisterRequest {
         val request = Auth.RegisterRequest.newBuilder()
-                .setName(name)
-                .setEmail(email)
-                .setPassword(password)
-                .build()
+            .setName(name)
+            .setEmail(email)
+            .setPassword(password)
+            .build()
 
         return request
     }
 
     private fun createLoginRequest(email: String, password: String): Auth.LoginRequest {
         val request = Auth.LoginRequest.newBuilder()
-                .setEmail(email)
-                .setPassword(password)
-                .build()
+            .setEmail(email)
+            .setPassword(password)
+            .build()
 
         return request
     }
 
-    //TODO add opportunity to change password
+    // TODO add opportunity to change password
 }

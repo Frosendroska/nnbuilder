@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 @GrpcService
 open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBase() {
-    //TODO add authorization
+    // TODO add authorization
     @Autowired
     private lateinit var generalNeuralNetworkService: GeneralNeuralNetworkService
 
@@ -21,9 +21,9 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
             exception = e.message
         }
         return Nnversion.makeNNSnapshotResponse.newBuilder()
-                .setNnId(newVersionId)
-                .setException(exception)
-                .build()
+            .setNnId(newVersionId)
+            .setException(exception)
+            .build()
     }
 
     @Override

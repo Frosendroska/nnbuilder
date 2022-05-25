@@ -4,12 +4,11 @@ import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
 import org.hse.nnbuilder.user.User
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
 
 @Service
 class GeneralNeuralNetworkService(
-        private val generalNeuralNetworkRepository: GeneralNeuralNetworkRepository,
-        private val neuralNetworkService: NeuralNetworkService
+    private val generalNeuralNetworkRepository: GeneralNeuralNetworkRepository,
+    private val neuralNetworkService: NeuralNetworkService
 ) {
 
     fun create(user: User): GeneralNeuralNetwork {
@@ -39,10 +38,10 @@ class GeneralNeuralNetworkService(
         val projectId = getProjectIdByNNVersionId(id)
         neuralNetworkService.deleteById(id)
 
-        if (!getById(projectId).checkVersionsExists()) { //we deleted last version in this project
+        if (!getById(projectId).checkVersionsExists()) { // we deleted last version in this project
             deleteById(projectId)
         }
-        //println(gnn.getNNVersions())
+        // println(gnn.getNNVersions())
     }
 
     /**
@@ -59,7 +58,6 @@ class GeneralNeuralNetworkService(
     private fun getProjectIdByNNVersionId(id: Long): Long {
         return getByIdOfNNVersion(id).getId()
     }
-
 
     /**
      * Add new neural network version - snapshot of neural network with given id

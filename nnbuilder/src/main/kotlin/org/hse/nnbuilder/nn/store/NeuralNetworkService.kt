@@ -9,7 +9,6 @@ import org.hse.nnbuilder.nn.RecurrentNN
 import org.hse.nnbuilder.services.Nnmodification
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class NeuralNetworkService(
