@@ -37,9 +37,9 @@ class AuthServiceTest {
 
     @BeforeAll
     @AfterEach
-            /**
-             * Clear database
-             */
+    /**
+     * Clear database
+     */
     fun resetData() {
         try {
             JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "users")
@@ -96,7 +96,7 @@ class AuthServiceTest {
         authService.register(registerRequest)
         val loginResponse = authService.login(loginRequest)
 
-        //Prepare data
+        // Prepare data
         val authentication = jwtToken.parseJwtToken(loginResponse.token)
 
         // Assert
@@ -148,19 +148,19 @@ class AuthServiceTest {
 
     private fun createRegisterRequest(name: String, email: String, password: String): Auth.RegisterRequest {
         val request = Auth.RegisterRequest.newBuilder()
-                .setName(name)
-                .setEmail(email)
-                .setPassword(password)
-                .build()
+            .setName(name)
+            .setEmail(email)
+            .setPassword(password)
+            .build()
 
         return request
     }
 
     private fun createLoginRequest(email: String, password: String): Auth.LoginRequest {
         val request = Auth.LoginRequest.newBuilder()
-                .setEmail(email)
-                .setPassword(password)
-                .build()
+            .setEmail(email)
+            .setPassword(password)
+            .build()
 
         return request
     }
