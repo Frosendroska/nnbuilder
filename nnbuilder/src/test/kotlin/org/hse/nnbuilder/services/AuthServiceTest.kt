@@ -15,9 +15,6 @@ import org.junit.jupiter.api.fail
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.jdbc.JdbcTestUtils
 
@@ -34,9 +31,6 @@ class AuthServiceTest {
 
     @Autowired
     private lateinit var jwtToken: JwtUtil
-
-    @Autowired
-    private lateinit var authenticationManager: AuthenticationManager
 
     @Autowired
     private val jdbcTemplate: JdbcTemplate? = null
@@ -97,7 +91,7 @@ class AuthServiceTest {
         val password = "password"
         val registerRequest = createRegisterRequest(name, email, password)
         val loginRequest = createLoginRequest(email, password)
-        
+
         // Action
         authService.register(registerRequest)
         val loginResponse = authService.login(loginRequest)
