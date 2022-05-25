@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import javax.persistence.CascadeType
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import javax.persistence.Column
