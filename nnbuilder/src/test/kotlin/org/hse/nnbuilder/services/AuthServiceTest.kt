@@ -6,6 +6,7 @@ import org.hse.nnbuilder.exception.UserNotFoundException
 import org.hse.nnbuilder.user.UserService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -16,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.jdbc.JdbcTestUtils
 
@@ -41,9 +43,9 @@ class AuthServiceTest {
 
     @BeforeAll
     @AfterEach
-    /**
-     * Clear database
-     */
+            /**
+             * Clear database
+             */
     fun resetData() {
         try {
             JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "users")
@@ -95,20 +97,20 @@ class AuthServiceTest {
         val password = "password"
         val registerRequest = createRegisterRequest(name, email, password)
         val loginRequest = createLoginRequest(email, password)
-
+        
         // Action
         authService.register(registerRequest)
         val loginResponse = authService.login(loginRequest)
 
-        // Prepare data
-        val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(email, password) // principal, credentials
-        )
-        val jwt = jwtToken.generateJwtToken(authentication)
+        //Prepare data
+        val authentication = jwtToken.parseJwtToken(loginResponse.token)
 
         // Assert
         assertTrue(loginResponse.exception.isEmpty())
-        assertEquals(jwt, loginResponse.token)
+        assertNotNull(authentication)
+        if (authentication != null) {
+            assertEquals(authentication.name, email)
+        }
     }
 
     @Test
@@ -152,19 +154,19 @@ class AuthServiceTest {
 
     private fun createRegisterRequest(name: String, email: String, password: String): Auth.RegisterRequest {
         val request = Auth.RegisterRequest.newBuilder()
-            .setName(name)
-            .setEmail(email)
-            .setPassword(password)
-            .build()
+                .setName(name)
+                .setEmail(email)
+                .setPassword(password)
+                .build()
 
         return request
     }
 
     private fun createLoginRequest(email: String, password: String): Auth.LoginRequest {
         val request = Auth.LoginRequest.newBuilder()
-            .setEmail(email)
-            .setPassword(password)
-            .build()
+                .setEmail(email)
+                .setPassword(password)
+                .build()
 
         return request
     }
