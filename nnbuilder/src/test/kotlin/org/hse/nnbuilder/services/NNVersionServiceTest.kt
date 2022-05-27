@@ -1,6 +1,9 @@
 package org.hse.nnbuilder.services
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.withContext
+import org.hse.nnbuilder.nn.store.NeuralNetworkRepository
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
 import org.hse.nnbuilder.user.User
 import org.hse.nnbuilder.user.UserService
@@ -38,6 +41,9 @@ class NNVersionServiceTest {
 
     @Autowired
     private lateinit var neuralNetworkService: NeuralNetworkService
+
+    @Autowired
+    private lateinit var networkRepository: NeuralNetworkRepository
 
     @Autowired
     private lateinit var nnVersionService: NNVersionService
@@ -178,5 +184,45 @@ class NNVersionServiceTest {
         assertFalse(generalNeuralNetworkService.checkExistsById(projectId))
         assertFalse(neuralNetworkService.checkExistsById(nnId1))
         assertFalse(neuralNetworkService.checkExistsById(nnId2))
+    }
+
+    @Test
+    fun compareNNVersionsTest() = runBlockingTest {
+        //Prepare data
+        val nnId1 = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
+        val snapshotRequest = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
+        val snapshotResponse = nnVersionService.makeNNSnapshot(snapshotRequest)
+        val nnId2 = snapshotResponse.nnId
+        val compareRequest = Nnversion.compareRequest.newBuilder()
+                .setNnId1(nnId1)
+                .setNnId2(nnId2)
+                .build()
+
+        //Action
+        var compareResponse = nnVersionService.compareNNVersions(compareRequest)
+
+        //Assert
+        assertFalse(compareResponse.hasDiffInLearningRate)
+        for (i in compareResponse.layersDiffList) {
+            assertFalse(i.hasDiffInExisting)
+            assertFalse(i.hasDiffInNeurons)
+            assertFalse(i.hasDiffInLayerType)
+            assertFalse(i.hasDiffInActivationFunction)
+        }
+
+        //Action
+        val loaded = neuralNetworkService.getById(nnId1)
+        loaded.neuralNetwork
+                .addLayer(
+                        1,  // i
+                        Nnmodification.LayerType.HiddenCell // f
+                )
+        networkRepository.save(loaded)
+
+        compareResponse = nnVersionService.compareNNVersions(compareRequest)
+
+        //Assert
+        assertTrue(compareResponse.layersDiffList[1].hasDiffInLayerType)
+        assertEquals(Nnmodification.LayerType.HiddenCell, compareResponse.layersDiffList[1].layerType1)
     }
 }
