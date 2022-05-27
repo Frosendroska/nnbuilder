@@ -7,6 +7,7 @@ import org.hse.nnbuilder.user.UserService
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -38,13 +39,16 @@ class NNVersionServiceTest {
     private lateinit var neuralNetworkService: NeuralNetworkService
 
     @Autowired
+    private lateinit var nnVersionService: NNVersionService
+
+    @Autowired
     private val jdbcTemplate: JdbcTemplate? = null
 
     private lateinit var user: User
 
     @BeforeAll
     fun createTestUser() {
-        resetData()
+        resetUserData()
 
         //Prepare data
         val name = "Ivan"
@@ -60,12 +64,21 @@ class NNVersionServiceTest {
         SecurityContextHolder.setContext(context)
     }
 
-    //    @AfterEach
-    @AfterAll
+    @AfterEach
             /**
              * Clear database
              */
     fun resetData() {
+        try {
+            JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "neuralnetwork", "general_neural_network")
+        } catch (e: Exception) {
+            println("Something went wrong while cleaning database")
+        }
+    }
+
+    @AfterAll
+    fun resetUserData() {
+        resetData()
         try {
             JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "users")
         } catch (e: Exception) {
@@ -85,5 +98,25 @@ class NNVersionServiceTest {
         assertTrue(nnVersion.generalNeuralNetwork.getId() == project.getId())
     }
 
+    @Test
+    fun makeSnapshotTest() = runBlockingTest {
+        //Prepare data
+        val nnId = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
+        val originalNNStored = neuralNetworkService.getById(nnId)
+        val originalNN = originalNNStored.neuralNetwork
+        val request = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId).build()
 
+        //Action
+        val response = nnVersionService.makeNNSnapshot(request)
+        val snapshotId = response.nnId
+        val snapshotNNStored = neuralNetworkService.getById(snapshotId)
+        val snapshotNN = snapshotNNStored.neuralNetwork
+
+        //Assert
+        assertEquals(originalNNStored.generalNeuralNetwork.getId(), snapshotNNStored.generalNeuralNetwork.getId())
+        assertEquals(originalNN.nnType, snapshotNN.nnType)
+        assertEquals(originalNN.layers, snapshotNN.layers)
+        assertEquals(originalNN.learningRate, snapshotNN.learningRate)
+        assertEquals(originalNN.defaultNumberOfLayers, snapshotNN.defaultNumberOfLayers)
+    }
 }
