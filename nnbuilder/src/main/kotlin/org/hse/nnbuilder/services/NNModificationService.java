@@ -16,6 +16,8 @@ import org.hse.nnbuilder.user.UserService;
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @GrpcService
 public class NNModificationService extends NNModificationServiceGrpc.NNModificationServiceImplBase {
@@ -40,14 +42,14 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
                             request.getAddLayer().getLType() // lType
-                            );
+                    );
         }
         if (request.hasDelLayer()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
             loaded.getNeuralNetwork()
                     .delLayer(
                             request.getDelLayer().getIndex() // i
-                            );
+                    );
         }
         if (request.hasChangeActivationFunction()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
@@ -55,7 +57,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .changeActivationFunction(
                             request.getChangeActivationFunction().getIndex(), // i
                             request.getChangeActivationFunction().getF() // f
-                            );
+                    );
         }
         if (request.hasChangeNumberOfNeuron()) {
             NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
@@ -63,7 +65,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .changeNumberOfNeuron(
                             request.getChangeNumberOfNeuron().getIndex(), // i
                             request.getChangeNumberOfNeuron().getNumber() // n
-                            );
+                    );
         }
 
         NNModificationResponse responseWithOk =
@@ -72,13 +74,23 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         responseObserver.onCompleted();
     }
 
-    // @Secured("ROLE_USER")
+    @Secured("ROLE_USER")
     @Override
     public void createnn(
             Nnmodification.NNCreationRequest request,
             StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
-        // String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        String userEmail = "c";
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        //String userEmail = "c";
+
+        long nnId = creatennForUser(userEmail, request.getNnType());
+
+        NNCreationResponse responseWithOk =
+                NNCreationResponse.newBuilder().setNnId(nnId).build();
+        responseObserver.onNext(responseWithOk);
+        responseObserver.onCompleted();
+    }
+
+    public long creatennForUser(String userEmail, Nnmodification.NetworkType nnType) {
         User user = userService.findByEmail(userEmail);
 
         long nnId = 0;
@@ -86,7 +98,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         // creating new project
         GeneralNeuralNetwork generalNeuralNetwork = generalNeuralNetworkService.create(user);
 
-        if (request.getNnType() == NetworkType.FF) {
+        if (nnType == NetworkType.FF) {
             FeedForwardNN ffnn = FeedForwardNN.buildDefaultFastForwardNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(ffnn, generalNeuralNetwork);
             neuralNetworkRepository.save(nnStored);
@@ -100,26 +112,23 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             // }
             // System.out.println("General in new stored: " + nnStored.generalNeuralNetwork.getId());
 
-        } else if (request.getNnType() == NetworkType.RNN) {
+        } else if (nnType == NetworkType.RNN) {
             RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(rnn, generalNeuralNetwork);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-        } else if (request.getNnType() == NetworkType.LSTM) {
+        } else if (nnType == NetworkType.LSTM) {
             LongShortTermMemoryNN lstmnn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(lstmnn, generalNeuralNetwork);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-        } else if (request.getNnType() == NetworkType.CNN) {
+        } else if (nnType == NetworkType.CNN) {
             ConvolutionalNN cnn = ConvolutionalNN.buildDefaultConvolutionalNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(cnn, generalNeuralNetwork);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
         }
 
-        NNCreationResponse responseWithOk =
-                NNCreationResponse.newBuilder().setNnId(nnId).build();
-        responseObserver.onNext(responseWithOk);
-        responseObserver.onCompleted();
+        return nnId;
     }
 }

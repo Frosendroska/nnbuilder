@@ -61,7 +61,7 @@ class GeneralNeuralNetworkService(
     /**
      * Get GeneralNeuralNetwork that contains NNVersion with given id
      */
-    private fun getByIdOfNNVersion(id: Long): GeneralNeuralNetwork {
+    fun getByIdOfNNVersion(id: Long): GeneralNeuralNetwork {
         val NNVersionStored = neuralNetworkService.getById(id)
         return NNVersionStored.generalNeuralNetwork
     }
