@@ -21,6 +21,10 @@ public class ConvolutionalNN extends AbstractNeuralNetwork {
         defaultNumberOfLayers = 8;
     }
 
+    public ConvolutionalNN(ConvolutionalNN other) {
+        init(other);
+    }
+
     /* Build default Convolutional Neural Network */
     public static ConvolutionalNN buildDefaultConvolutionalNN() {
         ConvolutionalNN nn = new ConvolutionalNN();
