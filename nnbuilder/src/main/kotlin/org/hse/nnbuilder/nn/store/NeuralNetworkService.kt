@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 class NeuralNetworkService(
     private val neuralNetworkRepository: NeuralNetworkRepository
 ) {
-    private fun checkExistsById(id: Long): Boolean {
+    public fun checkExistsById(id: Long): Boolean {
         return neuralNetworkRepository.findById(id).isPresent
     }
 

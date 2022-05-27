@@ -8,6 +8,7 @@ import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -118,5 +119,64 @@ class NNVersionServiceTest {
         assertEquals(originalNN.layers, snapshotNN.layers)
         assertEquals(originalNN.learningRate, snapshotNN.learningRate)
         assertEquals(originalNN.defaultNumberOfLayers, snapshotNN.defaultNumberOfLayers)
+    }
+
+    @Test
+    fun deleteNNVersionTest() = runBlockingTest {
+        //Prepare data
+        val nnId = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
+        assertTrue(neuralNetworkService.checkExistsById(nnId))
+        val request = Nnversion.deleteNNVersionRequest.newBuilder().setNnId(nnId).build()
+
+        //Action
+        nnVersionService.deleteNNVersion(request)
+
+        //Assert
+        assertFalse(neuralNetworkService.checkExistsById(nnId))
+    }
+
+    @Test
+    fun deleteProjectTest() = runBlockingTest {
+        //Prepare data
+        val nnId = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
+        val projectId = generalNeuralNetworkService.getByIdOfNNVersion(nnId).getId()
+        assertTrue(generalNeuralNetworkService.checkExistsById(projectId))
+        val request = Nnversion.deleteProjectRequest.newBuilder().setProjectId(projectId).build()
+
+        //Action
+        nnVersionService.deleteProject(request)
+
+        //Assert
+        assertFalse(neuralNetworkService.checkExistsById(nnId))
+        assertFalse(neuralNetworkService.checkExistsById(projectId))
+    }
+
+    @Test
+    fun automaticProjectDeletionTest() = runBlockingTest {
+        //Prepare data
+        val nnId1 = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
+        val projectId = generalNeuralNetworkService.getByIdOfNNVersion(nnId1).getId()
+        val snapshotRequest = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
+        val snapshotResponse = nnVersionService.makeNNSnapshot(snapshotRequest)
+        val nnId2 = snapshotResponse.nnId
+        val deleteNNVersionRequest1 = Nnversion.deleteNNVersionRequest.newBuilder().setNnId(nnId1).build()
+        val deleteNNVersionRequest2 = Nnversion.deleteNNVersionRequest.newBuilder().setNnId(nnId2).build()
+
+        assertTrue(neuralNetworkService.checkExistsById(nnId1))
+        assertTrue(neuralNetworkService.checkExistsById(nnId2))
+
+        //Action
+        nnVersionService.deleteNNVersion(deleteNNVersionRequest1)
+
+        assertTrue(generalNeuralNetworkService.checkExistsById(projectId))
+        assertFalse(neuralNetworkService.checkExistsById(nnId1))
+        assertTrue(neuralNetworkService.checkExistsById(nnId2))
+
+        nnVersionService.deleteNNVersion(deleteNNVersionRequest2)
+
+        //Assert
+        assertFalse(generalNeuralNetworkService.checkExistsById(projectId))
+        assertFalse(neuralNetworkService.checkExistsById(nnId1))
+        assertFalse(neuralNetworkService.checkExistsById(nnId2))
     }
 }

@@ -18,7 +18,7 @@ class GeneralNeuralNetworkService(
         return generalNeuralNetwork
     }
 
-    private fun checkExistsById(id: Long): Boolean {
+    fun checkExistsById(id: Long): Boolean {
         return generalNeuralNetworkRepository.findById(id).isPresent
     }
 
