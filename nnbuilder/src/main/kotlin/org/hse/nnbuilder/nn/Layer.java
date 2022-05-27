@@ -45,7 +45,7 @@ public final class Layer implements Serializable {
 
     /**
      * @param n Current number of neurons in this layer
-     * Set new number if neurons
+     *          Set new number if neurons
      */
     public void changeNumberOfNeuron(long n) {
         /* assert (n > 0); */
@@ -54,9 +54,29 @@ public final class Layer implements Serializable {
 
     /**
      * @param f New function
-     * Set another activation function
+     *          Set another activation function
      */
     public void setActivationFunction(ActivationFunction f) {
         activationFunction = f;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Layer)) {
+            return false;
+        }
+        return layerType != null &&
+                layerType.equals(((Layer) o).layerType) &&
+                activationFunction != null &&
+                activationFunction.equals(((Layer) o).activationFunction) &&
+                neurons == ((Layer) o).neurons;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

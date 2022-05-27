@@ -1,14 +1,15 @@
 package org.hse.nnbuilder.version_controller
 
 import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
+import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
 import org.hse.nnbuilder.user.User
 import org.springframework.stereotype.Service
 
 @Service
 class GeneralNeuralNetworkService(
-    private val generalNeuralNetworkRepository: GeneralNeuralNetworkRepository,
-    private val neuralNetworkService: NeuralNetworkService
+        private val generalNeuralNetworkRepository: GeneralNeuralNetworkRepository,
+        private val neuralNetworkService: NeuralNetworkService
 ) {
 
     fun create(user: User): GeneralNeuralNetwork {
@@ -42,6 +43,19 @@ class GeneralNeuralNetworkService(
             deleteById(projectId)
         }
         // println(gnn.getNNVersions())
+    }
+
+    /**
+     * Returns two neural network versions
+     */
+    fun getNNVersionsToCompare(nnId1: Long, nnId2: Long): Pair<AbstractNeuralNetwork, AbstractNeuralNetwork> {
+        if (getProjectIdByNNVersionId(nnId2) != getProjectIdByNNVersionId(nnId2)) {
+            throw Exception("These neural networks do not belong to the same project.")
+        }
+        val nn1 = neuralNetworkService.getById(nnId1).neuralNetwork
+        val nn2 = neuralNetworkService.getById(nnId2).neuralNetwork
+
+        return Pair(nn1, nn2)
     }
 
     /**
