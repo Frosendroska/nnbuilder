@@ -1,11 +1,11 @@
 package org.hse.nnbuilder.services
 
-import java.lang.Integer.max
 import net.devh.boot.grpc.server.service.GrpcService
 import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.Layer
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService
 import org.springframework.beans.factory.annotation.Autowired
+import java.lang.Integer.max
 
 @GrpcService
 open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBase() {
@@ -23,9 +23,9 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
             exception = e.message
         }
         return Nnversion.makeNNSnapshotResponse.newBuilder()
-                .setNnId(newVersionId)
-                .setException(exception)
-                .build()
+            .setNnId(newVersionId)
+            .setException(exception)
+            .build()
     }
 
     @Override
@@ -56,7 +56,7 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
             return responseBuilder.setException(e.message).build()
         }
 
-        //set diff of learning rate
+        // set diff of learning rate
         if (nn1.learningRate != nn2.learningRate) {
             responseBuilder.setHasDiffInLearningRate(true)
             responseBuilder.learningRate1 = nn1.learningRate.toDouble()
@@ -71,8 +71,7 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
 //            responseBuilder.learningRate2 = nn2.learningRate.toDouble()
 //        }
 
-
-        //set diff of layers
+        // set diff of layers
         val layersDiff = getLayersDiff(nn1.layers, nn2.layers)
         responseBuilder.addAllLayersDiff(layersDiff)
 

@@ -1,8 +1,6 @@
 package org.hse.nnbuilder.services
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.withContext
 import org.hse.nnbuilder.nn.store.NeuralNetworkRepository
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
 import org.hse.nnbuilder.user.User
@@ -57,7 +55,7 @@ class NNVersionServiceTest {
     fun createTestUser() {
         resetUserData()
 
-        //Prepare data
+        // Prepare data
         val name = "Ivan"
         val email = "ivan@mail.ru"
         val password = "password"
@@ -72,9 +70,9 @@ class NNVersionServiceTest {
     }
 
     @AfterEach
-            /**
-             * Clear database
-             */
+    /**
+     * Clear database
+     */
     fun resetData() {
         try {
             JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "neuralnetwork", "general_neural_network")
@@ -95,31 +93,31 @@ class NNVersionServiceTest {
 
     @Test
     fun correctGeneralNNCreating() = runBlockingTest {
-        //Action
+        // Action
         val nnId = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
         val nnVersion = neuralNetworkService.getById(nnId)
-        val project = generalNeuralNetworkService.getByIdOfNNVersion(nnId)  //general neural network
+        val project = generalNeuralNetworkService.getByIdOfNNVersion(nnId) // general neural network
 
-        //Assert
+        // Assert
         assertTrue(project.owner.getId() == user.getId())
         assertTrue(nnVersion.generalNeuralNetwork.getId() == project.getId())
     }
 
     @Test
     fun makeSnapshotTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val nnId = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
         val originalNNStored = neuralNetworkService.getById(nnId)
         val originalNN = originalNNStored.neuralNetwork
         val request = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId).build()
 
-        //Action
+        // Action
         val response = nnVersionService.makeNNSnapshot(request)
         val snapshotId = response.nnId
         val snapshotNNStored = neuralNetworkService.getById(snapshotId)
         val snapshotNN = snapshotNNStored.neuralNetwork
 
-        //Assert
+        // Assert
         assertEquals(originalNNStored.generalNeuralNetwork.getId(), snapshotNNStored.generalNeuralNetwork.getId())
         assertEquals(originalNN.nnType, snapshotNN.nnType)
         assertEquals(originalNN.layers, snapshotNN.layers)
@@ -129,37 +127,37 @@ class NNVersionServiceTest {
 
     @Test
     fun deleteNNVersionTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val nnId = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
         assertTrue(neuralNetworkService.checkExistsById(nnId))
         val request = Nnversion.deleteNNVersionRequest.newBuilder().setNnId(nnId).build()
 
-        //Action
+        // Action
         nnVersionService.deleteNNVersion(request)
 
-        //Assert
+        // Assert
         assertFalse(neuralNetworkService.checkExistsById(nnId))
     }
 
     @Test
     fun deleteProjectTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val nnId = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
         val projectId = generalNeuralNetworkService.getByIdOfNNVersion(nnId).getId()
         assertTrue(generalNeuralNetworkService.checkExistsById(projectId))
         val request = Nnversion.deleteProjectRequest.newBuilder().setProjectId(projectId).build()
 
-        //Action
+        // Action
         nnVersionService.deleteProject(request)
 
-        //Assert
+        // Assert
         assertFalse(neuralNetworkService.checkExistsById(nnId))
         assertFalse(neuralNetworkService.checkExistsById(projectId))
     }
 
     @Test
     fun automaticProjectDeletionTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val nnId1 = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
         val projectId = generalNeuralNetworkService.getByIdOfNNVersion(nnId1).getId()
         val snapshotRequest = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
@@ -171,7 +169,7 @@ class NNVersionServiceTest {
         assertTrue(neuralNetworkService.checkExistsById(nnId1))
         assertTrue(neuralNetworkService.checkExistsById(nnId2))
 
-        //Action
+        // Action
         nnVersionService.deleteNNVersion(deleteNNVersionRequest1)
 
         assertTrue(generalNeuralNetworkService.checkExistsById(projectId))
@@ -180,7 +178,7 @@ class NNVersionServiceTest {
 
         nnVersionService.deleteNNVersion(deleteNNVersionRequest2)
 
-        //Assert
+        // Assert
         assertFalse(generalNeuralNetworkService.checkExistsById(projectId))
         assertFalse(neuralNetworkService.checkExistsById(nnId1))
         assertFalse(neuralNetworkService.checkExistsById(nnId2))
@@ -188,20 +186,20 @@ class NNVersionServiceTest {
 
     @Test
     fun compareNNVersionsTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val nnId1 = nnModificationService.creatennForUser(user.getEmail(), Nnmodification.NetworkType.FF)
         val snapshotRequest = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
         val snapshotResponse = nnVersionService.makeNNSnapshot(snapshotRequest)
         val nnId2 = snapshotResponse.nnId
         val compareRequest = Nnversion.compareRequest.newBuilder()
-                .setNnId1(nnId1)
-                .setNnId2(nnId2)
-                .build()
+            .setNnId1(nnId1)
+            .setNnId2(nnId2)
+            .build()
 
-        //Action
+        // Action
         var compareResponse = nnVersionService.compareNNVersions(compareRequest)
 
-        //Assert
+        // Assert
         assertFalse(compareResponse.hasDiffInLearningRate)
         for (i in compareResponse.layersDiffList) {
             assertFalse(i.hasDiffInExisting)
@@ -210,18 +208,18 @@ class NNVersionServiceTest {
             assertFalse(i.hasDiffInActivationFunction)
         }
 
-        //Action
+        // Action
         val loaded = neuralNetworkService.getById(nnId1)
         loaded.neuralNetwork
-                .addLayer(
-                        1,  // i
-                        Nnmodification.LayerType.HiddenCell // f
-                )
+            .addLayer(
+                1, // i
+                Nnmodification.LayerType.HiddenCell // f
+            )
         networkRepository.save(loaded)
 
         compareResponse = nnVersionService.compareNNVersions(compareRequest)
 
-        //Assert
+        // Assert
         assertTrue(compareResponse.layersDiffList[1].hasDiffInLayerType)
         assertEquals(Nnmodification.LayerType.HiddenCell, compareResponse.layersDiffList[1].layerType1)
     }

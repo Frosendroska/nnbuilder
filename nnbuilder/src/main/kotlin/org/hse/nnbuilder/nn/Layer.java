@@ -68,11 +68,11 @@ public final class Layer implements Serializable {
         if (!(o instanceof Layer)) {
             return false;
         }
-        return layerType != null &&
-                layerType.equals(((Layer) o).layerType) &&
-                activationFunction != null &&
-                activationFunction.equals(((Layer) o).activationFunction) &&
-                neurons == ((Layer) o).neurons;
+        return layerType != null
+                && layerType.equals(((Layer) o).layerType)
+                && activationFunction != null
+                && activationFunction.equals(((Layer) o).activationFunction)
+                && neurons == ((Layer) o).neurons;
     }
 
     @Override

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class GeneralNeuralNetworkService(
-        private val generalNeuralNetworkRepository: GeneralNeuralNetworkRepository,
-        private val neuralNetworkService: NeuralNetworkService
+    private val generalNeuralNetworkRepository: GeneralNeuralNetworkRepository,
+    private val neuralNetworkService: NeuralNetworkService
 ) {
 
     fun create(user: User): GeneralNeuralNetwork {
