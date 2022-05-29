@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import EditorWindow from './EditorWindow'
 import * as api from 'nnbuilder-api'
 import {NetworkType} from 'nnbuilder-api';
-import * as d3 from 'd3';
 
 type EditorProps = {
     modificationService: api.NNModificationServicePromiseClient

@@ -1,0 +1,16 @@
+.header {
+  background-color: #a5b9c8;
+  padding: 2rem 0;
+  text-align: center;
+  font-family: "American Typewriter", sans-serif;
+}
+
+header > a {
+  color: #f1f1f1;
+  text-decoration: none;
+  padding: 0 1rem;
+}
+
+header > a:hover {
+  text-decoration: underline;
+}

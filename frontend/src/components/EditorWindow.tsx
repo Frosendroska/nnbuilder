@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import LayerData from "../structure/LayerData";
 import Edge from "../structure/Edge";
 import NeuronData from "../structure/NeuronData";
+import './style/Form.scss';
 
 function EditorWindow() {
     let container = d3.select("#layers").append("svg").attr("style", "width: 100%; height: 100%;")
@@ -87,6 +88,12 @@ function EditorWindow() {
         setEdges(prev => prev.filter(e => e.to.layer_id != last_layer_id))
     }
 
+    function changeAmount() {
+        let last_layer_id = layers[layers.length - 1].id
+        setLayers(prev => prev.slice(0, -1));
+        setEdges(prev => prev.filter(e => e.to.layer_id != last_layer_id))
+    }
+
     const neuronsStyle = {width: "800px", height: "600px"}
 
     return (
@@ -97,7 +104,7 @@ function EditorWindow() {
                 <div>
                     <button onClick={remove} className="value-button" id="decrease">-
                     </button>
-                    <input type="number" id="number" value={layers.length}/>
+                    <input onChange={changeAmount} type="number" id="number" value={layers.length}/>
                     <button onClick={add} className="value-button" id="increase">+
                     </button>
                 </div>
