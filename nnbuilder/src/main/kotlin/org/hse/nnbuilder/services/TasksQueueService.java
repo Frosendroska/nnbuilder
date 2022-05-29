@@ -26,7 +26,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
     private TaskQueuedStorage taskQueuedStorage;
 
     @Override
-    public void createtask(TaskCreationRequest request, StreamObserver<TaskCreationResponse> responseObserver) {
+    public void createtask(CreateTaskRequest request, StreamObserver<CreateTaskResponse> responseObserver) {
 
         // Get data from request
         TaskType name = request.getName();
@@ -39,15 +39,15 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
         // Response with id on task
         long taskId = taskQueued.getTaskId();
-        TaskCreationResponse responseWithTaskId =
-                TaskCreationResponse.newBuilder().setTaskId(taskId).build();
+        CreateTaskResponse responseWithTaskId =
+                CreateTaskResponse.newBuilder().setTaskId(taskId).build();
         responseObserver.onNext(responseWithTaskId);
         responseObserver.onCompleted();
     }
 
     @Override
     public void getinformation(
-            GettingInformationRequest request, StreamObserver<GettingInformationResponse> responseObserver) {
+            GetInformationRequest request, StreamObserver<GetInformationResponse> responseObserver) {
 
         // Get data and task from request
         long taskId = request.getTaskId();
@@ -62,7 +62,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
                 .setNanos(now.getNano())
                 .build();
 
-        GettingInformationResponse responseWithInfo = GettingInformationResponse.newBuilder()
+        GetInformationResponse responseWithInfo = GetInformationResponse.newBuilder()
                 .setTimeDeltaSeconds(
                         taskStatus == TaskStatus.HaveNotStarted ? 0 : curTime.getSeconds() - startTaskTime.getSeconds())
                 .setTaskStatus(taskStatus)
