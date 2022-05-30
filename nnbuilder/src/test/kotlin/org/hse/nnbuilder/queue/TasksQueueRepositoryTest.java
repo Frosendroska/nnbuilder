@@ -3,7 +3,10 @@ package org.hse.nnbuilder.queue;
 import java.io.IOException;
 import org.hse.nnbuilder.DatasetUtil;
 import org.hse.nnbuilder.dataset.DatasetStored;
+import org.hse.nnbuilder.nn.ConvolutionalNN;
 import org.hse.nnbuilder.nn.FeedForwardNN;
+import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
+import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 import org.junit.jupiter.api.Test;
@@ -35,42 +38,43 @@ public class TasksQueueRepositoryTest {
         FeedForwardNN nn = FeedForwardNN.buildDefaultFastForwardNN();
         NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
 
-        DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile());
+        DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile(), null);
 
         // Task
-        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored);
-
-        // TaskQueuedStorage tqs = new TaskQueuedStorage();
+        TaskQueued taskQueued = new TaskQueued(TaskType.ApplyToData, nnStored, dsStored);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 
-    // @Test
-    // void testAddLearningTaskCNN() {
-    //     ConvolutionalNN nn = ConvolutionalNN.buildDefaultConvolutionalNN();
-    //     NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
-    //     neuralNetworkRepository.save(nnStored);
-    //
-    //     QueuedTask tq = new QueuedTask(
-    //             TaskType.TrainNN, nnStored, 2L /*TODO вообще нужно айди датасета*/);
-    //     tasksQueueRepository.save(tq);
-    // }
-    //
-    // @Test
-    // void testAddLearningTasks() {
-    //     ConvolutionalNN cnn = ConvolutionalNN.buildDefaultConvolutionalNN();
-    //     NeuralNetworkStored cnnStored = new NeuralNetworkStored(cnn);
-    //     neuralNetworkRepository.save(cnnStored);
-    //
-    //     QueuedTask ctq = new QueuedTask(
-    //             TaskType.TrainNN, cnnStored, 2L /*TODO вообще нужно айди датасета*/);
-    //     tasksQueueRepository.save(ctq);
-    //
-    //     FeedForwardNN ffnn = FeedForwardNN.buildDefaultFastForwardNN();
-    //     NeuralNetworkStored ffnnStored = new NeuralNetworkStored(ffnn);
-    //     neuralNetworkRepository.save(ffnnStored);
-    //
-    //     QueuedTask fftq = new QueuedTask(
-    //             TaskType.TrainNN, ffnnStored, 1L /*TODO вообще нужно айди датасета*/);
-    //     tasksQueueRepository.save(fftq);
-    // }
+    @Test
+    void testAddLearningTaskCNN() throws IOException {
+        ConvolutionalNN nn = ConvolutionalNN.buildDefaultConvolutionalNN();
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+
+        DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
+
+        // Task
+        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored);
+        taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
+    }
+
+    @Test
+    void testAddLearningTasks() throws IOException {
+        LongShortTermMemoryNN lstmnn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
+        NeuralNetworkStored lstmStored = new NeuralNetworkStored(lstmnn);
+
+        DatasetStored dsStoredTrain = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
+
+        // Task
+        TaskQueued taskQueued1 = new TaskQueued(TaskType.TrainNNRegression, lstmStored, dsStoredTrain);
+        taskQueuedStorage.saveTaskQueuedTransition(taskQueued1, dsStoredTrain, lstmStored);
+
+        RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
+        NeuralNetworkStored rnnStored = new NeuralNetworkStored(rnn);
+
+        DatasetStored dsStoredApply = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
+
+        // Task
+        TaskQueued taskQueued2 = new TaskQueued(TaskType.ApplyToData, rnnStored, dsStoredApply);
+        taskQueuedStorage.saveTaskQueuedTransition(taskQueued2, dsStoredApply, rnnStored);
+    }
 }

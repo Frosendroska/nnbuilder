@@ -12,5 +12,6 @@ message LoadDatasetResponse {
 }
 
 message LoadDatasetRequest {
-    bytes content = 1;
+  bytes content = 1;
+  string targetColumnName = 2;
 }

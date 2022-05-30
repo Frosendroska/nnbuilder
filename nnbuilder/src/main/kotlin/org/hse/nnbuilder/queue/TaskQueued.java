@@ -10,9 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.hse.nnbuilder.answers.Predictions;
 import org.hse.nnbuilder.dataset.DatasetStored;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
+import org.hse.nnbuilder.nnmodel.NNModelStored;
 import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
 import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 
@@ -33,6 +36,14 @@ public final class TaskQueued {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dsId")
     private DatasetStored datasetStored;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mId")
+    private NNModelStored nnModelStored;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aId")
+    private Predictions predictions;
 
     @Column
     private Long epochAmount;
@@ -140,5 +151,23 @@ public final class TaskQueued {
 
     public void setEpochAmount(Long epochAmount) {
         this.epochAmount = epochAmount;
+    }
+
+    // NN Model Stored
+    public NNModelStored getNnModelStored() {
+        return nnModelStored;
+    }
+
+    public void setNnModelStored(NNModelStored nnModelStored) {
+        this.nnModelStored = nnModelStored;
+    }
+
+    // Answers
+    public Predictions getPredictions() {
+        return predictions;
+    }
+
+    public void setPredictions(Predictions predictions) {
+        this.predictions = predictions;
     }
 }

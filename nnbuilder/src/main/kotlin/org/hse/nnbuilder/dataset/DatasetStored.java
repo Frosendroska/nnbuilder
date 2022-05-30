@@ -13,6 +13,9 @@ public class DatasetStored {
     private Long dsId;
 
     @Column
+    private String targetColumnName;
+
+    @Column
     private byte[] content;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -20,7 +23,8 @@ public class DatasetStored {
 
     public DatasetStored() {}
 
-    public DatasetStored(byte[] content) {
+    public DatasetStored(byte[] content, String targetColumnName) {
+        this.targetColumnName = targetColumnName;
         this.content = content;
     }
 
@@ -51,14 +55,12 @@ public class DatasetStored {
         this.tasks = tasks;
     }
 
-    //
-    public void addTask(TaskQueued task) {
-        tasks.add(task);
-        task.setDatasetStored(this);
+    // Target Column Name
+    public String getTargetColumnName() {
+        return targetColumnName;
     }
 
-    public void removeTask(TaskQueued task) {
-        tasks.remove(task);
-        task.setDatasetStored(null);
+    public void setTargetColumnName(String targetColumnName) {
+        this.targetColumnName = targetColumnName;
     }
 }
