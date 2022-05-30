@@ -4,10 +4,7 @@ import "@babel/polyfill";
 
 import {useNavigate} from "react-router";
 import {token} from "./App";
-import React, {useEffect, useState} from "react";
-import {ErrorMessage} from "@hookform/error-message";
-import {Navigate} from "react-router-dom";
-import Projects from "./Projects";
+import React, {useState} from "react";
 
 type FormProps = {
     authService: api.AuthServicePromiseClient
@@ -45,19 +42,22 @@ function Register(props: FormProps): JSX.Element {
             .setEmail(data.email)
             .setPassword(data.password)
         const result = await props.authService.register(request)
-        console.log(JSON.stringify(result.getException()))
-        setError(result.getException())
-        console.log(data)
-        // const logrequest = new api.LoginRequest()
-        //     .setEmail(data.email)
-        //     .setPassword(data.password)
-        // props.authService.login(logrequest).then((result: api.LoginResponse) => {
-        //     token.set(result.getToken())
-        //     console.log(JSON.stringify(result.getException()))
-        //     setError(result.getException())
-        //     console.log(data)
-        // })
+        let newError = result.getException()
+        setError(newError)
+        if (newError == "") {
+            const logrequest = new api.LoginRequest()
+                .setEmail(data.email)
+                .setPassword(data.password)
+            props.authService.login(logrequest).then((result: api.LoginResponse) => {
+                token.set(result.getToken())
+                console.log(token.get())
+                setError(result.getException())
+            })
+            navigate("/projects")
+        }
     }));
+
+
 
     console.log(errors)
     return (

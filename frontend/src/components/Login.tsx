@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import * as api from 'nnbuilder-api'
 import { token } from './App';
 import {useNavigate} from "react-router";
+import React, {useState} from "react";
 
 type FormProps = {
     authService: api.AuthServicePromiseClient
@@ -13,6 +14,7 @@ type FormValues = {
 };
 
 function Login(props: FormProps): JSX.Element{
+    const [error, setError] = useState<string>("");
 
     const navigate = useNavigate();
 
@@ -31,13 +33,14 @@ function Login(props: FormProps): JSX.Element{
         const request = new api.LoginRequest()
             .setEmail(data.email)
             .setPassword(data.password)
-        props.authService.login(request).then((value: api.LoginResponse) => {
-            token.set(value.getToken())
-            console.log(token.get())
-            console.log(value.getException())
+        props.authService.login(request).then((result: api.LoginResponse) => {
+            token.set(result.getToken())
+            let newError = result.getException()
+            setError(newError)
+            if (newError == "") {
+                navigate('/projects');
+            }
         })
-        console.log(data)
-        navigate('/projects');
     }));
 
 
@@ -45,17 +48,22 @@ function Login(props: FormProps): JSX.Element{
         <div className="form-center">
             <form className="form" onSubmit={sendRequest}>
                 <h1>User Login</h1>
+                {error ? <p className="invalid-feedback">{error}</p> : null}
+                <div>
                 Email
                 <input type="text"
                        {...register("email", {
                            required: {
                                value: true,
-                               message: "this is required"
+                               message: "Please enter email"
                            }
                        })}
                        name="email"
                        placeholder="ivanivanov@gmail.com"
                 />
+                <div className="invalid-feedback">{errors.email?.message}</div>
+                </div>
+                <div>
                 Password
                 <input type="password"
                        {...register("password", {
@@ -63,11 +71,13 @@ function Login(props: FormProps): JSX.Element{
                                value: 6,
                                message: "Password min length is 6"
                            },
-                           required: "please enter email",
+                           required: "Please enter password",
                        })}
                        name="password"
                        placeholder="qwerty123"
                 />
+                    <div className="invalid-feedback">{errors.password?.message}</div>
+                </div>
                 <input type="submit" />
             </form>
         </div>

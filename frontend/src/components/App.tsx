@@ -1,12 +1,13 @@
-import React, {useCallback, useState} from 'react'
+import React from 'react'
 import * as api from 'nnbuilder-api'
 import Login from "./Login"
 import Editor from "./Editor"
-import {Routes, Route, Link, Navigate} from 'react-router-dom'
+import {Routes, Route, Navigate} from 'react-router-dom'
 import Header from "./Header";
 import {atom} from "nanostores";
 import Projects from "./Projects";
 import Register from "./Register";
+import {useStore} from "@nanostores/react";
 
 
 type AppProps = {
@@ -14,23 +15,26 @@ type AppProps = {
     modificationService: api.NNModificationServicePromiseClient
 }
 
-export const token = atom<string>('empty')
+export const token = atom<string>("")
 
 export default function App(props: AppProps): JSX.Element {
+    let user = useStore(token)
     return (
         <>
             <Routes>
                 <Route path="/" element={<Header/>}>
                     <Route
                         path="/projects"
-                        element={ token.get() === 'empty' ? <Navigate to="/login" /> : <Projects/> }/>;
+                        element={user == "" ? <Navigate to="/login"/> : <Projects/>}/>;
                     <Route
                         path="/editor"
-                        element={ token.get() === 'empty' ? <Navigate to="/login" /> : <Editor modificationService={props.modificationService}/> }/>;
+                        element={user == "" ? <Navigate to="/login"/> :
+                            <Editor modificationService={props.modificationService}/>}/>;
                     <Route
-                        path='/login' element = {<Login authService={props.authService}/>}/>
+                        path='/login' element={<Login authService={props.authService}/>}/>
                     <Route
-                        path='/register' element = {<Register authService={props.authService}/>}/>
+                        path='/register'
+                        element={<Register authService={props.authService}/>}/>
                 </Route>
             </Routes>
         </>
