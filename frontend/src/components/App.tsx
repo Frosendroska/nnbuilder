@@ -4,7 +4,7 @@ import Login from "./Login"
 import Editor from "./Editor"
 import {Routes, Route, Navigate} from 'react-router-dom'
 import Header from "./Header";
-import {atom} from "nanostores";
+import {persistentAtom} from "@nanostores/persistent";
 import Projects from "./Projects";
 import Register from "./Register";
 import {useStore} from "@nanostores/react";
@@ -15,7 +15,7 @@ type AppProps = {
     modificationService: api.NNModificationServicePromiseClient
 }
 
-export const token = atom<string>("")
+export const token = persistentAtom<string>("")
 
 export default function App(props: AppProps): JSX.Element {
     let user = useStore(token)
