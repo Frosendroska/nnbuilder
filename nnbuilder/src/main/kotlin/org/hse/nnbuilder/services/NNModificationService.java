@@ -24,7 +24,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
 
         if (request.hasAddLayer()) {
-
             loaded.getNeuralNetwork()
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
@@ -84,6 +83,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         NNCreationResponse responseWithNNId =
                 NNCreationResponse.newBuilder().setNnId(nnStored.getNnId()).build();
         responseObserver.onNext(responseWithNNId);
+
         responseObserver.onCompleted();
     }
 }
