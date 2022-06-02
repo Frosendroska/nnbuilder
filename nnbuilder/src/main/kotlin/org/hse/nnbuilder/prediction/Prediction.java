@@ -1,4 +1,4 @@
-package org.hse.nnbuilder.answers;
+package org.hse.nnbuilder.prediction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,33 +11,33 @@ import javax.persistence.Table;
 import org.hse.nnbuilder.queue.TaskQueued;
 
 @Entity
-@Table(name = "answers")
-public class Predictions {
+@Table(name = "predictions")
+public class Prediction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long aId;
+    private Long predictionId;
 
     @Column(columnDefinition = "text")
-    private String predictions;
+    private byte[] predictions;
 
     @OneToOne(cascade = CascadeType.ALL)
     TaskQueued task;
 
     // Id
-    public Long getaId() {
-        return aId;
+    public Long getPredictionId() {
+        return predictionId;
     }
 
-    public void setaId(Long aId) {
-        this.aId = aId;
+    public void setPredictionId(Long predictionId) {
+        this.predictionId = predictionId;
     }
 
     // Model
-    public String getPredictions() {
+    public byte[] getPredictions() {
         return this.predictions;
     }
 
-    public void setPredictions(String predictions) {
+    public void setPredictions(byte[] predictions) {
         this.predictions = predictions;
     }
 

@@ -11,34 +11,34 @@ import javax.persistence.Table;
 import org.hse.nnbuilder.queue.TaskQueued;
 
 @Entity
-@Table(name = "models")
-public class NNModelStored {
+@Table(name = "nntrained_models")
+public class NNTrainedModelStored {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mId;
+    private Long nnTrainedModelId;
 
     @Column(columnDefinition = "text")
-    private String model;
+    private String nnTrainedModel;
 
     @OneToOne(cascade = CascadeType.ALL)
     TaskQueued task;
 
     // Id
-    public Long getmId() {
-        return mId;
+    public Long getNnTrainedModelId() {
+        return nnTrainedModelId;
     }
 
-    public void setmId(Long mId) {
-        this.mId = mId;
+    public void setNnTrainedModelId(Long nnTrainedModelId) {
+        this.nnTrainedModelId = nnTrainedModelId;
     }
 
     // Model
-    public String getModel() {
-        return this.model;
+    public String getNnTrainedModel() {
+        return this.nnTrainedModel;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setNnTrainedModel(String nnTrainedModel) {
+        this.nnTrainedModel = nnTrainedModel;
     }
 
     // Tasks
@@ -46,7 +46,7 @@ public class NNModelStored {
         return task;
     }
 
-    public void setTask(TaskQueued tasks) {
-        this.task = tasks;
+    public void setTask(TaskQueued task) {
+        this.task = task;
     }
 }

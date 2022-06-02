@@ -3,15 +3,15 @@ syntax = "proto3";
 package org.hse.nnbuilder.services;
 
 service DatasetService {
-  rpc loadDataset (LoadDatasetRequest) returns (LoadDatasetResponse);
+  rpc uploadDataset (UploadDatasetRequest) returns (UploadDatasetResponse);
 }
 
 // Load Dataset
-message LoadDatasetResponse {
-  int64 dsId = 1;
+message UploadDatasetResponse {
+  int64 datasetId = 1;
 }
 
-message LoadDatasetRequest {
+message UploadDatasetRequest {
   bytes content = 1;
   string targetColumnName = 2;
 }

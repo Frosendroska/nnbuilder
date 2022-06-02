@@ -23,7 +23,7 @@ public class DatasetRepositoryTest {
         DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile(), null);
         datasetRepository.save(dsStored);
 
-        DatasetStored dsLoaded = datasetRepository.getById(dsStored.getDsId());
+        DatasetStored dsLoaded = datasetRepository.getById(dsStored.getDatasetId());
 
         assertThat(dsLoaded.getContent()).isNotEmpty();
     }

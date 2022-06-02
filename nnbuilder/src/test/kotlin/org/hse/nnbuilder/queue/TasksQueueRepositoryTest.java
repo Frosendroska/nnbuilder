@@ -26,6 +26,8 @@ public class TasksQueueRepositoryTest {
     @Autowired
     private TaskQueuedStorage taskQueuedStorage;
 
+    final Long defaultEpochAmount = 100L;
+
     @Test
     void testAddEmptyTask() {
         TaskQueued tq = new TaskQueued();
@@ -41,7 +43,7 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile(), null);
 
         // Task
-        TaskQueued taskQueued = new TaskQueued(TaskType.ApplyToData, nnStored, dsStored);
+        TaskQueued taskQueued = new TaskQueued(TaskType.ApplyToData, nnStored, dsStored, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 
@@ -53,7 +55,7 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
 
         // Task
-        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored);
+        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 
@@ -65,7 +67,8 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStoredTrain = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
 
         // Task
-        TaskQueued taskQueued1 = new TaskQueued(TaskType.TrainNNRegression, lstmStored, dsStoredTrain);
+        TaskQueued taskQueued1 =
+                new TaskQueued(TaskType.TrainNNRegression, lstmStored, dsStoredTrain, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued1, dsStoredTrain, lstmStored);
 
         RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
@@ -74,7 +77,7 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStoredApply = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
 
         // Task
-        TaskQueued taskQueued2 = new TaskQueued(TaskType.ApplyToData, rnnStored, dsStoredApply);
+        TaskQueued taskQueued2 = new TaskQueued(TaskType.ApplyToData, rnnStored, dsStoredApply, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued2, dsStoredApply, rnnStored);
     }
 }

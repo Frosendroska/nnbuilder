@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.queue;
 
-import com.google.protobuf.Timestamp;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,10 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import org.hse.nnbuilder.answers.Predictions;
 import org.hse.nnbuilder.dataset.DatasetStored;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
-import org.hse.nnbuilder.nnmodel.NNModelStored;
+import org.hse.nnbuilder.nnmodel.NNTrainedModelStored;
+import org.hse.nnbuilder.prediction.Prediction;
 import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
 import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 
@@ -34,25 +33,28 @@ public final class TaskQueued {
     private NeuralNetworkStored neuralNetworkStored;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dsId")
+    @JoinColumn(name = "datasetId")
     private DatasetStored datasetStored;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mId")
-    private NNModelStored nnModelStored;
+    @JoinColumn(name = "modelId")
+    private NNTrainedModelStored nnModelStored;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "aId")
-    private Predictions predictions;
+    @JoinColumn(name = "predictionId")
+    private Prediction predictions;
 
     @Column
     private Long epochAmount;
 
     @Column
-    private Timestamp addTaskTime;
+    private OffsetDateTime createTaskTime;
 
     @Column
-    private Timestamp startTaskTime;
+    private OffsetDateTime startTaskTime;
+
+    @Column
+    private OffsetDateTime finishTaskTime;
 
     @Column
     private TaskStatus taskStatus;
@@ -63,22 +65,23 @@ public final class TaskQueued {
             TaskType taskType,
             NeuralNetworkStored neuralNetworkStored,
             DatasetStored datasetStored,
-            TaskStatus taskStatus) {
-        Instant now = Instant.now();
-        Timestamp timestamp = Timestamp.newBuilder()
-                .setSeconds(now.getEpochSecond())
-                .setNanos(now.getNano())
-                .build();
+            TaskStatus taskStatus,
+            Long epochAmount) {
+
+        OffsetDateTime timestamp = OffsetDateTime.now();
         this.taskType = taskType;
         this.neuralNetworkStored = neuralNetworkStored;
         this.datasetStored = datasetStored;
-        this.addTaskTime = timestamp;
+        this.createTaskTime = timestamp;
         this.startTaskTime = null; // Will set is after status will be "Processing"
+        this.finishTaskTime = null; // Will set is after status will be "Finished"
         this.taskStatus = taskStatus;
+        this.epochAmount = epochAmount;
     }
 
-    public TaskQueued(TaskType taskName, NeuralNetworkStored neuralNetworkStored, DatasetStored datasetStored) {
-        this(taskName, neuralNetworkStored, datasetStored, TaskStatus.HaveNotStarted);
+    public TaskQueued(
+            TaskType taskType, NeuralNetworkStored neuralNetworkStored, DatasetStored datasetStored, Long epochAmount) {
+        this(taskType, neuralNetworkStored, datasetStored, TaskStatus.HaveNotStarted, epochAmount);
     }
 
     // ID
@@ -91,20 +94,20 @@ public final class TaskQueued {
     }
 
     // StartTime
-    public void setAddTaskTime(Timestamp addTaskTime) {
-        this.addTaskTime = addTaskTime;
+    public void setCreateTaskTime(OffsetDateTime createTaskTime) {
+        this.createTaskTime = createTaskTime;
     }
 
-    public Timestamp getAddTaskTime() {
-        return addTaskTime;
+    public OffsetDateTime getCreateTaskTime() {
+        return createTaskTime;
     }
 
     // StartTime
-    public void setStartTaskTime(Timestamp startTaskTime) {
+    public void setStartTaskTime(OffsetDateTime startTaskTime) {
         this.startTaskTime = startTaskTime;
     }
 
-    public Timestamp getStartTaskTime() {
+    public OffsetDateTime getStartTaskTime() {
         return startTaskTime;
     }
 
@@ -154,20 +157,29 @@ public final class TaskQueued {
     }
 
     // NN Model Stored
-    public NNModelStored getNnModelStored() {
+    public NNTrainedModelStored getNnModelStored() {
         return nnModelStored;
     }
 
-    public void setNnModelStored(NNModelStored nnModelStored) {
+    public void setNnModelStored(NNTrainedModelStored nnModelStored) {
         this.nnModelStored = nnModelStored;
     }
 
     // Answers
-    public Predictions getPredictions() {
+    public Prediction getPredictions() {
         return predictions;
     }
 
-    public void setPredictions(Predictions predictions) {
+    public void setPredictions(Prediction predictions) {
         this.predictions = predictions;
+    }
+
+    // Finish Task Time
+    public OffsetDateTime getFinishTaskTime() {
+        return finishTaskTime;
+    }
+
+    public void setFinishTaskTime(OffsetDateTime finishTaskTime) {
+        this.finishTaskTime = finishTaskTime;
     }
 }

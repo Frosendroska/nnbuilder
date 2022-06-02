@@ -1,8 +1,7 @@
 package org.hse.nnbuilder.services;
 
-import com.google.protobuf.Timestamp;
 import io.grpc.stub.StreamObserver;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.hse.nnbuilder.dataset.DatasetStorage;
 import org.hse.nnbuilder.dataset.DatasetStored;
@@ -10,7 +9,12 @@ import org.hse.nnbuilder.nn.store.NeuralNetworkStorage;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.queue.TaskQueued;
 import org.hse.nnbuilder.queue.TaskQueuedStorage;
-import org.hse.nnbuilder.services.Tasksqueue.*;
+import org.hse.nnbuilder.services.Tasksqueue.CreateTaskRequest;
+import org.hse.nnbuilder.services.Tasksqueue.CreateTaskResponse;
+import org.hse.nnbuilder.services.Tasksqueue.GetInformationRequest;
+import org.hse.nnbuilder.services.Tasksqueue.GetInformationResponse;
+import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
+import org.hse.nnbuilder.services.Tasksqueue.TaskType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @GrpcService
@@ -26,15 +30,16 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
     private TaskQueuedStorage taskQueuedStorage;
 
     @Override
-    public void createtask(CreateTaskRequest request, StreamObserver<CreateTaskResponse> responseObserver) {
+    public void createTask(CreateTaskRequest request, StreamObserver<CreateTaskResponse> responseObserver) {
 
         // Get data from request
         TaskType name = request.getName();
         NeuralNetworkStored nnStored = neuralNetworkStorage.getByIdOrThrow(request.getNnId());
-        DatasetStored dsStored = datasetStorage.getByIdOrThrow(request.getDataId());
+        DatasetStored dsStored = datasetStorage.getByIdOrThrow(request.getDatasetId());
+        Long epochAmount = request.getEpochAmount();
 
         // Make a task in DB
-        TaskQueued taskQueued = new TaskQueued(name, nnStored, dsStored);
+        TaskQueued taskQueued = new TaskQueued(name, nnStored, dsStored, epochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
 
         // Response with id on task
@@ -46,8 +51,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
     }
 
     @Override
-    public void getinformation(
-            GetInformationRequest request, StreamObserver<GetInformationResponse> responseObserver) {
+    public void getInformation(GetInformationRequest request, StreamObserver<GetInformationResponse> responseObserver) {
 
         // Get data and task from request
         long taskId = request.getTaskId();
@@ -55,16 +59,20 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
 
         // Response with info of task
         TaskStatus taskStatus = tq.getTaskStatus();
-        Timestamp startTaskTime = tq.getStartTaskTime();
-        Instant now = Instant.now();
-        Timestamp curTime = Timestamp.newBuilder()
-                .setSeconds(now.getEpochSecond())
-                .setNanos(now.getNano())
-                .build();
+        OffsetDateTime startTaskTime = tq.getStartTaskTime();
+        OffsetDateTime currentTime = OffsetDateTime.now();
+
+        Long timeDeltaSeconds = null;
+        if (taskStatus == TaskStatus.HaveNotStarted) {
+            timeDeltaSeconds = 0L;
+        } else if (taskStatus == TaskStatus.Processing) {
+            timeDeltaSeconds = currentTime.toEpochSecond() - startTaskTime.toEpochSecond();
+        } else if (taskStatus == TaskStatus.Done) {
+            timeDeltaSeconds = tq.getFinishTaskTime().toEpochSecond() - startTaskTime.toEpochSecond();
+        }
 
         GetInformationResponse responseWithInfo = GetInformationResponse.newBuilder()
-                .setTimeDeltaSeconds(
-                        taskStatus == TaskStatus.HaveNotStarted ? 0 : curTime.getSeconds() - startTaskTime.getSeconds())
+                .setTimeDeltaSeconds(timeDeltaSeconds)
                 .setTaskStatus(taskStatus)
                 .build();
         responseObserver.onNext(responseWithInfo);

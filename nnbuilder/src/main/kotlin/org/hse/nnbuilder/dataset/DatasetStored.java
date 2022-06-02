@@ -1,8 +1,16 @@
 package org.hse.nnbuilder.dataset;
 
+import com.sun.istack.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.hse.nnbuilder.queue.TaskQueued;
 
 @Entity
@@ -10,9 +18,10 @@ import org.hse.nnbuilder.queue.TaskQueued;
 public class DatasetStored {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long dsId;
+    private Long datasetId;
 
     @Column
+    @Nullable
     private String targetColumnName;
 
     @Column
@@ -29,12 +38,12 @@ public class DatasetStored {
     }
 
     // Dataset Id
-    public Long getDsId() {
-        return dsId;
+    public Long getDatasetId() {
+        return datasetId;
     }
 
-    void setDsId(Long dsId) {
-        this.dsId = dsId;
+    void setDatasetId(Long datasetId) {
+        this.datasetId = datasetId;
     }
 
     // Data
