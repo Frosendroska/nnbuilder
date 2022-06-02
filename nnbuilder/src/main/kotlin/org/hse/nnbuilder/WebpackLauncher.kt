@@ -29,7 +29,9 @@ open class WebpackLauncher {
 
         override fun afterPropertiesSet() {
             if (System.getProperty(WEBPACK_SERVER_PROPERTY) !== "true") {
-                // startWebpackDevServer()
+
+                startWebpackDevServer()
+
             }
         }
 
