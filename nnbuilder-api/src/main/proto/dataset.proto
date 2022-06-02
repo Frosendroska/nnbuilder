@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+service DatasetService {
+  rpc uploadDataset (UploadDatasetRequest) returns (UploadDatasetResponse);
+}
+
+// Load Dataset
+message UploadDatasetResponse {
+  int64 datasetId = 1;
+}
+
+message UploadDatasetRequest {
+  bytes content = 1;
+  string targetColumnName = 2;
+}

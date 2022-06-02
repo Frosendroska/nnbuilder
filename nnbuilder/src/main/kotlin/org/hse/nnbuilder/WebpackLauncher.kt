@@ -36,11 +36,8 @@ open class WebpackLauncher {
         private fun startWebpackDevServer() {
             val cmd = (if (isWindows()) listOf("cmd", "/c") else listOf()) + listOf("npm", "run", "start-dev")
 
-            ProcessBuilder(cmd)
-                .directory(File("frontend"))
-                .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-                .redirectError(ProcessBuilder.Redirect.INHERIT)
-                .start()
+            ProcessBuilder(cmd).directory(File("frontend")).redirectOutput(ProcessBuilder.Redirect.INHERIT)
+                .redirectError(ProcessBuilder.Redirect.INHERIT).start()
 
             System.setProperty(WEBPACK_SERVER_PROPERTY, "true")
         }
