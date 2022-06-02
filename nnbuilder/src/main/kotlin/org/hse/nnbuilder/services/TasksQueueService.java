@@ -63,12 +63,13 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         OffsetDateTime currentTime = OffsetDateTime.now();
 
         Long timeDeltaSeconds = null;
-        if (taskStatus == TaskStatus.HaveNotStarted) {
-            timeDeltaSeconds = 0L;
-        } else if (taskStatus == TaskStatus.Processing) {
+        if (taskStatus == TaskStatus.Processing) {
             timeDeltaSeconds = currentTime.toEpochSecond() - startTaskTime.toEpochSecond();
         } else if (taskStatus == TaskStatus.Done) {
             timeDeltaSeconds = tq.getFinishTaskTime().toEpochSecond() - startTaskTime.toEpochSecond();
+        } else {
+            // (taskStatus == TaskStatus.HaveNotStarted)
+            timeDeltaSeconds = 0L;
         }
 
         GetInformationResponse responseWithInfo = GetInformationResponse.newBuilder()

@@ -20,7 +20,7 @@ public class DatasetService extends DatasetServiceGrpc.DatasetServiceImplBase {
         String targetColumnName = request.getTargetColumnName();
 
         // Load dataset in DB
-        DatasetStored dsStored = new DatasetStored(content, targetColumnName.isEmpty() ? null : targetColumnName);
+        DatasetStored dsStored = new DatasetStored(content, targetColumnName);
         datasetStorage.save(dsStored);
 
         // Response
