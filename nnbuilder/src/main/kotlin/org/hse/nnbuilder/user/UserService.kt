@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService(
-    private val userRepository: UserRepository
+        private val userRepository: UserRepository
 ) {
     fun save(name: String, email: String, password: String): User {
         if (checkUserExists(email)) {
@@ -14,6 +14,22 @@ class UserService(
         }
         val user = User(name, email, password)
         return userRepository.save(user)
+    }
+
+    fun getById(id: Long): User {
+        return userRepository.getById(id)
+    }
+
+    fun changeName(id: Long, newName: String) {
+        val user = getById(id)
+        user.changeName(newName)
+        userRepository.save(user)
+    }
+
+    fun changePassword(id: Long, oldPassword: String, newPassword: String) {
+        val user = getById(id)
+        user.changePassword(oldPassword, newPassword)
+        userRepository.save(user)
     }
 
     fun findByEmail(email: String): User {

@@ -56,4 +56,16 @@ class User() {
     fun getPassword(): String {
         return password
     }
+
+    fun changeName(newName: String) {
+        name = newName
+    }
+
+    fun changePassword(oldPassword: String, newPassword: String) {
+        if (BCryptPasswordEncoder().matches(oldPassword, password)) {
+            password = newPassword
+        } else {
+            throw IllegalArgumentException("Invalid credentials!")
+        }
+    }
 }
