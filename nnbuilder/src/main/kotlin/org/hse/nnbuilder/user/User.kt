@@ -49,6 +49,10 @@ class User() {
         return email
     }
 
+    fun getName(): String {
+        return name
+    }
+
     fun getPassword(): String {
         return password
     }
