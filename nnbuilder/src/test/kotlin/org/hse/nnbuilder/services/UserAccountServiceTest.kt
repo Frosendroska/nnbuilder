@@ -1,6 +1,5 @@
 package org.hse.nnbuilder.services
 
-import javax.transaction.Transactional
 import kotlinx.coroutines.test.runBlockingTest
 import org.hse.nnbuilder.user.User
 import org.hse.nnbuilder.user.UserService
@@ -20,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.jdbc.JdbcTestUtils
+import javax.transaction.Transactional
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
@@ -44,7 +44,7 @@ class UserAccountServiceTest {
         resetData()
 
         // Prepare data
-        if (!userService.checkUserExists(email)) {  //TODO remove and add database cleaning
+        if (!userService.checkUserExists(email)) { // TODO remove and add database cleaning
             user = userService.save(name, email, password)
         }
     }
@@ -65,7 +65,7 @@ class UserAccountServiceTest {
     fun resetData() {
         try {
             JdbcTestUtils.dropTables(jdbcTemplate!!)
-            //JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "neuralnetworks", "general_neural_network", "users")
+            // JdbcTestUtils.deleteFromTables(jdbcTemplate!!, "neuralnetworks", "general_neural_network", "users")
         } catch (e: Exception) {
             println("Something went wrong while cleaning database")
         }
@@ -73,84 +73,83 @@ class UserAccountServiceTest {
 
     @Test
     fun getNameTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val expectedName = "Ivan3"
         val request = UserAccount.GetNameRequest.newBuilder().build()
 
-        //Action
+        // Action
         val response = userAccountService.getName(request)
 
-        //Assert
+        // Assert
         assertEquals(expectedName, response.name)
     }
 
     @Test
     fun getEmailTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val expectedEmail = "ivan3@mail.ru"
         val request = UserAccount.GetEmailRequest.newBuilder().build()
 
-        //Action
+        // Action
         val response = userAccountService.getEmail(request)
 
-        //Assert
+        // Assert
         assertEquals(expectedEmail, response.email)
     }
 
     @Test
     fun changeNameTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val newName = "Olga"
         val oldName = "Ivan3"
         val request1 = UserAccount.ChangeNameRequest.newBuilder()
-                .setNewName(newName)
-                .build()
+            .setNewName(newName)
+            .build()
         val request2 = UserAccount.ChangeNameRequest.newBuilder()
-                .setNewName(oldName)
-                .build()
+            .setNewName(oldName)
+            .build()
 
-        //Action
+        // Action
         userAccountService.changeName(request1)
 
-        //Assertion
+        // Assertion
         var user = userService.findByEmail(email)
         assertEquals(newName, user.getName())
 
-        //Action
+        // Action
         userAccountService.changeName(request2)
 
-        //Assertion
+        // Assertion
         user = userService.findByEmail(email)
         assertEquals(oldName, user.getName())
     }
 
     @Test
     fun changePasswordTest() = runBlockingTest {
-        //Prepare data
+        // Prepare data
         val newPassword = "neeeew"
         val oldPassword = "password"
         val request1 = UserAccount.ChangePasswordRequest.newBuilder()
-                .setNewPassword(newPassword)
-                .setOldPassword(oldPassword)
-                .build()
+            .setNewPassword(newPassword)
+            .setOldPassword(oldPassword)
+            .build()
         val request2 = UserAccount.ChangePasswordRequest.newBuilder()
-                .setNewPassword(oldPassword)
-                .setOldPassword(newPassword)
-                .build()
+            .setNewPassword(oldPassword)
+            .setOldPassword(newPassword)
+            .build()
 
-        //Action
+        // Action
         userAccountService.changePassword(request1)
 
-        //Assertion
+        // Assertion
         var user = userService.findByEmail(email)
         assertTrue(BCryptPasswordEncoder().matches(newPassword, user.getPassword()))
 
-        //Action
+        // Action
         userAccountService.changePassword(request2)
 
-        //Assertion
+        // Assertion
         user = userService.findByEmail(email)
         assertTrue(BCryptPasswordEncoder().matches(oldPassword, user.getPassword()))
     }
-
 }

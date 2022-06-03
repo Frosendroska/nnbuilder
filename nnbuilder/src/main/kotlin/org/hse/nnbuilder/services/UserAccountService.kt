@@ -17,16 +17,16 @@ class UserAccountService : UserAccountServiceGrpcKt.UserAccountServiceCoroutineI
     override suspend fun getName(request: UserAccount.GetNameRequest): UserAccount.GetNameResponse {
         val name = util.getUser().getName()
         return UserAccount.GetNameResponse.newBuilder()
-                .setName(name)
-                .build()
+            .setName(name)
+            .build()
     }
 
     @Override
     override suspend fun getEmail(request: UserAccount.GetEmailRequest): UserAccount.GetEmailResponse {
         val email = util.getUser().getEmail()
         return UserAccount.GetEmailResponse.newBuilder()
-                .setEmail(email)
-                .build()
+            .setEmail(email)
+            .build()
     }
 
     @Override
