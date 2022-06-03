@@ -41,7 +41,7 @@ public final class NeuralNetworkStored {
 
     public NeuralNetworkStored() {}
 
-    //ONLY FOR TESTS
+    // ONLY FOR TESTS
     public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
     }

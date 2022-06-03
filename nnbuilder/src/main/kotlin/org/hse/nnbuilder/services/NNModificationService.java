@@ -32,8 +32,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
     @Autowired
     private UserService userService;
 
-
-
     @Override
     public void modifynn(NNModificationRequest request, StreamObserver<NNModificationResponse> responseObserver) {
 
@@ -120,8 +118,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             neuralNetworkStorage.save(nnStored);
             nnId = nnStored.getNnId();
         } else {
-            throw new IllegalArgumentException(String.format(
-                    "Unexpected neural network type %s", nnType));
+            throw new IllegalArgumentException(String.format("Unexpected neural network type %s", nnType));
         }
 
         return nnId;
