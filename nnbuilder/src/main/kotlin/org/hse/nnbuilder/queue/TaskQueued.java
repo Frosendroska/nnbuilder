@@ -59,7 +59,7 @@ public final class TaskQueued {
     @Column
     private TaskStatus taskStatus;
 
-    TaskQueued() {}
+    public TaskQueued() {}
 
     private TaskQueued(
             TaskType taskType,

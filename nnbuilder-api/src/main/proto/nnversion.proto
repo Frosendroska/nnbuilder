@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+import "nnmodification.proto";
+
+package org.hse.nnbuilder.services;
+
+service NNVersionService {
+  rpc makeNNSnapshot (makeNNSnapshotRequest) returns (makeNNSnapshotResponse);
+  rpc deleteNNVersion (deleteNNVersionRequest) returns (deleteNNVersionResponse);
+  rpc deleteProject (deleteProjectRequest) returns (deleteProjectResponse);
+  rpc compareNNVersions (compareRequest) returns (compareResponse);
+}
+
+// Comparing 2 neural network versions
+message compareRequest {
+  int64 nnId1 = 1;
+  int64 nnId2 = 2;
+}
+
+message compareResponse {
+  bool hasDiffInLearningRate = 1;
+  double learningRate1 = 2;
+  double learningRate2 = 3;
+  repeated layerDifference layersDiff = 4;
+  string exception = 5;
+}
+
+message layerDifference {
+  bool hasDiffInExisting = 1;
+  bool exists1 = 2;
+  bool exists2 = 3;
+
+  bool hasDiffInNeurons = 4;
+  int64 neurons1 = 5;
+  int64 neurons2 = 6;
+
+  bool hasDiffInLayerType = 7;
+  LayerType layerType1 = 8;
+  LayerType layerType2 = 9;
+
+  bool hasDiffInActivationFunction = 10;
+  ActivationFunction activationFun1 = 11;
+  ActivationFunction activationFun2 = 12;
+}
+
+message makeNNSnapshotRequest {
+  int64 nnId = 1; //id of neural network to copy
+}
+
+message makeNNSnapshotResponse {
+  int64 nnId = 1; //id of created snapshot
+  string exception = 2;
+}
+
+message deleteNNVersionRequest {
+  int64 nnId = 1; //id of neural network to delete
+}
+
+message deleteNNVersionResponse {}
+
+//delete all versions of neural network
+message deleteProjectRequest {
+  int64 projectId = 1;
+}
+
+message deleteProjectResponse {}
