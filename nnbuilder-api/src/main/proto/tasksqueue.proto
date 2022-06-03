@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+import "google/protobuf/timestamp.proto";
+
+enum TaskType {
+  TrainNNClassification = 0;
+  TrainNNRegression = 1;
+  ApplyToData = 2;
+}
+
+enum TaskStatus {
+  HaveNotStarted = 0;
+  Processing = 1;
+  Done = 2;
+}
+
+service TasksQueueService {
+  rpc createTask (CreateTaskRequest) returns (CreateTaskResponse);
+  rpc getInformation(GetInformationRequest) returns (GetInformationResponse);
+}
+
+// Creating new task
+message CreateTaskRequest {
+  TaskType name = 1;
+  int64 nnId = 2;
+  int64 datasetId = 3;
+  int64 epochAmount = 4;
+}
+
+message CreateTaskResponse {
+  int64 taskId = 1;
+}
+
+// Asking information about a task
+message GetInformationRequest {
+  int64 taskId = 1;
+}
+
+message GetInformationResponse {
+  int64 timeDeltaSeconds = 1;
+  TaskStatus taskStatus = 2;
+}

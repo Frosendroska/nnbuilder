@@ -15,6 +15,9 @@ import org.hse.nnbuilder.user.User;
 import org.hse.nnbuilder.user.UserService;
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService;
+import org.hse.nnbuilder.nn.store.NeuralNetworkStorage;
+import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
+import org.hse.nnbuilder.services.Nnmodification.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class NNModificationService extends NNModificationServiceGrpc.NNModificationServiceImplBase {
 
     @Autowired
-    private NeuralNetworkRepository neuralNetworkRepository;
+    private NeuralNetworkStorage neuralNetworkStorage;
 
     @Autowired
     private GeneralNeuralNetworkService generalNeuralNetworkService;
@@ -32,12 +35,12 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
     private UserService userService;
 
     @Override
-    public void modifynn(
-            Nnmodification.NNModificationRequest request, StreamObserver<NNModificationResponse> responseObserver) {
+    public void modifynn(NNModificationRequest request, StreamObserver<NNModificationResponse> responseObserver) {
 
         Long nnId = request.getNnId();
+        NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
+
         if (request.hasAddLayer()) {
-            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
             loaded.getNeuralNetwork()
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
@@ -45,14 +48,12 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                             );
         }
         if (request.hasDelLayer()) {
-            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
             loaded.getNeuralNetwork()
                     .delLayer(
                             request.getDelLayer().getIndex() // i
                             );
         }
         if (request.hasChangeActivationFunction()) {
-            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
             loaded.getNeuralNetwork()
                     .changeActivationFunction(
                             request.getChangeActivationFunction().getIndex(), // i
@@ -60,7 +61,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                             );
         }
         if (request.hasChangeNumberOfNeuron()) {
-            NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnId);
             loaded.getNeuralNetwork()
                     .changeNumberOfNeuron(
                             request.getChangeNumberOfNeuron().getIndex(), // i
@@ -104,15 +104,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             NeuralNetworkStored nnStored = new NeuralNetworkStored(ffnn, generalNeuralNetwork);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
-            // System.out.println("NeuralNetworkStored in general..:");
-            // GeneralNeuralNetwork temp = generalNeuralNetworkService.getById(generalNeuralNetwork.getId());
-            // if(temp.getNNVersions() != null && !temp.getNNVersions().isEmpty()) {
-            //     for (NeuralNetworkStored i : temp.getNNVersions()) {
-            //         System.out.println(i.getId());
-            //     }
-            // }
-            // System.out.println("General in new stored: " + nnStored.generalNeuralNetwork.getId());
-
         } else if (nnType == NetworkType.RNN) {
             RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
             NeuralNetworkStored nnStored = new NeuralNetworkStored(rnn, generalNeuralNetwork);
@@ -128,6 +119,9 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             NeuralNetworkStored nnStored = new NeuralNetworkStored(cnn, generalNeuralNetwork);
             neuralNetworkRepository.save(nnStored);
             nnId = nnStored.getId();
+        } else {
+            throw new IllegalArgumentException(String.format(
+                    "Unexpected neural network type %s", nnType));
         }
 
         return nnId;
