@@ -43,7 +43,7 @@ public class TasksQueueRepositoryTest {
 
     @BeforeAll
     void prepare() {
-        User user = userService.save("Ivan", "ivan@gmail.com", "password");
+        User user = userService.save("Ivan2", "ivan2@gmail.com", "password");
         testingGeneralNeuralNetwork = generalNeuralNetworkService.create(user);
     }
 
