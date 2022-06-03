@@ -45,7 +45,7 @@ class GeneralNeuralNetwork() {
     fun checkVersionsExists(): Boolean {
         println(nnversions)
         for (i in nnversions) {
-            println("id: " + i.id)
+            println("id: " + i.nnId)
         }
         return nnversions.isNotEmpty()
     }

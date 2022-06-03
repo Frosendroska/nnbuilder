@@ -44,7 +44,7 @@ class NeuralNetworkService(
     private fun createNeuralNetworkStored(abstractNeuralNetwork: AbstractNeuralNetwork, generalNeuralNetwork: GeneralNeuralNetwork): Long {
         val nnStored = NeuralNetworkStored(abstractNeuralNetwork, generalNeuralNetwork)
         neuralNetworkRepository.save(nnStored)
-        return nnStored.id
+        return nnStored.nnId
     }
 
     /**

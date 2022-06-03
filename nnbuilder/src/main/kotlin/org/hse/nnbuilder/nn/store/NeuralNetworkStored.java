@@ -12,16 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import org.hse.nnbuilder.nn.AbstractNeuralNetwork;
-import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork;
 import org.hse.nnbuilder.queue.TaskQueued;
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
 
 @Entity
 @Table(name = "neuralnetworks")
@@ -46,10 +41,10 @@ public final class NeuralNetworkStored {
 
     public NeuralNetworkStored() {}
 
-    // //FOR TESTS
-    // public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {
-    //     this.neuralNetwork = neuralNetwork;
-    // }
+    //ONLY FOR TESTS
+    public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {
+        this.neuralNetwork = neuralNetwork;
+    }
 
     public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork, GeneralNeuralNetwork generalNeuralNetwork) {
         this.neuralNetwork = neuralNetwork;
@@ -86,12 +81,13 @@ public final class NeuralNetworkStored {
         if (!(o instanceof NeuralNetworkStored)) {
             return false;
         }
-        return id != null && id.equals(((NeuralNetworkStored) o).getId());
+        return nnId != null && nnId.equals(((NeuralNetworkStored) o).nnId);
     }
 
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
 
     // Tasks
     public List<TaskQueued> getTasks() {
