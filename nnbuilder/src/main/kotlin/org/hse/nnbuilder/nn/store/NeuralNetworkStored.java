@@ -41,10 +41,10 @@ public final class NeuralNetworkStored {
 
     public NeuralNetworkStored() {}
 
-    // ONLY FOR TESTS
-    public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {
-        this.neuralNetwork = neuralNetwork;
-    }
+    // // ONLY FOR TESTS
+    // public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork) {
+    //     this.neuralNetwork = neuralNetwork;
+    // }
 
     public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork, GeneralNeuralNetwork generalNeuralNetwork) {
         this.neuralNetwork = neuralNetwork;
