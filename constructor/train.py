@@ -28,7 +28,7 @@ task_info = structures.Task(row)
 cur.execute("SELECT * from datasets where ds_id=%s", [task_info.dataset])
 row = cur.fetchone()
 dataset = structures.Dataset(row)
-cur.execute("SELECT * from neuralnetwork where id=%s", [task_info.nnDescription])
+cur.execute("SELECT * from neuralnetworks where nn_id=%s", [task_info.nnDescription])
 row = cur.fetchone()
 
 info = json.loads(row[1])
