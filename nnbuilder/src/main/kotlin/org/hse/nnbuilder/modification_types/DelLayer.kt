@@ -1,5 +1,6 @@
 package org.hse.nnbuilder.modification_types
 
+import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.Layer
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 
@@ -13,12 +14,12 @@ class DelLayer(index: Int, deletedLayer: Layer) : Modification(ModificationType.
     }
 
     @Override
-    override fun makeDirectChange(nnStored: NeuralNetworkStored) {
-        nnStored.neuralNetwork.delLayer(index)
+    override fun makeDirectChange(nn: AbstractNeuralNetwork) {
+        nn.delLayer(index)
     }
 
     @Override
-    override fun makeReverseChange(nnStored: NeuralNetworkStored) {
-        nnStored.neuralNetwork.layers.add(index, deletedLayer)
+    override fun makeReverseChange(nn: AbstractNeuralNetwork) {
+        nn.layers.add(index, deletedLayer)
     }
 }

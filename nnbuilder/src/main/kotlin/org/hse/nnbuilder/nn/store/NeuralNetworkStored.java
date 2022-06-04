@@ -37,7 +37,7 @@ public final class NeuralNetworkStored {
             fetch = FetchType.EAGER,
             cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "general_neural_network_id", nullable = false)
-    public GeneralNeuralNetwork generalNeuralNetwork;
+    private GeneralNeuralNetwork generalNeuralNetwork;
 
     public NeuralNetworkStored() {}
 
@@ -58,6 +58,10 @@ public final class NeuralNetworkStored {
 
     public void setNnId(Long nnId) {
         this.nnId = nnId;
+    }
+
+    public GeneralNeuralNetwork getGeneralNeuralNetwork() {
+        return generalNeuralNetwork;
     }
 
     // Abstract Neural Network

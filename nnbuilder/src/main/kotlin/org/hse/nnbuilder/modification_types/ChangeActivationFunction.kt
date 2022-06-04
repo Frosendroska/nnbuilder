@@ -1,5 +1,6 @@
 package org.hse.nnbuilder.modification_types
 
+import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 import org.hse.nnbuilder.services.Nnmodification
 
@@ -19,12 +20,12 @@ class ChangeActivationFunction(index: Int,
     }
 
     @Override
-    override fun makeDirectChange(nnStored: NeuralNetworkStored) {
-        nnStored.neuralNetwork.changeActivationFunction(index, newActivationFunction)
+    override fun makeDirectChange(nn: AbstractNeuralNetwork) {
+        nn.changeActivationFunction(index, newActivationFunction)
     }
 
     @Override
-    override fun makeReverseChange(nnStored: NeuralNetworkStored) {
-        nnStored.neuralNetwork.changeActivationFunction(index, oldActivationFunction)
+    override fun makeReverseChange(nn: AbstractNeuralNetwork) {
+        nn.changeActivationFunction(index, oldActivationFunction)
     }
 }

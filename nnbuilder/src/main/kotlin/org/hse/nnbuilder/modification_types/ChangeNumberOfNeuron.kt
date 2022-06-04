@@ -1,5 +1,6 @@
 package org.hse.nnbuilder.modification_types
 
+import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 
 class ChangeNumberOfNeuron(index: Int, oldNumber: Long, newNumber: Long) :
@@ -15,12 +16,12 @@ class ChangeNumberOfNeuron(index: Int, oldNumber: Long, newNumber: Long) :
     }
 
     @Override
-    override fun makeDirectChange(nnStored: NeuralNetworkStored) {
-        nnStored.neuralNetwork.changeNumberOfNeuron(index, newNumber)
+    override fun makeDirectChange(nn: AbstractNeuralNetwork) {
+        nn.changeNumberOfNeuron(index, newNumber)
     }
 
     @Override
-    override fun makeReverseChange(nnStored: NeuralNetworkStored) {
-        nnStored.neuralNetwork.changeNumberOfNeuron(index, oldNumber)
+    override fun makeReverseChange(nn: AbstractNeuralNetwork) {
+        nn.changeNumberOfNeuron(index, oldNumber)
     }
 }

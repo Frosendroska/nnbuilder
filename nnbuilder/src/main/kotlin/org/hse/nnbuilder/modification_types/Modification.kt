@@ -1,5 +1,6 @@
 package org.hse.nnbuilder.modification_types
 
+import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 
 enum class ModificationType {
@@ -8,12 +9,12 @@ enum class ModificationType {
 
 abstract class Modification(type: ModificationType) {
     private val modificationType = type
-    
+
     fun getModificationType(): ModificationType {
         return modificationType
     }
 
-    abstract fun makeDirectChange(nnStored: NeuralNetworkStored)
+    abstract fun makeDirectChange(nn: AbstractNeuralNetwork)
 
-    abstract fun makeReverseChange(nnStored: NeuralNetworkStored)
+    abstract fun makeReverseChange(nn: AbstractNeuralNetwork)
 }
