@@ -81,4 +81,12 @@ class GeneralNeuralNetworkService(
         val generalNeuralNetwork = getByIdOfNNVersion(id)
         return neuralNetworkService.addNewVersion(id, generalNeuralNetwork)
     }
+
+    fun undo(nnVersionId: Long) {
+        neuralNetworkService.undo(nnVersionId)
+    }
+
+    fun redo(nnVersionId: Long) {
+        neuralNetworkService.redo(nnVersionId)
+    }
 }

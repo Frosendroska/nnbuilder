@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.modification_types
 
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 
 enum class ModificationType {
     AddLayer, DelLayer, ChangeActivationFunction, ChangeNumberOfNeuron

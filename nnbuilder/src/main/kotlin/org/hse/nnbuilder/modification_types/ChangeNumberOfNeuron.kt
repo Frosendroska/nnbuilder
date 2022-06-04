@@ -1,10 +1,9 @@
 package org.hse.nnbuilder.modification_types
 
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 
 class ChangeNumberOfNeuron(index: Int, oldNumber: Long, newNumber: Long) :
-        Modification(ModificationType.ChangeNumberOfNeuron) {
+    Modification(ModificationType.ChangeNumberOfNeuron) {
     private val index: Int
     private val oldNumber: Long
     private val newNumber: Long

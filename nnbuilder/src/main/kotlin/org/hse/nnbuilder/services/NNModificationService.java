@@ -45,16 +45,17 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         Long nnId = request.getNnId();
         NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
 
-        Modification modification;
+        Modification modification = null;
 
         if (request.hasAddLayer()) {
-            modification = new AddLayer(request.getAddLayer().getIndex(), request.getAddLayer().getLType());
+            modification = new AddLayer(
+                    request.getAddLayer().getIndex(), request.getAddLayer().getLType());
 
             loaded.getNeuralNetwork()
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
                             request.getAddLayer().getLType() // lType
-                    );
+                            );
         }
         if (request.hasDelLayer()) {
             int index = request.getDelLayer().getIndex();
@@ -64,20 +65,21 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             loaded.getNeuralNetwork()
                     .delLayer(
                             request.getDelLayer().getIndex() // i
-                    );
+                            );
         }
         if (request.hasChangeActivationFunction()) {
             int index = request.getChangeActivationFunction().getIndex();
             ActivationFunction oldActivationFunction =
                     loaded.getNeuralNetwork().getLayers().get(index).getActivationFunction();
-            ActivationFunction newActivationFunction = request.getChangeActivationFunction().getF();
+            ActivationFunction newActivationFunction =
+                    request.getChangeActivationFunction().getF();
             modification = new ChangeActivationFunction(index, oldActivationFunction, newActivationFunction);
 
             loaded.getNeuralNetwork()
                     .changeActivationFunction(
                             request.getChangeActivationFunction().getIndex(), // i
                             request.getChangeActivationFunction().getF() // f
-                    );
+                            );
         }
         if (request.hasChangeNumberOfNeuron()) {
             int index = request.getChangeActivationFunction().getIndex();
@@ -89,8 +91,11 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .changeNumberOfNeuron(
                             request.getChangeNumberOfNeuron().getIndex(), // i
                             request.getChangeNumberOfNeuron().getNumber() // n
-                    );
+                            );
         }
+
+        loaded.getNeuralNetwork().addNewModification(modification);
+        neuralNetworkStorage.save(loaded);
 
         NNModificationResponse responseWithOk =
                 NNModificationResponse.newBuilder().build();

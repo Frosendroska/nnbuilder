@@ -2,7 +2,6 @@ package org.hse.nnbuilder.modification_types
 
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.Layer
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 
 class DelLayer(index: Int, deletedLayer: Layer) : Modification(ModificationType.DelLayer) {
     private val index: Int

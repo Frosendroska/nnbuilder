@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.modification_types
 
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 import org.hse.nnbuilder.services.Nnmodification
 
 class AddLayer(index: Int, layerType: Nnmodification.LayerType) : Modification(ModificationType.AddLayer) {

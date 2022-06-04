@@ -1,13 +1,14 @@
 package org.hse.nnbuilder.modification_types
 
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
-import org.hse.nnbuilder.nn.store.NeuralNetworkStored
 import org.hse.nnbuilder.services.Nnmodification
 
-class ChangeActivationFunction(index: Int,
-                               oldActivationFunction: Nnmodification.ActivationFunction,
-                               newActivationFunction: Nnmodification.ActivationFunction) :
-        Modification(ModificationType.ChangeActivationFunction) {
+class ChangeActivationFunction(
+    index: Int,
+    oldActivationFunction: Nnmodification.ActivationFunction,
+    newActivationFunction: Nnmodification.ActivationFunction
+) :
+    Modification(ModificationType.ChangeActivationFunction) {
 
     private val index: Int
     private val oldActivationFunction: Nnmodification.ActivationFunction
