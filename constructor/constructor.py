@@ -8,6 +8,10 @@ import torch
 from sklearn.model_selection import train_test_split
 import random
 import pandas
+import structures
+import ast
+import types
+import argparse
 
 activations = nn.ModuleDict([
                 ['prelu', nn.RReLU()],
@@ -19,7 +23,7 @@ activations = nn.ModuleDict([
                 ['elu', nn.ELU()],
     ])
 
-loss_functions = {'FF': torch.nn.MSELoss(), 'CrossEntropy': torch.nn.CrossEntropyLoss()}
+loss_functions = {'MSELoss': torch.nn.MSELoss(), 'CrossEntropy': torch.nn.CrossEntropyLoss()}
 
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, df, target_list):
@@ -33,20 +37,34 @@ class CustomDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         return torch.FloatTensor(self.vectors[index]), torch.FloatTensor(self.targets[index])
 
+
 class NeuralNetwork(nn.Module):
-    def __init__(self, info):
+    def __init__(self, info, type):
         super(NeuralNetwork, self).__init__()
         self.array = []
         layers = info['layers']
         for i in range(len(layers) - 1):
             self.array.append(nn.Linear(layers[i]['neurons'], layers[i + 1]['neurons']))
-            if (layers[i]['activationFunction'] != 'None'):
+            if layers[i]['activationFunction'] != 'None':
                 self.array.append(activations[layers[i]['activationFunction']])
         self.layers = nn.Sequential(*self.array)
-        self.criterion = loss_functions[info['nntype']]
+        if type == structures.TaskType.trainClassification:
+            self.criterion = loss_functions['CrossEntropy']
+        else:
+            self.criterion = loss_functions['MSELoss']
 
     def forward(self, x):
         return self.layers(x)
+
+
+def tensor_to_lists(dictionary):
+    for key, value in dictionary.items():
+        dictionary[key] = value.tolist()
+
+
+def list_to_tensor(dictionary):
+    for key, value in dictionary.items():
+        dictionary[key] = torch.Tensor(value)
 
 
 def train_loop(data, target, model, optimizer):
@@ -56,11 +74,14 @@ def train_loop(data, target, model, optimizer):
         loss.backward()
         optimizer.step()
 
-def train(model, train_x, train_y, test_x, test_y, history, optimizer, epochs=100):
+
+def train(model, dataset, optimizer, history, epochs=100):
+    X_train, X_test, y_train, y_test = dataset.split()
     for ep in range(epochs):
         print(f"Epoch {ep + 1} \n-------------------------------")
-        train_loop(train_x, train_y, model, optimizer)
-        test_loop(test_x, test_y, model, history)
+        train_loop(X_train, y_train, model, optimizer)
+        test_loop(X_test, y_test, model, history)
+
 
 def test_loop(data, target, model, history):
     size = len(data)
@@ -73,26 +94,34 @@ def test_loop(data, target, model, history):
     history.append(test_loss)
     print(f"Avg loss: {test_loss:>8f}")
 
-def save(network):
+
+def save(network, optimizer):
+    dict = network.state_dict()
+    tensor_to_lists(dict)
     state = {
-        'state_dict': network.state_dict(),
-        'optimizer': network.optimizer.state_dict(),
+        'state_dict': dict
     }
     info = json.dumps(state)
     return info
 
+
 def restore_net(states, model):
-    model.load_state_dict(states)
+    state_dict = json.loads(states)
+    dict = state_dict['state_dict']
+    list_to_tensor(dict)
+    model.load_state_dict(dict)
     return model
 
-def get_prediction(network, x, type = "classification"):
+
+def get_prediction(network, x, type='classification'):
     pred = network(x)
-    if (type == 'regression'):
+    if type == 'regression':
         return pred.data.numpy()
     prediction = torch.max(pred, 1)[1]
     return prediction.data.numpy()
 
-def accuracy(model, type, data, target):
+
+def accuracy(model, data, target):
     total = 0
     correct = 0
     for X, y in (zip(data, target)):
@@ -100,10 +129,3 @@ def accuracy(model, type, data, target):
         total += 1
         correct += (abs(res - y) <= 0.5).sum()
     return correct / total
-
-def create_tensors(data_bytes, target_bytes):
-    f = io.BytesIO(data_bytes)
-    X = pd.read_csv(f, sep=';')
-    f = io.BytesIO(target_bytes)
-    y = pd.read_csv(f, sep=';')
-    return train_test_split(X, y, train_size=0.67, random_state=42)
