@@ -17,7 +17,7 @@ public class Prediction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long predictionId;
 
-    @Column(columnDefinition = "text")
+    @Column
     private byte[] predictions;
 
     @OneToOne(cascade = CascadeType.ALL)

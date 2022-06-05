@@ -25,14 +25,13 @@ public class TaskExecutor {
                     }
             );
 
-            // Wait till the end of learning process
+            // Wait till the end of the learning process
             exec.waitFor();
+            //
 
-            if (task.getTaskStatus() == TaskStatus.Done) {
-                task.setFinishTaskTime(OffsetDateTime.now());
-            } else {
-                // TaskStatus.
-                //TODO
+            task.setFinishTaskTime(OffsetDateTime.now());
+            if (task.getTaskStatus() != TaskStatus.Done) {
+                task.setTaskStatus(TaskStatus.Failed);
             }
         } catch (Exception e) {
             e.printStackTrace();
