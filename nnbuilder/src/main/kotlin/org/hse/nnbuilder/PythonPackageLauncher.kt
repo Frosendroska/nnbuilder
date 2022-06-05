@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ResourceLoader
 import java.io.File
-import java.nio.file.Files
-import kotlin.io.path.Path
 
 
 @Configuration
@@ -53,7 +51,12 @@ open class PythonPackageLauncher {
 
             val fileWithCurrentPackageHash = File("$virtualenvPath/package-hash.txt")
 
-            if (Files.readAllLines(Path(fileWithCurrentPackageHash.absolutePath))[0] == currentPackageHash) {
+            fileWithCurrentPackageHash.createNewFile()
+
+            val textFromFile = File(fileWithCurrentPackageHash.absolutePath).inputStream()
+                    .bufferedReader()
+                    .use { it.readText() }
+            if (textFromFile == currentPackageHash) {
                 return
             }
 
@@ -61,7 +64,7 @@ open class PythonPackageLauncher {
                 throw RuntimeException("Virtualenv creation failed")
             }
 
-            fileWithCurrentPackageHash.createNewFile()
+
             fileWithCurrentPackageHash.writeText(currentPackageHash)
         }
 

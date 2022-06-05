@@ -45,6 +45,11 @@ public class TaskQueuedStorage {
         tasksQueueRepository.save(taskQueued);
     }
 
+    @Transactional
+    public void saveTaskToRepository(TaskQueued taskQueued) {
+        tasksQueueRepository.save(taskQueued);
+    }
+
     /**
      * Select the oldest task with type "not started" and switch type to "processing"
      *

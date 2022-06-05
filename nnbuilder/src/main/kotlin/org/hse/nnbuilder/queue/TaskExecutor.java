@@ -1,10 +1,13 @@
 package org.hse.nnbuilder.queue;
 
 import java.time.OffsetDateTime;
+import javax.transaction.Transactional;
 import org.hse.nnbuilder.PythonPackageLauncher.PythonPackageInstaller;
 import org.hse.nnbuilder.services.Tasksqueue.TaskStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component("TaskExecutor")
 public class TaskExecutor {
 
     @Autowired
@@ -12,6 +15,8 @@ public class TaskExecutor {
 
     @Autowired
     private PythonPackageInstaller pythonPackageInstaller;
+
+    public TaskExecutor() {}
 
     public void processTask() {
         try {
@@ -29,12 +34,18 @@ public class TaskExecutor {
             exec.waitFor();
             //
 
-            task.setFinishTaskTime(OffsetDateTime.now());
-            if (task.getTaskStatus() != TaskStatus.Done) {
-                task.setTaskStatus(TaskStatus.Failed);
-            }
+            setFinishTaskTime(task);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Transactional
+    public void setFinishTaskTime(TaskQueued task) {
+        task.setFinishTaskTime(OffsetDateTime.now());
+        if (task.getTaskStatus() != TaskStatus.Done) {
+            task.setTaskStatus(TaskStatus.Failed);
+        }
+        taskQueuedStorage.saveTaskToRepository(task);
     }
 }
