@@ -2,9 +2,11 @@ package org.hse.nnbuilder.queue;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @Configuration
+@Profile("!test")
 public class ThreadPoolTaskSchedulerConfig {
 
     private static final int TASK_RUN_INTERVAL_MS = 2000;
@@ -13,7 +15,7 @@ public class ThreadPoolTaskSchedulerConfig {
     public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
         threadPoolTaskScheduler.setPoolSize(5);
-        threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
+        threadPoolTaskScheduler.setThreadNamePrefix("TaskScheduler");
 
         threadPoolTaskScheduler.initialize();
         threadPoolTaskScheduler.scheduleAtFixedRate(

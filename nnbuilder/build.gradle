@@ -70,9 +70,16 @@ spotless {
   }
 }
 
-bootJar {
+processResources {
   dependsOn ':frontend:assemble'
+  dependsOn ':constructor:assemble'
+
   from('../frontend/build/dist') {
     into 'static'
   }
+  from('../constructor/build/dist') {
+    into 'py'
+  }
 }
+
+idea.module.resourceDirs += file('build/resources/main')

@@ -71,6 +71,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
             // (taskStatus == TaskStatus.HaveNotStarted)
             timeDeltaSeconds = 0L;
         }
+        //TODO
 
         GetInformationResponse responseWithInfo = GetInformationResponse.newBuilder()
                 .setTimeDeltaSeconds(timeDeltaSeconds)
