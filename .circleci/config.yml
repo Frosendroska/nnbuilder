@@ -5,7 +5,6 @@ orbs:
   envsubst: sawadashota/envsubst@1.1.0
   docker: circleci/docker@2.0.3
   codecov: codecov/codecov@3.2.2
-  python: circleci/python@2.0.3
 
 
 jobs:
@@ -20,9 +19,8 @@ jobs:
       - checkout
       - node/install:
           node-version: "17.6.0"
-      - python/install-packages:
-          args: virtualenv
-          pkg-manager: pip
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install python3 python3-pip python3-virtualenv -y
       - restore_cache:
           key: gradle-wrapper-v1-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
