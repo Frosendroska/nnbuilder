@@ -34,5 +34,3 @@
 * `gw nnbuild-api:assemble` re-generates grpc code from protobuf definitions
 * `gw spotlessApply` applies code style fixes
 * `gw dockerComposeDown` to disable proxy
-
-### Conspects

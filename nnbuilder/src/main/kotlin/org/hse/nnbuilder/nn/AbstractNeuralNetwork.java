@@ -16,15 +16,30 @@ import org.hse.nnbuilder.services.Nnmodification.NetworkType;
     @JsonSubTypes.Type(value = RecurrentNN.class, name = "RNN"),
 })
 public abstract class AbstractNeuralNetwork implements NeuralNetwork {
-    /** Type of Neural Network */
+    /**
+     * Type of Neural Network
+     */
     @JsonProperty("nntype")
     NetworkType nnType;
-    /** List of layers */
+    /**
+     * List of layers
+     */
     List<Layer> layers;
-    /** Learning rate */
+    /**
+     * Learning rate
+     */
     float learningRate;
-    /** Param for constructor for default network */
+    /**
+     * Param for constructor for default network
+     */
     int defaultNumberOfLayers;
+
+    protected void init(AbstractNeuralNetwork other) {
+        this.nnType = other.getNNType();
+        this.layers = other.getLayers();
+        this.learningRate = other.getLearningRate();
+        this.defaultNumberOfLayers = other.getDefaultNumberOfLayers();
+    }
 
     @Override
     public final NetworkType getNNType() {

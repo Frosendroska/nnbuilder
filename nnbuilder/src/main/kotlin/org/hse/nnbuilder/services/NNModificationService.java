@@ -8,14 +8,29 @@ import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStorage;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
-import org.hse.nnbuilder.services.Nnmodification.*;
+import org.hse.nnbuilder.services.Nnmodification.NNCreationResponse;
+import org.hse.nnbuilder.services.Nnmodification.NNModificationRequest;
+import org.hse.nnbuilder.services.Nnmodification.NNModificationResponse;
+import org.hse.nnbuilder.services.Nnmodification.NetworkType;
+import org.hse.nnbuilder.user.User;
+import org.hse.nnbuilder.user.UserService;
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @GrpcService
 public class NNModificationService extends NNModificationServiceGrpc.NNModificationServiceImplBase {
 
     @Autowired
     private NeuralNetworkStorage neuralNetworkStorage;
+
+    @Autowired
+    private GeneralNeuralNetworkService generalNeuralNetworkService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void modifynn(NNModificationRequest request, StreamObserver<NNModificationResponse> responseObserver) {
@@ -57,33 +72,55 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         responseObserver.onCompleted();
     }
 
+    @Secured("ROLE_USER")
     @Override
     public void createnn(
-            NNCreationRequest request, StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
+            Nnmodification.NNCreationRequest request,
+            StreamObserver<Nnmodification.NNCreationResponse> responseObserver) {
+        String userEmail =
+                SecurityContextHolder.getContext().getAuthentication().getName();
+        // String userEmail = "c";
 
-        NeuralNetworkStored nnStored;
-        if (request.getNnType() == NetworkType.FF) {
+        long nnId = creatennForUser(userEmail, request.getNnType());
+
+        NNCreationResponse responseWithOk =
+                NNCreationResponse.newBuilder().setNnId(nnId).build();
+        responseObserver.onNext(responseWithOk);
+        responseObserver.onCompleted();
+    }
+
+    public long creatennForUser(String userEmail, Nnmodification.NetworkType nnType) {
+        User user = userService.findByEmail(userEmail);
+
+        long nnId = 0;
+
+        // creating new project
+        GeneralNeuralNetwork generalNeuralNetwork = generalNeuralNetworkService.create(user);
+
+        if (nnType == NetworkType.FF) {
             FeedForwardNN ffnn = FeedForwardNN.buildDefaultFastForwardNN();
-            nnStored = new NeuralNetworkStored(ffnn);
-        } else if (request.getNnType() == NetworkType.RNN) {
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(ffnn, generalNeuralNetwork);
+            neuralNetworkStorage.save(nnStored);
+            nnId = nnStored.getNnId();
+        } else if (nnType == NetworkType.RNN) {
             RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
-            nnStored = new NeuralNetworkStored(rnn);
-        } else if (request.getNnType() == NetworkType.LSTM) {
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(rnn, generalNeuralNetwork);
+            neuralNetworkStorage.save(nnStored);
+            nnId = nnStored.getNnId();
+        } else if (nnType == NetworkType.LSTM) {
             LongShortTermMemoryNN lstmnn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
-            nnStored = new NeuralNetworkStored(lstmnn);
-        } else if (request.getNnType() == NetworkType.CNN) {
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(lstmnn, generalNeuralNetwork);
+            neuralNetworkStorage.save(nnStored);
+            nnId = nnStored.getNnId();
+        } else if (nnType == NetworkType.CNN) {
             ConvolutionalNN cnn = ConvolutionalNN.buildDefaultConvolutionalNN();
-            nnStored = new NeuralNetworkStored(cnn);
+            NeuralNetworkStored nnStored = new NeuralNetworkStored(cnn, generalNeuralNetwork);
+            neuralNetworkStorage.save(nnStored);
+            nnId = nnStored.getNnId();
         } else {
-            throw new IllegalArgumentException(String.format(
-                    "Unexpected neural network type %s", request.getNnType().name()));
+            throw new IllegalArgumentException(String.format("Unexpected neural network type %s", nnType));
         }
 
-        neuralNetworkStorage.save(nnStored);
-        NNCreationResponse responseWithNNId =
-                NNCreationResponse.newBuilder().setNnId(nnStored.getNnId()).build();
-        responseObserver.onNext(responseWithNNId);
-
-        responseObserver.onCompleted();
+        return nnId;
     }
 }

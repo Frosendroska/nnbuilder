@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+service UserAccountService {
+  rpc getName (GetNameRequest) returns (GetNameResponse);
+  rpc getEmail (GetEmailRequest) returns (GetEmailResponse);
+  rpc changeName (ChangeNameRequest) returns (ChangeNameResponse);
+  rpc changePassword (ChangePasswordRequest) returns (ChangePasswordResponse);
+}
+
+message GetNameRequest {}
+
+message GetNameResponse {
+  string name = 1;
+}
+
+message GetEmailRequest {}
+
+message GetEmailResponse {
+  string email = 1;
+}
+
+message ChangeNameRequest {
+  string newName = 1;
+}
+
+message ChangeNameResponse {}
+
+message ChangePasswordRequest {
+  string oldPassword = 1;
+  string newPassword = 2;
+}
+
+message ChangePasswordResponse {
+  string exception = 1;
+}
