@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Hashing of file and hash of a String using sha1Hex
  */
-public class HashUtil {
+public final class HashUtil {
     public static String getFileHash(@NotNull Path filePath) {
         try (InputStream is = Files.newInputStream(filePath)) {
             return DigestUtils.sha3_512Hex(is);
