@@ -40,9 +40,7 @@ dependencies {
   implementation "io.grpc:grpc-stub:${grpcVersion}"
   implementation "io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}"
 
-  // https://mvnrepository.com/artifact/commons-codec/commons-codec
-  implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
-
+  implementation 'commons-codec:commons-codec:1.15'
 }
 
 sourceSets {

@@ -73,7 +73,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         }
 
         GetInformationResponse responseWithInfo = GetInformationResponse.newBuilder()
-                .setTimeSpentOnLearningSec(timeDeltaSeconds)
+                .setTaskProcessingTimeSeconds(timeDeltaSeconds)
                 .setTaskStatus(taskStatus)
                 .build();
         responseObserver.onNext(responseWithInfo);

@@ -10,12 +10,12 @@ import org.hse.nnbuilder.exception.HashError;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Helps to get a hash of file and hash of a String using sha1Hex
+ * Hashing of file and hash of a String using sha1Hex
  */
 public class HashUtil {
-    public static String getFileHash(@NotNull Path filePath) throws HashError {
+    public static String getFileHash(@NotNull Path filePath) {
         try (InputStream is = Files.newInputStream(filePath)) {
-            return DigestUtils.sha1Hex(is);
+            return DigestUtils.sha3_512Hex(is);
         } catch (IOException e) {
             throw new HashError("Impossible to hash " + filePath.getFileName() + ".", e);
         }
@@ -25,7 +25,7 @@ public class HashUtil {
         return DigestUtils.sha1Hex(commitInfo);
     }
 
-    public static String setFileHash(Path file, Path storage) throws  HashError {
+    public static String setFileHash(Path file, Path storage) {
         try {
             String hash = getFileHash(file);
             Path copied = storage.resolve(hash);
@@ -35,5 +35,4 @@ public class HashUtil {
             throw new HashError("Impossible to set file hash.", e);
         }
     }
-
 }

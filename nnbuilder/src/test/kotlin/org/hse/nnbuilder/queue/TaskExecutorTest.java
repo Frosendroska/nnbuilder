@@ -12,16 +12,16 @@ import org.springframework.test.context.ActiveProfiles;
 public class TaskExecutorTest {
 
     @Autowired
-    TaskExecutor taskExecutor;
+    ScheduledTaskExecutor taskExecutor;
 
     @Test
     void callProcessTaskTest() {
-        taskExecutor.processTask();
+        taskExecutor.processScheduledTask();
     }
 
     @Test
     void callTwoProcessTaskTest() {
-        taskExecutor.processTask();
-        taskExecutor.processTask();
+        taskExecutor.processScheduledTask();
+        taskExecutor.processScheduledTask();
     }
 }

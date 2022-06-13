@@ -1,15 +1,15 @@
 package org.hse.nnbuilder.queue;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.stereotype.Component;
 
 /**
  * This class helps to execute tasks per TASK_RUN_INTERVAL_MS
  * and allows to have in thread pool only TASK_POOL_SIZE
  */
-@Configuration
+@Component
 @Profile("!test")
 public class ThreadPoolTaskSchedulerConfig {
 
@@ -24,7 +24,7 @@ public class ThreadPoolTaskSchedulerConfig {
 
         threadPoolTaskScheduler.initialize();
         threadPoolTaskScheduler.scheduleAtFixedRate(
-                () -> new TaskExecutor().processTask(),
+                () -> new ScheduledTaskExecutor().processScheduledTask(),
                 TASK_RUN_INTERVAL_MS
         );
 

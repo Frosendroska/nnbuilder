@@ -39,6 +39,6 @@ message GetInformationRequest {
 }
 
 message GetInformationResponse {
-  int64 timeSpentOnLearningSec = 1;
+  int64 taskProcessingTimeSeconds = 1;
   TaskStatus taskStatus = 2;
 }
