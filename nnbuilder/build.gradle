@@ -40,6 +40,8 @@ dependencies {
 
   implementation "io.grpc:grpc-stub:${grpcVersion}"
   implementation "io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}"
+
+  implementation 'commons-codec:commons-codec:1.15'
 }
 
 sourceSets {
@@ -71,9 +73,16 @@ spotless {
   }
 }
 
-bootJar {
+processResources {
   dependsOn ':frontend:assemble'
+  dependsOn ':constructor:assemble'
+
   from('../frontend/build/dist') {
     into 'static'
   }
+  from('../constructor/build/dist') {
+    into 'py'
+  }
 }
+
+idea.module.resourceDirs += file('build/resources/main')

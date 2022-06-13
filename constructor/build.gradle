@@ -1,0 +1,14 @@
+task createVirtualenv(type: Exec) {
+    executable "../scripts/virtualenv.sh"
+    args "$buildDir/venv"
+}
+
+task buildPython(type: Exec) {
+    dependsOn createVirtualenv
+    executable "$buildDir/venv/bin/python"
+    args "setup.py", "sdist", "--dist-dir=build/dist"
+}
+
+assemble.dependsOn buildPython
+
+// TODO: lint
