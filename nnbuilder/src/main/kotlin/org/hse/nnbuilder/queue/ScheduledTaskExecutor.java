@@ -24,11 +24,10 @@ public class ScheduledTaskExecutor {
             if (task == null) {
                 return;
             }
-            Process exec = Runtime.getRuntime().exec(
-                    new String[] {
-                            pythonPackageInstaller.getPackageExecutablePath(), task.getTaskId().toString()
-                    }
-            );
+            Process exec = Runtime.getRuntime().exec(new String[] {
+                pythonPackageInstaller.getPackageExecutablePath(),
+                task.getTaskId().toString()
+            });
 
             // Wait till the end of the learning process
             int resultCode = exec.waitFor();

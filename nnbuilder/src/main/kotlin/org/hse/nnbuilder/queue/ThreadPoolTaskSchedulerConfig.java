@@ -24,9 +24,7 @@ public class ThreadPoolTaskSchedulerConfig {
 
         threadPoolTaskScheduler.initialize();
         threadPoolTaskScheduler.scheduleAtFixedRate(
-                () -> new ScheduledTaskExecutor().processScheduledTask(),
-                TASK_RUN_INTERVAL_MS
-        );
+                () -> new ScheduledTaskExecutor().processScheduledTask(), TASK_RUN_INTERVAL_MS);
 
         return threadPoolTaskScheduler;
     }

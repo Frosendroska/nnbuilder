@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ResourceLoader
 import java.io.File
 
-
 @Configuration
 open class PythonPackageLauncher {
 
@@ -54,8 +53,8 @@ open class PythonPackageLauncher {
             fileWithCurrentPackageHash.createNewFile()
 
             val textFromFile = File(fileWithCurrentPackageHash.absolutePath).inputStream()
-                    .bufferedReader()
-                    .use { it.readText() }
+                .bufferedReader()
+                .use { it.readText() }
             if (textFromFile == currentPackageHash) {
                 return
             }
@@ -63,7 +62,6 @@ open class PythonPackageLauncher {
             if (!runAndWait("$virtualenvPath/bin/pip", "install", "--force", packageFile.absolutePath)) {
                 throw RuntimeException("Virtualenv creation failed")
             }
-
 
             fileWithCurrentPackageHash.writeText(currentPackageHash)
         }
@@ -75,10 +73,10 @@ open class PythonPackageLauncher {
         companion object {
             private fun runAndWait(vararg cmd: String): Boolean {
                 return ProcessBuilder(*cmd)
-                        .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-                        .redirectError(ProcessBuilder.Redirect.INHERIT)
-                        .start()
-                        .waitFor() == 0
+                    .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+                    .redirectError(ProcessBuilder.Redirect.INHERIT)
+                    .start()
+                    .waitFor() == 0
             }
         }
     }
