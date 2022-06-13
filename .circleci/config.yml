@@ -21,8 +21,6 @@ jobs:
       - node/install:
           node-version: "17.6.0"
       - python/install-packages:
-          pkg-manager: pip
-      - python/install-packages:
           args: virtualenv
           pkg-manager: pip
       - restore_cache:
