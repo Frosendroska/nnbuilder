@@ -31,8 +31,15 @@ public class TasksQueueRepositoryTest {
     @Autowired
     private TaskQueuedStorage taskQueuedStorage;
 
+    @Autowired
+    private UserService userService;
 
-    final static Long DEFAULT_EPOCH_NUMBER = 100L;
+    @Autowired
+    private GeneralNeuralNetworkService generalNeuralNetworkService;
+
+    private GeneralNeuralNetwork testingGeneralNeuralNetwork;
+
+    final Long defaultEpochAmount = 100L;
 
     @BeforeAll
     void prepare() {
@@ -55,7 +62,7 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile(), null);
 
         // Task
-        TaskQueued taskQueued = new TaskQueued(TaskType.ApplyToData, nnStored, dsStored, DEFAULT_EPOCH_NUMBER);
+        TaskQueued taskQueued = new TaskQueued(TaskType.ApplyToData, nnStored, dsStored, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 
@@ -67,8 +74,7 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStored = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
 
         // Task
-        TaskQueued taskQueued =
-                new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored, DEFAULT_EPOCH_NUMBER);
+        TaskQueued taskQueued = new TaskQueued(TaskType.TrainNNClassification, nnStored, dsStored, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
     }
 
@@ -81,7 +87,7 @@ public class TasksQueueRepositoryTest {
 
         // Task
         TaskQueued taskQueued1 =
-                new TaskQueued(TaskType.TrainNNRegression, lstmStored, dsStoredTrain, DEFAULT_EPOCH_NUMBER);
+                new TaskQueued(TaskType.TrainNNRegression, lstmStored, dsStoredTrain, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued1, dsStoredTrain, lstmStored);
 
         RecurrentNN rnn = RecurrentNN.buildDefaultRecurrentNN();
@@ -90,7 +96,7 @@ public class TasksQueueRepositoryTest {
         DatasetStored dsStoredApply = new DatasetStored(DatasetUtil.readDatasetFile(), "industry");
 
         // Task
-        TaskQueued taskQueued2 = new TaskQueued(TaskType.ApplyToData, rnnStored, dsStoredApply, DEFAULT_EPOCH_NUMBER);
+        TaskQueued taskQueued2 = new TaskQueued(TaskType.ApplyToData, rnnStored, dsStoredApply, defaultEpochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued2, dsStoredApply, rnnStored);
     }
 }
