@@ -1,11 +1,11 @@
 task installPypaBuild(type: Exec) {
-    executable "python3"
+    executable 'python3'
     args '-m', 'pip', 'install', 'build'
 }
 
 task buildPythonPackage(type: Exec) {
     dependsOn installPypaBuild
-    executable "python3"
+    executable 'python3'
     args '-m', 'build', '--sdist', '--wheel', '--outdir=build/dist'
 }
 
