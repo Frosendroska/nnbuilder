@@ -1,14 +1,14 @@
-import NeuronData from "./NeuronData"
+import NeuronData from './NeuronData'
 
 class Edge {
-    from: NeuronData;
-    to: NeuronData;
-    weight: number;
+    from: NeuronData
+    to: NeuronData
+    weight: number
 
     constructor(from: NeuronData, to: NeuronData) {
-        this.from = from;
-        this.to = to;
-        this.weight = 0;
+        this.from = from
+        this.to = to
+        this.weight = 0
     }
 }
 

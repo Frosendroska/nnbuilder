@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import * as api from 'nnbuilder-api'
-import {NetworkType} from 'nnbuilder-api';
+import {NetworkType} from 'nnbuilder-api'
 
 type EditorProps = {
     modificationService: api.NNModificationServicePromiseClient
 }
 
 function RightPanel(props: EditorProps): JSX.Element {
-    const [nntype, setNNtype] = useState("FF")
+    const [nntype, setNNtype] = useState('FF')
     const [create, setCreate] = useState(false)
 
     useEffect(() => {
@@ -19,47 +19,45 @@ function RightPanel(props: EditorProps): JSX.Element {
             console.log(JSON.stringify(value))
         })
     }, [create])
-    const ulStyle = { display: "flex" }
+    //const ulStyle = { display: 'flex' }
     return (
-        <div className="Left">
+        <div className='Left'>
             <h1>NNTypes: {nntype}</h1>
             <div><input onChange={e => {
-                setNNtype(e.target.value);
+                setNNtype(e.target.value)
                 setCreate(false)
-            }} type="radio" value="FF" defaultChecked name="type"/> Feed forward
+            }} type='radio' value='FF' defaultChecked name='type'/> Feed forward
             </div>
             <div><input onChange={e => {
-                setNNtype(e.target.value);
+                setNNtype(e.target.value)
                 setCreate(false)
-            }} type="radio" value="RNN" name="type"/> Recurrent network
+            }} type='radio' value='RNN' name='type'/> Recurrent network
             </div>
             <div><input onChange={e => {
-                setNNtype(e.target.value);
+                setNNtype(e.target.value)
                 setCreate(false)
-            }} type="radio" value="LSTM" name="type"/> Long term memory
+            }} type='radio' value='LSTM' name='type'/> Long term memory
             </div>
             <div><input onChange={e => {
-                setNNtype(e.target.value);
+                setNNtype(e.target.value)
                 setCreate(false)
-            }} type="radio" value="CNN" name="type"/> Deep convolutional network
+            }} type='radio' value='CNN' name='type'/> Deep convolutional network
             </div>
             <div>
-                <button onClick={e => setCreate(true)} className="Create">Create nn</button>
+                <button onClick={() => setCreate(true)} className='Create'>Create nn</button>
             </div>
             <div>
-                <button className="Load">Load dataset</button>
+                <button className='Load'>Load dataset</button>
             </div>
             public
             <div>
-                <button className="Save">Save neural network</button>
+                <button className='Save'>Save neural network</button>
             </div>
             <div>
-                <button className="Load">Load learnt model</button>
+                <button className='Load'>Load learnt model</button>
             </div>
         </div>
-    );
+    )
 }
 
-export default RightPanel;
-
-
+export default RightPanel
