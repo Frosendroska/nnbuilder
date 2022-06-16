@@ -12,7 +12,7 @@ function Editor(props: EditorProps): JSX.Element {
     const ulStyle = {display: 'flex'}
     return (
         <div style={ulStyle}>
-            <LeftPanel />
+            <LeftPanel/>
             <EditorWindow/>
             <RightPanel modificationService={props.modificationService}/>
         </div>

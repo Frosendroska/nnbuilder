@@ -58,7 +58,6 @@ function Register(props: FormProps): JSX.Element {
     }))
 
 
-
     console.log(errors)
     return (
         <div>

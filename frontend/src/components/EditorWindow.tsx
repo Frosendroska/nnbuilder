@@ -15,7 +15,7 @@ function EditorWindow() {
         .join('rect')
         .attr('x', 10)
         .attr('y', (layerData) => {
-            return layerData.id * 115;
+            return layerData.id * 115
         })
         .attr('width', 300)
         .attr('height', 100)
@@ -23,7 +23,7 @@ function EditorWindow() {
         .attr('ry', 5)
         .attr('fill', '#FFA567')
 
-    let edgesContainer = d3.select('#layers').select('g')
+    const edgesContainer = d3.select('#layers').select('g')
         .selectAll('line')
         .data(edges)
         .join('line')
@@ -33,7 +33,7 @@ function EditorWindow() {
         .attr('y2', d => d.to.y)
         .attr('stroke', 'red')
 
-    let neuronsContainer = d3.select('#layers').select('g')
+    const neuronsContainer = d3.select('#layers').select('g')
         .selectAll('circle')
         .data(layers.flatMap(x => x.neurons))
         .join('circle')
