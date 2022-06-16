@@ -21,12 +21,12 @@ function Login(props: FormProps): JSX.Element {
     const {
         register,
         handleSubmit,
-        formState: {errors}
+        formState: {errors},
     } = useForm<FormValues>({
         defaultValues: {
             email: '',
             password: '',
-        }
+        },
     })
 
     const sendRequest = (handleSubmit((data) => {
@@ -35,7 +35,7 @@ function Login(props: FormProps): JSX.Element {
             .setPassword(data.password)
         props.authService.login(request).then((result: api.LoginResponse) => {
             token.set(result.getToken())
-            let newError = result.getException()
+            const newError = result.getException()
             setError(newError)
             if (newError == '') {
                 navigate('/projects')
@@ -52,29 +52,29 @@ function Login(props: FormProps): JSX.Element {
                 <div>
                     Email
                     <input type='text'
-                           {...register('email', {
-                               required: {
-                                   value: true,
-                                   message: 'Please enter email'
-                               }
-                           })}
-                           name='email'
-                           placeholder='ivanivanov@gmail.com'
+                        {...register('email', {
+                            required: {
+                                value: true,
+                                message: 'Please enter email',
+                            },
+                        })}
+                        name='email'
+                        placeholder='ivanivanov@gmail.com'
                     />
                     <div className='invalid-feedback'>{errors.email?.message}</div>
                 </div>
                 <div>
                     Password
                     <input type='password'
-                           {...register('password', {
-                               minLength: {
-                                   value: 6,
-                                   message: 'Password min length is 6'
-                               },
-                               required: 'Please enter password',
-                           })}
-                           name='password'
-                           placeholder='qwerty123'
+                        {...register('password', {
+                            minLength: {
+                                value: 6,
+                                message: 'Password min length is 6',
+                            },
+                            required: 'Please enter password',
+                        })}
+                        name='password'
+                        placeholder='qwerty123'
                     />
                     <div className='invalid-feedback'>{errors.password?.message}</div>
                 </div>

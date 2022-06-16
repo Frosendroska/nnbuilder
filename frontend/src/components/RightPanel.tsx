@@ -15,30 +15,33 @@ function RightPanel(props: EditorProps): JSX.Element {
         if (nntype == 'RNN') type = NetworkType.RNN
         if (nntype == 'LSTM') type = NetworkType.LSTM
         if (nntype == 'CNN') type = NetworkType.CNN
-        if (create) props.modificationService.createnn(new api.NNCreationRequest().setNntype(type)).then((value: api.NNCreationResponse) => {
-            console.log(JSON.stringify(value))
-        })
+        if (create) {
+            props.modificationService.createnn(new api.NNCreationRequest().setNntype(type)).then(
+                (value: api.NNCreationResponse) => {
+                    console.log(JSON.stringify(value))
+                })
+        }
     }, [create])
-    //const ulStyle = { display: 'flex' }
+    // const ulStyle = { display: 'flex' }
     return (
         <div className='Left'>
             <h1>NNTypes: {nntype}</h1>
-            <div><input onChange={e => {
+            <div><input onChange={(e) => {
                 setNNtype(e.target.value)
                 setCreate(false)
             }} type='radio' value='FF' defaultChecked name='type'/> Feed forward
             </div>
-            <div><input onChange={e => {
+            <div><input onChange={(e) => {
                 setNNtype(e.target.value)
                 setCreate(false)
             }} type='radio' value='RNN' name='type'/> Recurrent network
             </div>
-            <div><input onChange={e => {
+            <div><input onChange={(e) => {
                 setNNtype(e.target.value)
                 setCreate(false)
             }} type='radio' value='LSTM' name='type'/> Long term memory
             </div>
-            <div><input onChange={e => {
+            <div><input onChange={(e) => {
                 setNNtype(e.target.value)
                 setCreate(false)
             }} type='radio' value='CNN' name='type'/> Deep convolutional network

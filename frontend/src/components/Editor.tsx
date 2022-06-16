@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import EditorWindow from './EditorWindow'
 import * as api from 'nnbuilder-api'
 import LeftPanel from './LeftPanel'

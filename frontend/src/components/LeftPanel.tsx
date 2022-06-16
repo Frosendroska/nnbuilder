@@ -17,16 +17,16 @@ function LeftPanel(): JSX.Element {
                 <input type='button' value='<'/>
                 <input
                     type='text'
-                    //value={this.state.value}
-                    //onChange={e => setNNtype}
+                    // value={this.state.value}
+                    // onChange={e => setNNtype}
                 />
                 <input type='button' value='>'/>
             </div>
             <h3>Learning rate</h3>
             <input
                 type='text'
-                //value={this.state.value}
-                //onChange={this.handleChange}
+                // value={this.state.value}
+                // onChange={this.handleChange}
             />
             <h3>Target: target</h3>
             <input type='submit' value='Load dataset'/>

@@ -19,7 +19,7 @@ class LayerData implements d3.SimulationNodeDatum {
         this.y = 0
         this.fx = null
         this.fy = null
-        this.neurons = [...Array(getRandomInt(3, 10))].map(index => new NeuronData(id, index))
+        this.neurons = [...Array(getRandomInt(3, 10))].map((index) => new NeuronData(id, index))
     }
 }
 

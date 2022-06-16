@@ -25,14 +25,14 @@ function Register(props: FormProps): JSX.Element {
     const {
         register,
         handleSubmit,
-        formState: {errors}
+        formState: {errors},
     } = useForm<FormValues>({
         defaultValues: {
             firstName: '',
             lastName: '',
             email: '',
             password: '',
-        }
+        },
     })
 
     const sendRequest = (handleSubmit(async (data) => {
@@ -42,7 +42,7 @@ function Register(props: FormProps): JSX.Element {
             .setEmail(data.email)
             .setPassword(data.password)
         const result = await props.authService.register(request)
-        let newError = result.getException()
+        const newError = result.getException()
         setError(newError)
         if (newError == '') {
             const logrequest = new api.LoginRequest()
@@ -67,49 +67,49 @@ function Register(props: FormProps): JSX.Element {
                 <div>
                     First Name
                     <input type='text'
-                           className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                           {...register('firstName', {
-                               required: {
-                                   value: true,
-                                   message: 'First name is required'
-                               }
-                           })}
-                           placeholder='Ivan'
+                        className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
+                        {...register('firstName', {
+                            required: {
+                                value: true,
+                                message: 'First name is required',
+                            },
+                        })}
+                        placeholder='Ivan'
                     />
                     <div className='invalid-feedback'>{errors.firstName?.message}</div>
                 </div>
                 <div>Last Name
                     <input type='text'
-                           {...register('lastName', {})}
-                           name='lastName'
-                           placeholder='Ivanov'
+                        {...register('lastName', {})}
+                        name='lastName'
+                        placeholder='Ivanov'
                     />
                     <div className='invalid-feedback'>{errors.lastName?.message}</div>
                 </div>
                 <div>Email
                     <input type='text'
-                           {...register('email', {
-                               required: {
-                                   value: true,
-                                   message: 'Email is required'
-                               }
-                           })}
-                           name='email'
-                           placeholder='ivanivanov@gmail.com'
+                        {...register('email', {
+                            required: {
+                                value: true,
+                                message: 'Email is required',
+                            },
+                        })}
+                        name='email'
+                        placeholder='ivanivanov@gmail.com'
                     />
                     <div className='invalid-feedback'>{errors.email?.message}</div>
                 </div>
                 <div>Password
                     <input type='password'
-                           {...register('password', {
-                               minLength: {
-                                   value: 6,
-                                   message: 'Password min length is 6'
-                               },
-                               required: 'Password is required',
-                           })}
-                           name='password'
-                           placeholder='qwerty123'
+                        {...register('password', {
+                            minLength: {
+                                value: 6,
+                                message: 'Password min length is 6',
+                            },
+                            required: 'Password is required',
+                        })}
+                        name='password'
+                        placeholder='qwerty123'
                     />
                     <div className='invalid-feedback'>{errors.password?.message}</div>
                 </div>

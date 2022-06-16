@@ -27,41 +27,41 @@ function EditorWindow() {
         .selectAll('line')
         .data(edges)
         .join('line')
-        .attr('x1', d => d.from.x)
-        .attr('y1', d => d.from.y)
-        .attr('x2', d => d.to.x)
-        .attr('y2', d => d.to.y)
+        .attr('x1', (d) => d.from.x)
+        .attr('y1', (d) => d.from.y)
+        .attr('x2', (d) => d.to.x)
+        .attr('y2', (d) => d.to.y)
         .attr('stroke', 'red')
 
     const neuronsContainer = d3.select('#layers').select('g')
         .selectAll('circle')
-        .data(layers.flatMap(x => x.neurons))
+        .data(layers.flatMap((x) => x.neurons))
         .join('circle')
         .attr('r', 10)
         .attr('x', 150)
         .attr('y', (d: NeuronData) => d.layer_id * 115 + 50)
         .attr('fill', 'red')
 
-    let simulation = d3.forceSimulation(layers.flatMap(x => x.neurons))
+    const simulation = d3.forceSimulation(layers.flatMap((x) => x.neurons))
         .force('collideForce', d3.forceCollide().radius(20).strength(0.1))
-        .force('x', d3.forceX(function () {
-                return 150
-            }).strength(0.025)
+        .force('x', d3.forceX(function() {
+            return 150
+        }).strength(0.025),
         )
-        .force('y', d3.forceY(function (d: NeuronData) {
+        .force('y', d3.forceY(function(d: NeuronData) {
             return d.layer_id * 115 + 50
         }).strength(0.5))
         .alphaDecay(0.01)
 
     simulation.on('tick', () => {
         neuronsContainer
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y)
+            .attr('cx', (d) => d.x)
+            .attr('cy', (d) => d.y)
         edgesContainer
-            .attr('x1', d => d.from.x)
-            .attr('y1', d => d.from.y)
-            .attr('x2', d => d.to.x)
-            .attr('y2', d => d.to.y)
+            .attr('x1', (d) => d.from.x)
+            .attr('y1', (d) => d.from.y)
+            .attr('x2', (d) => d.to.x)
+            .attr('y2', (d) => d.to.y)
     })
 
     useEffect(() => {
@@ -71,28 +71,30 @@ function EditorWindow() {
         d3.select('#layers')
             .append('svg')
             .attr('style', 'width: 100%; height: 100%;').append('g')
-    }, []);
+    }, [])
 
     function add() {
-        let newLayer = new LayerData(layers.length)
-        let oldLayer = layers[layers.length - 1]
-        if (layers.length > 0) setEdges(prev =>
-            prev.concat(newLayer.neurons.flatMap(to => oldLayer.neurons
-                .flatMap(from => new Edge(from, to))))
-        );
-        setLayers(prev => prev.concat([newLayer]));
+        const newLayer = new LayerData(layers.length)
+        const oldLayer = layers[layers.length - 1]
+        if (layers.length > 0) {
+            setEdges((prev) =>
+                prev.concat(newLayer.neurons.flatMap((to) => oldLayer.neurons
+                    .flatMap((from) => new Edge(from, to)))),
+            )
+        }
+        setLayers((prev) => prev.concat([newLayer]))
     }
 
     function remove() {
-        let last_layer_id = layers[layers.length - 1].id
-        setLayers(prev => prev.slice(0, -1));
-        setEdges(prev => prev.filter(e => e.to.layer_id != last_layer_id))
+        const lastLayerId = layers[layers.length - 1].id
+        setLayers((prev) => prev.slice(0, -1))
+        setEdges((prev) => prev.filter((e) => e.to.layer_id != lastLayerId))
     }
 
     function changeAmount() {
-        let last_layer_id = layers[layers.length - 1].id
-        setLayers(prev => prev.slice(0, -1));
-        setEdges(prev => prev.filter(e => e.to.layer_id != last_layer_id))
+        const lastLayerId = layers[layers.length - 1].id
+        setLayers((prev) => prev.slice(0, -1))
+        setEdges((prev) => prev.filter((e) => e.to.layer_id != lastLayerId))
     }
 
     const neuronsStyle = {width: '800px', height: layers.length * 115 + 'px'}
@@ -112,7 +114,7 @@ function EditorWindow() {
                 <div id='layers' style={neuronsStyle}> </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default EditorWindow
