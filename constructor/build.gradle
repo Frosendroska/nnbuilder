@@ -1,14 +1,14 @@
-task createVirtualenv(type: Exec) {
-    executable "../scripts/virtualenv.sh"
-    args "$buildDir/venv"
+task installPypaBuild(type: Exec) {
+    executable 'python3'
+    args '-m', 'pip', 'install', 'build'
 }
 
-task buildPython(type: Exec) {
-    dependsOn createVirtualenv
-    executable "$buildDir/venv/bin/python"
-    args "setup.py", "sdist", "--dist-dir=build/dist"
+task buildPythonPackage(type: Exec) {
+    dependsOn installPypaBuild
+    executable 'python3'
+    args '-m', 'build', '--sdist', '--wheel', '--outdir=build/dist'
 }
 
-assemble.dependsOn buildPython
+assemble.dependsOn buildPythonPackage
 
 // TODO: lint
