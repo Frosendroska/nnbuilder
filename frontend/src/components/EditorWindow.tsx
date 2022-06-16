@@ -6,9 +6,6 @@ import NeuronData from "../structure/NeuronData";
 import './style/Form.scss';
 
 function EditorWindow() {
-    let container = d3.select("#layers").append("svg").attr("style", "width: 100%; height: 100%;")
-    container.append("g")
-
     const [layers, setLayers] = useState<LayerData[]>([])
     const [edges, setEdges] = useState<Edge[]>([])
 
@@ -16,12 +13,12 @@ function EditorWindow() {
         .selectAll("rect")
         .data(layers)
         .join("rect")
-        .attr("x", (layerData) => {
+        .attr("x", 10)
+        .attr("y", (layerData) => {
             return layerData.id * 115;
         })
-        .attr("y", 10)
-        .attr("width", 100)
-        .attr("height", 300)
+        .attr("width", 300)
+        .attr("height", 100)
         .attr("rx", 5)
         .attr("ry", 5)
         .attr("fill", '#FFA567')
@@ -41,19 +38,19 @@ function EditorWindow() {
         .data(layers.flatMap(x => x.neurons))
         .join("circle")
         .attr("r", 10)
-        .attr("x", (d: NeuronData) => d.layer_id * 115 + 50)
-        .attr("y", 150)
+        .attr("x", 150)
+        .attr("y", (d: NeuronData) => d.layer_id * 115 + 50)
         .attr("fill", "red")
 
     let simulation = d3.forceSimulation(layers.flatMap(x => x.neurons))
         .force("collideForce", d3.forceCollide().radius(20).strength(0.1))
-        .force("x", d3.forceX(function (d: NeuronData) {
-            return d.layer_id * 115 + 50
-        }).strength(0.5))
-        .force("y", d3.forceY(function (d) {
+        .force("x", d3.forceX(function (d) {
                 return 150
             }).strength(0.025)
         )
+        .force("y", d3.forceY(function (d: NeuronData) {
+            return d.layer_id * 115 + 50
+        }).strength(0.5))
         .alphaDecay(0.01)
 
     simulation.on("tick", () => {
@@ -70,6 +67,10 @@ function EditorWindow() {
     useEffect(() => {
         // call api and get layers
         setLayers([new LayerData(0)])
+
+        d3.select("#layers")
+            .append("svg")
+            .attr("style", "width: 100%; height: 100%;").append("g")
     }, []);
 
     function add() {
@@ -94,7 +95,7 @@ function EditorWindow() {
         setEdges(prev => prev.filter(e => e.to.layer_id != last_layer_id))
     }
 
-    const neuronsStyle = {width: "800px", height: "600px"}
+    const neuronsStyle = {width: "800px", height: layers.length * 115 + "px"}
 
     return (
         <div className="Editor">

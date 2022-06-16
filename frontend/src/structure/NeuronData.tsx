@@ -11,8 +11,8 @@ class NeuronData implements d3.SimulationNodeDatum {
     constructor(layer_id: number, id: number) {
         this.layer_id = layer_id;
         this.id = id;
-        this.x = this.layer_id * 115 + 50;
-        this.y = 115;
+        this.x = 115;
+        this.y = this.layer_id * 115 + 50;
         this.fx = null;
         this.fy = null;
     }

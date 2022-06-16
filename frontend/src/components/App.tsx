@@ -9,16 +9,17 @@ import Projects from "./Projects";
 import Register from "./Register";
 import {useStore} from "@nanostores/react";
 
-
 type AppProps = {
     authService: api.AuthServicePromiseClient
     modificationService: api.NNModificationServicePromiseClient
 }
 
-export const token = persistentAtom<string>("")
+export const token = persistentAtom<string>('token', "")
 
 export default function App(props: AppProps): JSX.Element {
     let user = useStore(token)
+    console.log("current user token is: ", user)
+
     return (
         <>
             <Routes>
