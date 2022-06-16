@@ -1,0 +1,16 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+    "setuptools ~= 62.4",
+    "wheel"
+]
+
+[project]
+name = "nnbuilder-python"
+version = "0.0.0"
+dependencies = [
+    "numpy",
+]
+
+[project.scripts]
+constructor = "constructor.main:main"
