@@ -9,9 +9,9 @@ type EditorProps = {
 }
 
 function Editor(props: EditorProps): JSX.Element {
-    const ulStyle = {display: 'flex'}
+    const flexStyle = {display: 'flex'}
     return (
-        <div style={ulStyle}>
+        <div style={flexStyle}>
             <LeftPanel/>
             <EditorWindow/>
             <RightPanel modificationService={props.modificationService}/>
