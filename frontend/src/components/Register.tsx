@@ -1,6 +1,7 @@
 import {useForm} from 'react-hook-form'
 import * as api from 'nnbuilder-api'
 import '@babel/polyfill'
+import './style/Form.scss'
 
 import {useNavigate} from 'react-router'
 import {token} from './App'

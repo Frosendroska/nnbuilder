@@ -8,6 +8,7 @@ import {persistentAtom} from '@nanostores/persistent'
 import Projects from './Projects'
 import Register from './Register'
 import {useStore} from '@nanostores/react'
+import './style/Main.scss'
 
 type AppProps = {
     authService: api.AuthServicePromiseClient

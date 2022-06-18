@@ -1,36 +1,40 @@
-import React from 'react'
-import './style/Form.scss'
-
+import React, {useState} from 'react'
+import './style/LeftPanel.scss'
+import IncDecInput from './IncDecInput';
 
 function LeftPanel(): JSX.Element {
+    const [epochs, setEpochs] = useState(5)
+    const [learningRate, setLearningRate] = useState(0.01)
     // const [nntype, setNNtype] = useState('FF')
     // const [status, setStatus] = useState('not trained')
     // const [target, setTarget] = useState('pet type')
 
-    const ulStyle = {display: 'flex'}
     return (
-        <div className='Left'>
-            <h2>NNType: nntype</h2>
-            <h2>Status: status</h2>
-            <h3>Epochs</h3>
-            <div style={ulStyle}>
-                <input type='button' value='<'/>
-                <input
-                    type='text'
-                    // value={this.state.value}
-                    // onChange={e => setNNtype}
-                />
-                <input type='button' value='>'/>
+        <div className='left'>
+            <div className='line'>
+                <span className='description big'>Status:</span>
+                <div className='greyRect'>Trained</div>
             </div>
-            <h3>Learning rate</h3>
-            <input
-                type='text'
-                // value={this.state.value}
-                // onChange={this.handleChange}
-            />
-            <h3>Target: target</h3>
-            <input type='submit' value='Load dataset'/>
-            <input type='submit' value='Train'/>
+            <div className='line'>
+                <span className={'description'}>NNtype:</span>
+                <div className='greyRect'>Recurrent</div>
+            </div>
+            <div className='line-centered'>
+                    <div className={'description'}>Epochs</div>
+                    {IncDecInput(epochs, setEpochs, 1, true)}
+            </div>
+            <div className='line-centered'>
+                    <div className={'description'}>Learning rate</div>
+                    {IncDecInput(learningRate, setLearningRate, 0.01, false)}
+            </div>
+            <div className='line'>
+                <span className={'description'}>Target:</span>
+                <div className='greyRect'>PetType</div>
+            </div>
+            <div>
+                <input type='submit' value='Load dataset'/>
+                <input className={'submit-green'} type='submit' value='Train'/>
+            </div>
         </div>
     )
 }

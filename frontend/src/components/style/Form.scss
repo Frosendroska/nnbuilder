@@ -1,21 +1,23 @@
-* {box-sizing: border-box}
+* {
+  box-sizing: border-box;
+}
 
 .form-center {
-  display:flex;
+  display: flex;
   justify-content: center;
 }
 
-
-
 .form {
   font-family: "American Typewriter", sans-serif;
-  height: 560px;
   width: 500px;
   position: absolute;
   transform: translate(-50%,-50%);
   top: 400px;
   left: 50%;
   padding: 50px 35px;
+  h1 {
+    margin-bottom: 25px;
+  }
 }
 
 input[type=text], input[type=password], input[type=email] {
@@ -41,6 +43,9 @@ input[type=submit] {
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
+  &.submit-green {
+    background: #ACC8A5;
+  }
 }
 
 input[type=button] {

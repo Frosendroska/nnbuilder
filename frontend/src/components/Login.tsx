@@ -3,6 +3,7 @@ import * as api from 'nnbuilder-api'
 import {token} from './App'
 import {useNavigate} from 'react-router'
 import React, {useState} from 'react'
+import './style/Form.scss'
 
 type FormProps = {
     authService: api.AuthServicePromiseClient

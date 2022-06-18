@@ -3,7 +3,9 @@ import * as d3 from 'd3'
 import LayerData from '../structure/LayerData'
 import Edge from '../structure/Edge'
 import NeuronData from '../structure/NeuronData'
-import './style/Form.scss'
+import './style/LeftPanel.scss'
+import IncDecInput from './IncDecInput'
+import LayerSettings from './LayerSettings'
 
 function EditorWindow() {
     const [layers, setLayers] = useState<LayerData[]>([])
@@ -21,7 +23,7 @@ function EditorWindow() {
         .attr('height', 100)
         .attr('rx', 5)
         .attr('ry', 5)
-        .attr('fill', '#FFA567')
+        .attr('fill', '#D9D9D9')
 
     const edgesContainer = d3.select('#layers').select('g')
         .selectAll('line')
@@ -31,7 +33,7 @@ function EditorWindow() {
         .attr('y1', (d) => d.from.y)
         .attr('x2', (d) => d.to.x)
         .attr('y2', (d) => d.to.y)
-        .attr('stroke', 'red')
+        .attr('stroke', '#D95555')
 
     const neuronsContainer = d3.select('#layers').select('g')
         .selectAll('circle')
@@ -40,15 +42,15 @@ function EditorWindow() {
         .attr('r', 10)
         .attr('x', 150)
         .attr('y', (d: NeuronData) => d.layer_id * 115 + 50)
-        .attr('fill', 'red')
+        .attr('fill', '#D95555')
 
     const simulation = d3.forceSimulation(layers.flatMap((x) => x.neurons))
         .force('collideForce', d3.forceCollide().radius(20).strength(0.1))
-        .force('x', d3.forceX(function() {
-            return 150
-        }).strength(0.025),
+        .force('x', d3.forceX(function () {
+                return 150
+            }).strength(0.025),
         )
-        .force('y', d3.forceY(function(d: NeuronData) {
+        .force('y', d3.forceY(function (d: NeuronData) {
             return d.layer_id * 115 + 50
         }).strength(0.5))
         .alphaDecay(0.01)
@@ -73,44 +75,46 @@ function EditorWindow() {
             .attr('style', 'width: 100%; height: 100%;').append('g')
     }, [])
 
-    function add() {
-        const newLayer = new LayerData(layers.length)
-        const oldLayer = layers[layers.length - 1]
-        if (layers.length > 0) {
+    function add(n: number = 1) {
+        const layersId = layers.length
+        const newLayers = [...Array(n).keys()].map((i) => new LayerData(layersId + i))
+
+        if (layersId > 0) {
+            let oldLayer = layers[layers.length - 1]
             setEdges((prev) =>
-                prev.concat(newLayer.neurons.flatMap((to) => oldLayer.neurons
-                    .flatMap((from) => new Edge(from, to)))),
+                prev.concat(
+                    newLayers.flatMap(layer => {
+                        const result = layer.neurons.flatMap(to => oldLayer.neurons
+                            .flatMap(from => new Edge(from, to)))
+                        oldLayer = layer
+                        return result
+                    }),
+                )
             )
         }
-        setLayers((prev) => prev.concat([newLayer]))
+        setLayers((prev) => prev.concat(newLayers))
     }
 
-    function remove() {
-        const lastLayerId = layers[layers.length - 1].id
-        setLayers((prev) => prev.slice(0, -1))
-        setEdges((prev) => prev.filter((e) => e.to.layer_id != lastLayerId))
-    }
-
-    function changeAmount() {
-        const lastLayerId = layers[layers.length - 1].id
-        setLayers((prev) => prev.slice(0, -1))
-        setEdges((prev) => prev.filter((e) => e.to.layer_id != lastLayerId))
+    function remove(n: number = 1) {
+        const lastLayerIds = new Set([...Array(n).keys()].map((i) => layers[layers.length - i - 1].id))
+        setLayers((prev) => prev.slice(0, -n))
+        setEdges((prev) => prev.filter((e) => !lastLayerIds.has(e.to.layer_id)))
     }
 
     const neuronsStyle = {width: '800px', height: layers.length * 115 + 'px'}
+
+    const setLayersAmount = (amount: number) => {
+        const change = amount - layers.length
+        change < 0 ? remove(-change) : add(change)
+    }
 
     return (
         <div className='Editor'>
             <div className='Window'>
                 <h2>Editor Window</h2>
                 Layers: {layers.length}
-                <div>
-                    <button onClick={remove} className='value-button' id='decrease'>-
-                    </button>
-                    <input onChange={changeAmount} type='number' id='number' value={layers.length}/>
-                    <button onClick={add} className='value-button' id='increase'>+
-                    </button>
-                </div>
+                {IncDecInput(layers.length, setLayersAmount, 1, true)}
+                <LayerSettings/>
                 <div id='layers' style={neuronsStyle}> </div>
             </div>
         </div>
