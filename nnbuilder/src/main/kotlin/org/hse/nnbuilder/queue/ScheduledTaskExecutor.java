@@ -16,8 +16,6 @@ public class ScheduledTaskExecutor {
     @Autowired
     private PythonPackageInstaller pythonPackageInstaller;
 
-    public ScheduledTaskExecutor() {}
-
     public void processScheduledTask() {
         try {
             TaskQueued task = taskQueuedStorage.getTaskToExecute();
