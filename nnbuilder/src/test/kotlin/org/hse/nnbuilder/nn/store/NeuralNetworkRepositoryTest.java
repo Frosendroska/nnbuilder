@@ -7,6 +7,11 @@ import org.hse.nnbuilder.nn.FeedForwardNN;
 import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.services.Nnmodification.LayerType;
+import org.hse.nnbuilder.user.User;
+import org.hse.nnbuilder.user.UserService;
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
+import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +24,29 @@ import org.springframework.test.context.ActiveProfiles;
 public class NeuralNetworkRepositoryTest {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private NeuralNetworkRepository neuralNetworkRepository;
+
+    @Autowired
+    private GeneralNeuralNetworkService generalNeuralNetworkService;
+
+    private GeneralNeuralNetwork testingGeneralNeuralNetwork;
+
+    @BeforeAll
+    void prepare() {
+        User user = userService.save("Ivan", "ivan@gmail.com", "password");
+        testingGeneralNeuralNetwork = generalNeuralNetworkService.create(user);
+    }
 
     @Test
     void testFF() {
         FeedForwardNN nn = FeedForwardNN.buildDefaultFastForwardNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(2);
     }
@@ -39,10 +58,10 @@ public class NeuralNetworkRepositoryTest {
             nn.addLayer(1, LayerType.HiddenCell);
         }
 
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(102);
     }
@@ -50,10 +69,10 @@ public class NeuralNetworkRepositoryTest {
     @Test
     void testCNN() {
         ConvolutionalNN nn = ConvolutionalNN.buildDefaultConvolutionalNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(8);
     }
@@ -61,10 +80,10 @@ public class NeuralNetworkRepositoryTest {
     @Test
     void testRNN() {
         RecurrentNN nn = RecurrentNN.buildDefaultRecurrentNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(4);
     }
@@ -72,10 +91,10 @@ public class NeuralNetworkRepositoryTest {
     @Test
     void testLSTM() {
         LongShortTermMemoryNN nn = LongShortTermMemoryNN.buildDefaultLongTermMemoryNN();
-        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn);
+        NeuralNetworkStored nnStored = new NeuralNetworkStored(nn, testingGeneralNeuralNetwork);
         neuralNetworkRepository.save(nnStored);
 
-        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getId());
+        NeuralNetworkStored loaded = neuralNetworkRepository.getById(nnStored.getNnId());
 
         assertThat(loaded.getNeuralNetwork().getLayers()).hasSize(4);
     }

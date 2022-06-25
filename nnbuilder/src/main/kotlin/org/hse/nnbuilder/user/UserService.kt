@@ -16,6 +16,22 @@ class UserService(
         return userRepository.save(user)
     }
 
+    fun getById(id: Long): User {
+        return userRepository.getById(id)
+    }
+
+    fun changeName(id: Long, newName: String) {
+        val user = getById(id)
+        user.changeName(newName)
+        userRepository.save(user)
+    }
+
+    fun changePassword(id: Long, oldPassword: String, newPassword: String) {
+        val user = getById(id)
+        user.changePassword(oldPassword, newPassword)
+        userRepository.save(user)
+    }
+
     fun findByEmail(email: String): User {
         return userRepository.findByEmail(email) ?: throw UserNotFoundException("User with email $email is not found.")
     }

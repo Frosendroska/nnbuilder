@@ -30,6 +30,7 @@ dependencies {
   implementation 'org.javassist:javassist:3.28.0-GA'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation("org.springframework.security:spring-security-test:5.5.1")
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
   testImplementation 'org.assertj:assertj-core:3.22.0'
   testImplementation 'org.mockito:mockito-core:4.4.0'
@@ -39,6 +40,8 @@ dependencies {
 
   implementation "io.grpc:grpc-stub:${grpcVersion}"
   implementation "io.grpc:grpc-kotlin-stub:${grpcKotlinVersion}"
+
+  implementation 'commons-codec:commons-codec:1.15'
 }
 
 sourceSets {
@@ -70,9 +73,16 @@ spotless {
   }
 }
 
-bootJar {
+processResources {
   dependsOn ':frontend:assemble'
+  dependsOn ':constructor:assemble'
+
   from('../frontend/build/dist') {
     into 'static'
   }
+  from('../constructor/build/dist') {
+    into 'py'
+  }
 }
+
+idea.module.resourceDirs += file('build/resources/main')
