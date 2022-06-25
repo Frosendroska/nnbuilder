@@ -13,12 +13,15 @@ import './style/Main.scss'
 type AppProps = {
     authService: api.AuthServicePromiseClient
     modificationService: api.NNModificationServicePromiseClient
+    taskQueueService: api.TasksQueueServicePromiseClient
+    versionService: api.NNVersionServicePromiseClient
+    userAccountService: api.UserAccountServicePromiseClient
 }
 
 export const token = persistentAtom<string>('token', '')
 
 export default function App(props: AppProps): JSX.Element {
-    const user = useStore(token)
+    const user = useStore(token) + "247"
     console.log('current user token is: ', user)
 
     return (
@@ -27,11 +30,11 @@ export default function App(props: AppProps): JSX.Element {
                 <Route path='/' element={<Header/>}>
                     <Route
                         path='/projects'
-                        element={user == '' ? <Navigate to='/login'/> : <Projects/>}/>
+                        element={user == '' ? <Navigate to='/login'/> : <Projects userAccountService={props.userAccountService}/>}/>
                     <Route
                         path='/editor'
                         element={user == '' ? <Navigate to='/login'/> :
-                            <Editor modificationService={props.modificationService}/>}/>
+                            <Editor modificationService={props.modificationService} taskQueueService={props.taskQueueService} versionService={props.versionService}/>}/>
                     <Route
                         path='/login' element={<Login authService={props.authService}/>}/>
                     <Route

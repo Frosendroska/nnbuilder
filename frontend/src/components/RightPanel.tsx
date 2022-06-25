@@ -1,63 +1,37 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import * as api from 'nnbuilder-api'
-import {NetworkType} from 'nnbuilder-api'
+import './style/Panel.scss'
 
 type EditorProps = {
     modificationService: api.NNModificationServicePromiseClient
+    versionService: api.NNVersionServicePromiseClient
 }
 
 function RightPanel(props: EditorProps): JSX.Element {
-    const [nntype, setNNtype] = useState('FF')
-    const [create, setCreate] = useState(false)
 
-    useEffect(() => {
-        let type = NetworkType.FF
-        if (nntype == 'RNN') type = NetworkType.RNN
-        if (nntype == 'LSTM') type = NetworkType.LSTM
-        if (nntype == 'CNN') type = NetworkType.CNN
-        if (create) {
-            props.modificationService.createnn(new api.NNCreationRequest().setNntype(type)).then(
-                (value: api.NNCreationResponse) => {
-                    console.log(JSON.stringify(value))
-                })
-        }
-    }, [create])
-    // const ulStyle = { display: 'flex' }
+    const addSnapshot = () => {
+       alert("Snapshot added!");
+       const request = new api.makeNNSnapshotRequest().setNnid(1)
+       props.versionService.makeNNSnapshot(request)
+       return true;
+    }
+
+    const delSnapshot = () => {
+        alert("Snapshot deleted!");
+        const request = new api.deleteNNVersionRequest().setNnid(1)
+        props.versionService.deleteNNVersion(request)
+        return true;
+    }
+
     return (
-        <div className='Left'>
-            <h1>NNTypes: {nntype}</h1>
-            <div><input onChange={(e) => {
-                setNNtype(e.target.value)
-                setCreate(false)
-            }} type='radio' value='FF' defaultChecked name='type'/> Feed forward
-            </div>
-            <div><input onChange={(e) => {
-                setNNtype(e.target.value)
-                setCreate(false)
-            }} type='radio' value='RNN' name='type'/> Recurrent network
-            </div>
-            <div><input onChange={(e) => {
-                setNNtype(e.target.value)
-                setCreate(false)
-            }} type='radio' value='LSTM' name='type'/> Long term memory
-            </div>
-            <div><input onChange={(e) => {
-                setNNtype(e.target.value)
-                setCreate(false)
-            }} type='radio' value='CNN' name='type'/> Deep convolutional network
+        <div className='right'>
+            <div>
+                <input type='submit' value='Undo'/>
+                <input type='submit' value='Redo'/>
             </div>
             <div>
-                <button onClick={() => setCreate(true)} className='Create'>Create nn</button>
-            </div>
-            <div>
-                <button className='Load'>Load dataset</button>
-            </div>
-            public
-            <div>
-                <button className='Save'>Save neural network</button>
-            </div>
-            <div>
-                <button className='Load'>Load learnt model</button>
+                <input type='submit' value='Add snapshot' onClick={addSnapshot}/>
+                <input className={'submit-red'} type='submit' value='Delete snapshot' onClick={delSnapshot}/>
             </div>
         </div>
     )

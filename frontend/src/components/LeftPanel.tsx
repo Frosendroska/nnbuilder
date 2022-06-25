@@ -1,13 +1,22 @@
 import React, {useState} from 'react'
-import './style/LeftPanel.scss'
+import './style/Panel.scss'
 import IncDecInput from './IncDecInput';
+import * as api from 'nnbuilder-api'
 
-function LeftPanel(): JSX.Element {
+type PanelProps = {
+    taskQueueService: api.TasksQueueServicePromiseClient
+    versionService: api.NNVersionServicePromiseClient
+}
+
+function LeftPanel(props: PanelProps): JSX.Element {
     const [epochs, setEpochs] = useState(5)
     const [learningRate, setLearningRate] = useState(0.01)
-    // const [nntype, setNNtype] = useState('FF')
-    // const [status, setStatus] = useState('not trained')
-    // const [target, setTarget] = useState('pet type')
+
+    const taskRequest = () => {
+        const request = new api.CreateTaskRequest
+        props.taskQueueService.createTask(request)
+        return true;
+    }
 
     return (
         <div className='left'>
@@ -32,8 +41,8 @@ function LeftPanel(): JSX.Element {
                 <div className='greyRect'>PetType</div>
             </div>
             <div>
-                <input type='submit' value='Load dataset'/>
-                <input className={'submit-green'} type='submit' value='Train'/>
+                <input type='submit' value='Load dataset' onSubmit={()=>{}}/>
+                <input className={'submit-green'} type='submit' value='Train' onSubmit={taskRequest}/>
             </div>
         </div>
     )

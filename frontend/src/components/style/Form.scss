@@ -46,6 +46,9 @@ input[type=submit] {
   &.submit-green {
     background: #ACC8A5;
   }
+  &.submit-red {
+    background: #D95555;
+  }
 }
 
 input[type=button] {
@@ -67,6 +70,6 @@ input[type=submit]:hover, input[type=button]:hover {
   font-size: smaller;
   position: relative;
   top:-20px;
-  color: #bf1650;
+  color: #D95555;
   display: inline;
 }

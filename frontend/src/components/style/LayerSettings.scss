@@ -2,6 +2,22 @@
   box-sizing: border-box
 }
 
+div.layers-with-settings {
+  display: flex;
+
+  div.layer-settings {
+    height: 115px;
+    font-size: 10px;
+    div.IncDecInput {
+      height: 20px;
+    }
+
+    select {
+      height: 20px;
+    }
+  }
+}
+
 .div.IncDecInput {
   display: flex;
   width: 100%;
@@ -52,7 +68,7 @@ select {
   font-family: "American Typewriter", sans-serif;
   -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;       /* Remove default arrow */
+  appearance: none; /* Remove default arrow */
   cursor: pointer;
   //background-image: url(...);   /* Add custom arrow */
 }

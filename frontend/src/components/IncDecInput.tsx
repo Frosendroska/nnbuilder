@@ -1,22 +1,27 @@
 import React, {useState} from 'react'
 
-function IncDecInput(currentValue: number, setCurrentValue: (arg: number) => void, increment: number, isInteger: boolean) {
+function IncDecInput(currentValue: number, setCurrentValue: (arg: number) => void, increment: number,
+                     isInteger: boolean = true, min: number = 0, max: number = Infinity) {
     const softValidation = new RegExp('^-?[0-9]*[.]?[0-9]{0,5}$')
     const hardValidation = new RegExp('^[0-9]+([.][0-9]{1,5})?$')
     const [localValue, setLocalValue] = useState(currentValue.toString())
 
+    function correctValue(arg: number) {
+        return Math.min(max, Math.max(min, arg))
+    }
+
     const setActualValue = (arg: number) => {
-        const value = Math.max(0, arg)
+        const value = correctValue(arg)
         const result = isInteger ? parseInt(value.toFixed(0)) : parseFloat(value.toFixed(5))
         value % 1 === 0 ? setCurrentValue(value) : setCurrentValue(result)
         return result
     }
 
     const setValueByInput = (arg: string) => {
-        if (softValidation.test(arg)) setLocalValue(arg)
         if (hardValidation.test(arg)) {
             setActualValue(Number(arg))
-        }
+            setLocalValue(correctValue(Number(arg)).toString())
+        } else if (softValidation.test(arg)) setLocalValue(arg)
     }
 
     const setValueByButton = (arg: number) => {

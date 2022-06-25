@@ -8,7 +8,7 @@ div.left {
   gap: 20px;
   padding: 20px;
   padding-top: 50px;
-  width: 250px;
+  width: 300px;
   font-family: "American Typewriter", sans-serif;
   font-size: smaller;
 
@@ -77,6 +77,49 @@ div.IncDecInput {
     div.arrow-up {
       border-bottom: 5px solid #D95555;
     }
+  }
+}
+
+div.right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  padding-top: 50px;
+  width: 300px;
+  font-family: "American Typewriter", sans-serif;
+  font-size: smaller;
+}
+
+div.editor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  padding-top: 50px;
+  font-family: "American Typewriter", sans-serif;
+  font-size: larger;
+  width: 70%;
+
+  div.IncDecInput {
+    width: 200px;
+  }
+
+  div.layers-with-settings div.description {
+    font-size: larger;
+  }
+
+  div.layers-with-settings div.description {
+    font-size: larger;
+  }
+
+  div.layers-with-settings select {
+    outline: none;
+    opacity: 0.9;
+  }
+
+  div.layers-with-settings select:hover {
+    opacity: 1;
   }
 }
 

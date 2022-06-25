@@ -6,7 +6,7 @@ import * as api from './clients'
 
 ReactDOM.render(
     <BrowserRouter>
-        <App authService={api.authService} modificationService={api.modificationService}/>
+        <App authService={api.authService} modificationService={api.modificationService} taskQueueService={api.taskQueueService} versionService={api.versionService} userAccountService = {api.userAccountService}/>
     </BrowserRouter>,
     document.getElementById('root'),
 )
