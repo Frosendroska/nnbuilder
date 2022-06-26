@@ -37,7 +37,8 @@ public final class NeuralNetworkStored {
             fetch = FetchType.EAGER,
             cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "general_neural_network_id", nullable = false)
-    private GeneralNeuralNetwork generalNeuralNetwork;
+
+    public GeneralNeuralNetwork generalNeuralNetwork;
 
     public NeuralNetworkStored() {}
 

@@ -139,4 +139,5 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
         }
         return responseBuilder.build()
     }
+    
 }

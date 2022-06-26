@@ -82,4 +82,5 @@ class NeuralNetworkService(
         nn.neuralNetwork.redo()
         neuralNetworkRepository.save(nn)
     }
+
 }

@@ -42,7 +42,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         TaskQueued taskQueued = new TaskQueued(name, nnStored, dsStored, epochAmount);
         taskQueuedStorage.saveTaskQueuedTransition(taskQueued, dsStored, nnStored);
 
-        // Response with id on task
+        // Response with id of task
         long taskId = taskQueued.getTaskId();
         CreateTaskResponse responseWithTaskId =
                 CreateTaskResponse.newBuilder().setTaskId(taskId).build();
@@ -65,7 +65,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         Long timeDeltaSeconds = null;
         if (taskStatus == TaskStatus.Processing) {
             timeDeltaSeconds = currentTime.toEpochSecond() - startTaskTime.toEpochSecond();
-        } else if (taskStatus == TaskStatus.Done) {
+        } else if (taskStatus == TaskStatus.Done || taskStatus == TaskStatus.Failed) {
             timeDeltaSeconds = tq.getFinishTaskTime().toEpochSecond() - startTaskTime.toEpochSecond();
         } else {
             // (taskStatus == TaskStatus.HaveNotStarted)
@@ -73,7 +73,7 @@ public class TasksQueueService extends TasksQueueServiceGrpc.TasksQueueServiceIm
         }
 
         GetInformationResponse responseWithInfo = GetInformationResponse.newBuilder()
-                .setTimeDeltaSeconds(timeDeltaSeconds)
+                .setTaskProcessingTimeSeconds(timeDeltaSeconds)
                 .setTaskStatus(taskStatus)
                 .build();
         responseObserver.onNext(responseWithInfo);
