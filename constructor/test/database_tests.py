@@ -1,5 +1,5 @@
 import random
-import constructor
+from constructor.src import example
 import psycopg2
 import os
 from sklearn.datasets import make_moons
@@ -26,9 +26,9 @@ def generate_data(cur):
     print(df)
 
 def generate_model_in_db(json_file, cur):
-    info = constructor.Information(json_file)
-    my_model = constructor.NeuralNetwork(info)
-    constructor.save("model.pth", my_model)
+    info = example.Information(json_file)
+    my_model = example.NeuralNetwork(info)
+    example.save("model.pth", my_model)
     ff = open("model.pth", "rb")
     data = ff.read()
     ff.close()
@@ -59,5 +59,3 @@ cur = con.cursor()
 generate_data(cur)
 con.commit()
 con.close()
-
-

@@ -7,6 +7,11 @@ from sklearn.preprocessing import OrdinalEncoder
 import torch
 
 
+class TrainType(enum.Enum):
+    classification = 0
+    regression = 1
+
+
 class TaskType(enum.Enum):
     trainClassification = 0
     trainRegression = 1
@@ -37,7 +42,9 @@ class Dataset(object):
         df = pd.read_csv(f)
         if target_name != None:
             self.data = torch.tensor(df.loc[:, df.columns != target_name].values.astype(np.float32))
-            self.target = torch.tensor(df[target_name].values.astype(np.float32))
+            target_value = df[target_name].values.astype(np.float32)
+            self.target = torch.tensor(np.reshape(target_value, (len(target_value), 1)))
+
         else:
             self.data = torch.tensor(df.values.astype(np.float32))
             self.target = None
