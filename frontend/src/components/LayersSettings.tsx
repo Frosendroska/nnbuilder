@@ -65,7 +65,8 @@ function LayerSettings(props: LayerProps): JSX.Element {
 
 function LayersSettings(props: LayersProps): JSX.Element {
     return (
-        <div>
+        <div className={"all-layers-settings"}>
+            <div className={"settings-label"}>Settings</div>
             {props.layers.map((layerData, i) => {
                 return <LayerSettings key={layerData.id}
                                       updateLayer={(layer) => props.updateLayer(layer, i)}

@@ -37,17 +37,24 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
 input[type=submit] {
   background-color: #a5b9c8;
   color: white;
-  padding: 16px 20px;
-  margin: 8px 0;
+  //padding: 16px 20px;
+  //margin: 8px 0;
+  height: 40px;
   border: none;
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
   &.submit-green {
     background: #ACC8A5;
+    color: #000000
   }
   &.submit-red {
     background: #D95555;
+    color: #000000
+  }
+  &.submit-grey {
+    background: #F1F1F1;
+    color: #000000
   }
 }
 

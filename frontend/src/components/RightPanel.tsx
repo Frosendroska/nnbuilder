@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import * as api from 'nnbuilder-api'
 import './style/Panel.scss'
+import VersionController from "./VersionController";
 
 type EditorProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -8,6 +9,8 @@ type EditorProps = {
 }
 
 function RightPanel(props: EditorProps): JSX.Element {
+    const [version, setVersion] = useState(1)
+    const maxValue = 5
 
     const addSnapshot = () => {
        alert("Snapshot added!");
@@ -23,13 +26,16 @@ function RightPanel(props: EditorProps): JSX.Element {
         return true;
     }
 
+    const ulStyle = {display: 'flex', gap: '10px'}
+
     return (
         <div className='right'>
-            <div>
-                <input type='submit' value='Undo'/>
-                <input type='submit' value='Redo'/>
+            {VersionController(version, setVersion, 1, true, 1, maxValue)}
+            <div style={ulStyle}>
+                <input className={'submit-grey'} type='submit' value='Undo'/>
+                <input className={'submit-grey'} type='submit' value='Redo'/>
             </div>
-            <div>
+            <div className={"vertical-panel"}>
                 <input type='submit' value='Add snapshot' onClick={addSnapshot}/>
                 <input className={'submit-red'} type='submit' value='Delete snapshot' onClick={delSnapshot}/>
             </div>

@@ -14,3 +14,68 @@ header > a {
 header > a:hover {
   text-decoration: underline;
 }
+
+
+
+div.projects-page {
+  margin: 40px;
+
+  select{
+    height: 40px;
+  }
+}
+
+
+h2 {
+  font-weight: bold;
+  font-size: 40px;
+  font-family: "American Typewriter", sans-serif;
+  margin-bottom: 20px;
+}
+
+
+div.learnt {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 40px;
+  * {
+    width: 150px;
+  }
+}
+
+div.projects {
+  display: flex;
+  gap: 40px;
+}
+
+div.project {
+  width: 250px;
+  height: 200px;
+  position: relative;
+  background: #F1F1F1;
+  text-align: center;
+
+  h3 {
+    text-align: center;
+    margin: 30px;
+    font-size: 20px;
+  }
+
+  div.project-version {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  div.project-exit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    //font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+}

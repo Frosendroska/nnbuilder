@@ -40,7 +40,7 @@ function LeftPanel(props: PanelProps): JSX.Element {
                 <span className={'description'}>Target:</span>
                 <div className='greyRect'>PetType</div>
             </div>
-            <div>
+            <div className={"vertical-panel"}>
                 <input type='submit' value='Load dataset' onSubmit={()=>{}}/>
                 <input className={'submit-green'} type='submit' value='Train' onSubmit={taskRequest}/>
             </div>

@@ -26,7 +26,7 @@ function calculateEdges(layers: LayerData[]): Edge[] {
     })
 }
 
-function EditorWindow(props: EditorWindowProps) {
+function EditorWindow(_: EditorWindowProps) {
     const [layers, setLayers] = useState<LayerData[]>([])
     const edges = calculateEdges(layers)
 
@@ -108,7 +108,6 @@ function EditorWindow(props: EditorWindowProps) {
     }
 
     function remove(n: number = 1) {
-        //const lastLayerIds = new Set([...Array(n).keys()].map((i) => layers[layers.length - i - 1].id))
         setLayers((prev) => prev.slice(0, -n))
     }
 
@@ -129,8 +128,8 @@ function EditorWindow(props: EditorWindowProps) {
 
     return (
         <div className='editor'>
-            Layers: {layers.length}
-            {IncDecInput(layers.length, setLayersAmount, 1, true, 1, 100)}
+            <div className={"layers-amount"}><div>Layers</div>
+                {IncDecInput(layers.length, setLayersAmount, 1, true, 1, 100)}</div>
             <div className={"layers-with-settings"}>
                 <LayersSettings updateLayer={updateLayer} layers={layers}/>
                 <div id='layers' style={neuronsStyle}> </div>
