@@ -51,13 +51,6 @@ public abstract class AbstractNeuralNetwork implements NeuralNetwork {
         this.defaultNumberOfLayers = other.getDefaultNumberOfLayers();
     }
 
-    protected void init(AbstractNeuralNetwork other) {
-        this.nnType = other.getNNType();
-        this.layers = other.getLayers();
-        this.learningRate = other.getLearningRate();
-        this.defaultNumberOfLayers = other.getDefaultNumberOfLayers();
-    }
-
     @Override
     public final NetworkType getNNType() {
         return nnType;
