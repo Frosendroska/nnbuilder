@@ -49,13 +49,17 @@ class NeuralNetwork(nn.Module):
 
 
 def tensor_to_lists(dictionary):
+    new_dict = {}
     for key, value in dictionary.items():
-        dictionary[key] = value.tolist()
+        new_dict[key] = value.tolist()
+    return new_dict
 
 
 def list_to_tensor(dictionary):
+    new_dict = {}
     for key, value in dictionary.items():
-        dictionary[key] = torch.Tensor(value)
+        new_dict[key] = torch.Tensor(value)
+    return new_dict
 
 
 def train_step(data, target, model, optimizer):
@@ -89,12 +93,10 @@ def train(model, dataset, optimizer, history, epochs=DEFAULT_EPOCH):
 
 def save(network, optimizer, history):
     dict = network.state_dict()
-    tensor_to_lists(dict)
     state = {
-        'state_dict': dict,
-        'type': network.type,
-        'train metrics': history,
-        'optimizer': optimizer.state_dict()
+        'state_dict': tensor_to_lists(dict),
+        'type': int(network.type),
+        'history': history
     }
     info = json.dumps(state)
     return info
@@ -103,22 +105,22 @@ def restore_net(states, model):
     state_dict = json.loads(states)
     dict = state_dict['state_dict']
     type = state_dict['type']
-    list_to_tensor(dict)
-    model.load_state_dict(dict)
+    model.load_state_dict(list_to_tensor(dict))
     model.load_type(type)
 
     return model
 
 
-def get_prediction(network, x, type="classification"):
+def get_prediction(network, x):
     pred = network(x)
-    if type == 'regression':
+    if network.type == 'regression':
         return pred.data.numpy()
     prediction = torch.max(pred, 1)[1]
     return prediction.data.numpy()
 
 
 def accuracy(data, target):
-    correct = (int(data == target)).sum()
+    data = torch.max(data, 1)[1].data
+    correct = (data == target).sum()
     total = target.shape[0]
     return correct / total

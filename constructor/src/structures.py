@@ -11,11 +11,26 @@ class TrainType(enum.Enum):
     classification = 0
     regression = 1
 
+    def __new__(cls, value):
+        member = object.__new__(cls)
+        member._value_ = value
+        return member
+
+    def __int__(self):
+        return self.value
 
 class TaskType(enum.Enum):
     trainClassification = 0
     trainRegression = 1
     applyToData = 2
+
+    def __new__(cls, value):
+        member = object.__new__(cls)
+        member._value_ = value
+        return member
+
+    def __int__(self):
+        return self.value
 
 
 class Task(object):

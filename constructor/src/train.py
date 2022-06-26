@@ -1,4 +1,6 @@
 import sys
+
+import numpy.random
 import pandas as pd
 import constructor as ctor
 import structures
@@ -31,9 +33,9 @@ if task_info.task_type == structures.TaskType.applyToData:
     df = pd.DataFrame(dict(label=res))
     data = df.to_csv(index=False)
 
-    id_value = random.randint(0, 10000000)
-    insert(cur, "answers", "a_id", "answers", id_value, data, task_id)
-    update(cur, "a_id", id_value, task_id)
+    generate_answer_id = numpy.random.randint(1000000)
+    insert(cur, "answers", "a_id", "answers", generate_answer_id, data, task_id)
+    update(cur, "a_id", generate_answer_id, task_id)
 
 else:
     nn_type = structures.TrainType(int(task_info.task_type))
@@ -43,9 +45,9 @@ else:
     optimizer = torch.optim.Adam(model.parameters(), lr=info['learningRate'])
     ctor.train(model, dataset, optimizer, history, task_info.epoch)
     network = ctor.save(model, optimizer, history)
-    id_value = random.randint(0, 10000000)
-    insert(cur, "models", "m_id", "model", id_value, network, task_id)
-    update(cur, "m_id", id_value, task_id)
+    generate_model_id = numpy.random.randint(1000000)
+    insert(cur, "models", "m_id", "model", generate_model_id, network, task_id)
+    update(cur, "m_id", generate_model_id, task_id)
 
 logging.info("Done")
 
