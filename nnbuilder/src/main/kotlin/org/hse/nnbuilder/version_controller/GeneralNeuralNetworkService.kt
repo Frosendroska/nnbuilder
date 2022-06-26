@@ -89,5 +89,4 @@ class GeneralNeuralNetworkService(
     fun redo(nnVersionId: Long) {
         neuralNetworkService.redo(nnVersionId)
     }
-
 }
