@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.lang.Integer.max
 
 @GrpcService
-open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBase() {
+class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBase() {
     // TODO add authorization
     @Autowired
     private lateinit var generalNeuralNetworkService: GeneralNeuralNetworkService
@@ -58,11 +58,11 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
 
         // set diff of learning rate
         if (nn1.learningRate != nn2.learningRate) {
-            responseBuilder.setHasDiffInLearningRate(true)
+            responseBuilder.hasDiffInLearningRate = true
             responseBuilder.learningRate1 = nn1.learningRate.toDouble()
             responseBuilder.learningRate2 = nn2.learningRate.toDouble()
         } else {
-            responseBuilder.setHasDiffInLearningRate(false)
+            responseBuilder.hasDiffInLearningRate = false
         }
 
 //        responseBuilder.hasDiffInLearningRate = true
@@ -81,7 +81,7 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
     private fun getLayersDiff(layers1: List<Layer>, layers2: List<Layer>): ArrayList<Nnversion.layerDifference> {
         val maxSize = max(layers1.size, layers2.size)
         val layersDiff = ArrayList<Nnversion.layerDifference>(maxSize)
-        for (i in 0..(maxSize - 1)) {
+        for (i in 0 until maxSize) {
             val layerDiffBuilder = Nnversion.layerDifference.newBuilder()
 
             if (i < layers1.size) {
@@ -100,7 +100,7 @@ open class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineIm
                 layerDiffBuilder.activationFun2 = layer.activationFunction
             }
 
-            if (layerDiffBuilder.exists1.equals(layerDiffBuilder.exists2)) {
+            if (layerDiffBuilder.exists1 == layerDiffBuilder.exists2) {
                 layerDiffBuilder.hasDiffInExisting = false
                 layerDiffBuilder.hasDiffInNeurons = (layerDiffBuilder.neurons1 != layerDiffBuilder.neurons2)
                 layerDiffBuilder.hasDiffInLayerType = (!layerDiffBuilder.layerType1.equals(layerDiffBuilder.layerType2))

@@ -8,10 +8,11 @@ import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStorage;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
+import org.hse.nnbuilder.services.Enums.ActionType;
+import org.hse.nnbuilder.services.Enums.NetworkType;
 import org.hse.nnbuilder.services.Nnmodification.NNCreationResponse;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationRequest;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationResponse;
-import org.hse.nnbuilder.services.Nnmodification.NetworkType;
 import org.hse.nnbuilder.user.User;
 import org.hse.nnbuilder.user.UserService;
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
@@ -81,7 +82,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                 SecurityContextHolder.getContext().getAuthentication().getName();
         // String userEmail = "c";
 
-        long nnId = creatennForUser(userEmail, request.getNnType());
+        long nnId = creatennForUser(userEmail, request.getNnType(), request.getName(), request.getActionType());
 
         NNCreationResponse responseWithOk =
                 NNCreationResponse.newBuilder().setNnId(nnId).build();
@@ -89,13 +90,13 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         responseObserver.onCompleted();
     }
 
-    public long creatennForUser(String userEmail, Nnmodification.NetworkType nnType) {
+    public long creatennForUser(String userEmail, Enums.NetworkType nnType, String name, ActionType action) {
         User user = userService.findByEmail(userEmail);
 
         long nnId = 0;
 
         // creating new project
-        GeneralNeuralNetwork generalNeuralNetwork = generalNeuralNetworkService.create(user);
+        GeneralNeuralNetwork generalNeuralNetwork = generalNeuralNetworkService.create(user, name, action);
 
         if (nnType == NetworkType.FF) {
             FeedForwardNN ffnn = FeedForwardNN.buildDefaultFastForwardNN();

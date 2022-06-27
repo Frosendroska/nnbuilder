@@ -4,28 +4,15 @@ import './style/Projects.scss'
 import * as api from 'nnbuilder-api'
 import {token} from "./App";
 import {useStore} from "@nanostores/react";
+import Project from '../structure/Project';
 
 type ProjectsProps = {
     userAccountService: api.UserAccountServicePromiseClient
+    modificationService: api.NNModificationServicePromiseClient
+    versionService: api.NNVersionServicePromiseClient
 }
 
-class Project {
-    id: number
-    name: string
-    versions: number
-    type: string
-    status: string
-
-    constructor(id: number, name: string, versions: number, type: string, status: string) {
-        this.id = id
-        this.name = name
-        this.versions = versions
-        this.type = type
-        this.status = status
-    }
-}
-
-function ProjectComponent(project: Project) {
+function ProjectComponent(project: Project, deleteProject: (id: number) => void) {
     return <div key={project.id} className={"project-wrapper"}>
         <div className={"project clickable"} onClick={() => window.location.href = "/editor"}>
             <h3>{project.name}</h3>
@@ -35,7 +22,7 @@ function ProjectComponent(project: Project) {
                 <div>Status: {project.status}</div>
             </div>
         </div>
-        <div className={"project-exit no-select"}>x</div>
+        <div className={"project-exit no-select"} onClick={() => deleteProject(project.id)}>x</div>
     </div>
 }
 
@@ -52,19 +39,45 @@ function Projects(props: ProjectsProps): JSX.Element {
     const user = useStore(token)
     const [step, setStep] = useState(0)
     const [newProjectName, setNewProjectName] = useState("")
+    const [type, setType] = useState(0)
     const [username, setUserName] = useState<string>('');
-    const [projects] = useState<Project[]>([
-        new Project(1, "Cat or dog?", 5, "Reccurent", "Inference"),
-        new Project(2, "Apple or orange?", 3, "Reccurent", "Inference"),
-        new Project(3, "Maks or Ann?", 6, "Reccurent", "Inference"),
-    ])
+    const [projects, setProjects] = useState<Project[]>([])
+
+    const tokenInfo = {"Authorization": "Bearer " + user}
 
     useEffect(() => {
         const request = new api.GetNameRequest()
-        props.userAccountService.getName(request, {"Authorization": "Bearer " + user}).then((result) => {
+        props.userAccountService.getName(request, tokenInfo).then((result) => {
             setUserName(result.getName())
         })
     }, [])
+
+    const getAllProjects = () => {
+        const request = new api.GetProjectsRequest()
+        props.userAccountService.getProjects(request, tokenInfo).then((result) => {
+            const projects = result.getProjectList().map((project) =>
+                new Project(project.getId(), project.getName(), project.getVersions(), "Recurrent", "Inference"))
+            setProjects(projects)
+        })
+    }
+
+
+    const createNewProject = ((name: string, value: number) => {
+        const request = new api.NNCreationRequest().setName(name).setNntype(value)
+        props.modificationService.createnn(request, tokenInfo).then((result) => {
+            setStep(0)
+            getAllProjects()
+        })
+    })
+
+    const deleteProject = (id: number) => {
+        const request = new api.deleteProjectRequest().setProjectid(id)
+        props.versionService.deleteProject(request).then((result) => {
+            getAllProjects()
+        })
+    }
+
+    useEffect(() => getAllProjects(), [])
 
     return (
         <>
@@ -87,7 +100,7 @@ function Projects(props: ProjectsProps): JSX.Element {
                         </div>
                         <h2>Projects</h2>
                         <div className={"projects"}>{
-                            projects.map(project => ProjectComponent(project))
+                            projects.map(project => ProjectComponent(project, deleteProject))
                         }
                             {AddNewProject(() => setStep(1))}
                         </div>
@@ -105,17 +118,20 @@ function Projects(props: ProjectsProps): JSX.Element {
                             <input type={"text"} value={newProjectName}
                                    onChange={(event => setNewProjectName(event.target.value))}/>
                             <div>Select NN type</div>
-                            <select>
-                                <option value={"ff"}>Feed Forward</option>
-                                <option value={"rnn"}>Recurrent Neural Network</option>
-                                <option value={"ltm"}>Long Term Memory</option>
-                                <option value={"dcn"}>Deep Convolutional Network</option>
+                            <select value={type} onChange={(event) => setType(Number(event.target.value))}>
+                                <option value={"0"}>Feed Forward</option>
+                                <option value={"1"}>Recurrent Neural Network</option>
+                                <option value={"2"}>Long Term Memory</option>
+                                <option value={"3"}>Deep Convolutional Network</option>
                             </select>
                             <div>Select action</div>
                             <select>
                                 <option>Classification</option>
                             </select>
-                            <input type={"submit"} className={"submit-green"} value={"Create"}/>
+                            <input type={"submit"} className={"submit-green"} value={"Create"}
+                                   onClick={() => {
+                                       createNewProject(newProjectName, type)
+                                   }}/>
                         </div>
                     </div>
             }

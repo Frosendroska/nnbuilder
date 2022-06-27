@@ -3,6 +3,7 @@ package org.hse.nnbuilder.version_controller
 import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.AbstractNeuralNetwork
 import org.hse.nnbuilder.nn.store.NeuralNetworkService
+import org.hse.nnbuilder.services.Enums
 import org.hse.nnbuilder.user.User
 import org.springframework.stereotype.Service
 
@@ -12,8 +13,8 @@ class GeneralNeuralNetworkService(
     private val neuralNetworkService: NeuralNetworkService
 ) {
 
-    fun create(user: User): GeneralNeuralNetwork {
-        val generalNeuralNetwork = GeneralNeuralNetwork(user)
+    fun create(user: User, name: String, action: Enums.ActionType?): GeneralNeuralNetwork {
+        val generalNeuralNetwork = GeneralNeuralNetwork(user, name, action)
         generalNeuralNetworkRepository.save(generalNeuralNetwork)
         return generalNeuralNetwork
     }
@@ -23,7 +24,9 @@ class GeneralNeuralNetworkService(
     }
 
     fun getById(id: Long): GeneralNeuralNetwork {
-        return generalNeuralNetworkRepository.findById(id).orElseThrow { NeuralNetworkNotFoundException("GeneralNeuralNetwork with id $id does not exist.") }
+        return generalNeuralNetworkRepository.findById(id).orElseThrow {
+            NeuralNetworkNotFoundException("GeneralNeuralNetwork with id $id does not exist.")
+        }
     }
 
     /**
@@ -62,8 +65,8 @@ class GeneralNeuralNetworkService(
      * Get GeneralNeuralNetwork that contains NNVersion with given id
      */
     fun getByIdOfNNVersion(id: Long): GeneralNeuralNetwork {
-        val NNVersionStored = neuralNetworkService.getById(id)
-        return NNVersionStored.generalNeuralNetwork
+        val nnVersionStored = neuralNetworkService.getById(id)
+        return nnVersionStored.generalNeuralNetwork
     }
 
     /**

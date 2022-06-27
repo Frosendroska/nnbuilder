@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.hse.nnbuilder.services.Nnmodification.LayerType;
-import org.hse.nnbuilder.services.Nnmodification.NetworkType;
+import org.hse.nnbuilder.services.Enums.NetworkType;
 
 /**
  * https://www.asimovinstitute.org/neural-network-zoo/

@@ -44,7 +44,7 @@ public class TasksQueueRepositoryTest {
     @BeforeAll
     void prepare() {
         User user = userService.save("Ivan2", "ivan2@gmail.com", "password");
-        testingGeneralNeuralNetwork = generalNeuralNetworkService.create(user);
+        testingGeneralNeuralNetwork = generalNeuralNetworkService.create(user, "test", null);
     }
 
     @Test

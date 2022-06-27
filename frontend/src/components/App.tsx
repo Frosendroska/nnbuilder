@@ -30,11 +30,15 @@ export default function App(props: AppProps): JSX.Element {
                 <Route path='/' element={<Header/>}>
                     <Route
                         path='/projects'
-                        element={user == '' ? <Navigate to='/login'/> : <Projects userAccountService={props.userAccountService}/>}/>
+                        element={user == '' ? <Navigate to='/login'/> :
+                            <Projects modificationService={props.modificationService}
+                                      userAccountService={props.userAccountService}
+                                      versionService={props.versionService}/>}/>
                     <Route
                         path='/editor'
                         element={user == '' ? <Navigate to='/login'/> :
-                            <Editor modificationService={props.modificationService} taskQueueService={props.taskQueueService} versionService={props.versionService}/>}/>
+                            <Editor modificationService={props.modificationService}
+                                    taskQueueService={props.taskQueueService} versionService={props.versionService}/>}/>
                     <Route
                         path='/login' element={<Login authService={props.authService}/>}/>
                     <Route

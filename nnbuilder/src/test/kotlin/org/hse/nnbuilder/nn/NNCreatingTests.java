@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.hse.nnbuilder.services.Nnmodification.LayerType;
-import org.hse.nnbuilder.services.Nnmodification.NetworkType;
+import org.hse.nnbuilder.services.Enums.NetworkType;
 import org.junit.jupiter.api.Test;
 
 public class NNCreatingTests {

@@ -45,4 +45,21 @@ class UserAccountService : UserAccountServiceGrpcKt.UserAccountServiceCoroutineI
         userService.changePassword(id, oldPassword, newPassword)
         return UserAccount.ChangePasswordResponse.newBuilder().build()
     }
+
+    @Override
+    override suspend fun getProjects(request: UserAccount.GetProjectsRequest): UserAccount.GetProjectsResponse {
+        val projects = util.getUser().projects
+        val projectBuilder = UserAccount.GetProjectsResponse.newBuilder()
+        projects.forEach { project ->
+            projectBuilder.addProject(
+                UserAccount.ProjectInfo.newBuilder()
+                    .setName(project.name)
+                    .setId(project.getId())
+                    .setVersions(project.getNNVersions().size)
+                    .setActionType(project.actionType)
+                    .build()
+            )
+        }
+        return projectBuilder.build()
+    }
 }
