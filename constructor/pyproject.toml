@@ -12,10 +12,8 @@ dependencies = [
     "numpy",
     "psycopg2",
     "torch",
-    "logging",
     "sklearn",
     "dotenv",
-    "os",
     "pandas"
 ]
 
