@@ -1,14 +1,12 @@
-task installPypaBuild(type: Exec) {
+task installTox(type: Exec) {
     executable 'python3'
-    args '-m', 'pip', 'install', 'build'
+    args '-m', 'pip', 'install', 'tox'
 }
 
 task buildPythonPackage(type: Exec) {
-    dependsOn installPypaBuild
-    executable 'python3'
-    args '-m', 'build', '--sdist', '--wheel', '--outdir=build/dist'
+    dependsOn installTox
+    executable 'tox'
+    args '--notest'
 }
 
 assemble.dependsOn buildPythonPackage
-
-// TODO: lint

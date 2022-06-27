@@ -46,6 +46,7 @@ out/
 *.DS_Store
 
 ### PYTHON ###
+.tox/
 __pycache__/
 *.py[cod]
 *$py.class
