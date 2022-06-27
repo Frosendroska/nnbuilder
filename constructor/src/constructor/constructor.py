@@ -2,9 +2,9 @@ import torch.nn as nn
 import json
 import torch
 import structures
-import logging
-import enum
+#import logging
 from structures import TrainType
+
 
 DEFAULT_EPOCH = 100
 
@@ -22,6 +22,14 @@ activations = nn.ModuleDict([
 loss_functions = {'MSELoss': torch.nn.MSELoss(), 'CrossEntropy': torch.nn.CrossEntropyLoss(),
                   'BCE': torch.nn.BCELoss()}
 
+layer_types = {
+    "InputCell" : lambda input_size, output_size: nn.Linear(input_size, output_size),
+    "OutputCell" : lambda input_size, output_size: nn.Linear(input_size, output_size),
+    "HiddenCell" : lambda input_size, output_size: nn.Linear(input_size, output_size),
+    "RecurrentCell": lambda input_size, output_size: nn.RNNCell(input_size, output_size),
+    "MemoryCell": lambda input_size, output_size: nn.LSTMCell(input_size, output_size)
+}
+
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super(NeuralNetwork, self).__init__()
@@ -33,7 +41,8 @@ class NeuralNetwork(nn.Module):
     def load_info(self, info):
         layers = info['layers']
         for i in range(len(layers) - 1):
-            self.array.append(nn.Linear(layers[i]['neurons'], layers[i + 1]['neurons']))
+            self.array.append(layer_types.get(layers[i]['layerType'])
+                              (layers[i]['neurons'], layers[i + 1]['neurons']))
             if layers[i]['activationFunction'] != 'None':
                 self.array.append(activations[layers[i]['activationFunction']])
         self.layers = nn.Sequential(*self.array)
@@ -83,12 +92,12 @@ def test_step(data, target, model, history):
     else:
         history.append(test_loss)
 
-    logging.info(f"Avg loss: {test_loss:>8f}")
+    #logging.info(f"Avg loss: {test_loss:>8f}")
 
 def train(model, dataset, optimizer, history, epochs=DEFAULT_EPOCH):
     X_train, X_test, y_train, y_test = dataset.split()
     for ep in range(epochs):
-        logging.info(f"Epoch {ep + 1} \n-------------------------------")
+        #logging.info(f"Epoch {ep + 1} \n-------------------------------")
         train_step(X_train, y_train, model, optimizer)
         test_step(X_test, y_test, model, history)
 

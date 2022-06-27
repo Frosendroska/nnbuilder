@@ -1,13 +1,11 @@
 import sys
 import numpy.random
 import pandas as pd
-import constructor as ctor
+import constructor.src.constructor.src.constructor as ctor
 import structures
-import psycopg2
 import json
 import torch
-import random
-import logging
+#import logging
 from function_for_db import upload, insert, update, connect
 
 
@@ -49,7 +47,7 @@ def train():
         insert(cur, "models", "m_id", "model", generate_model_id, network, task_id)
         update(cur, "m_id", generate_model_id, task_id)
 
-    logging.info("Done")
+    #logging.info("Done")
 
     con.commit()
     con.close()

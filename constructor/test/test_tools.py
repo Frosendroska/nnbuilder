@@ -1,11 +1,8 @@
 import random
-from constructor.src import example
-import psycopg2
-import os
-from sklearn.datasets import make_moons
 import pandas as pd
 from sklearn.datasets import make_regression
 from sklearn.datasets import make_classification
+
 
 def add_layer(count, layer_type, activationF):
     return {"neurons": count, "layerType": layer_type, "activationFunction": activationF}
