@@ -1,10 +1,9 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './style/Header.scss'
 import './style/Projects.scss'
-//import {token} from './App'
-//import {useStore} from '@nanostores/react'
-//import {Link} from 'react-router-dom'
 import * as api from 'nnbuilder-api'
+import {token} from "./App";
+import {useStore} from "@nanostores/react";
 
 type ProjectsProps = {
     userAccountService: api.UserAccountServicePromiseClient
@@ -27,7 +26,7 @@ class Project {
 }
 
 function ProjectComponent(project: Project) {
-    return <div className={"project-wrapper"}>
+    return <div key={project.id} className={"project-wrapper"}>
         <div className={"project clickable"} onClick={() => window.location.href = "/editor"}>
             <h3>{project.name}</h3>
             <div className={"project-version"}>Versions: {project.versions}</div>
@@ -50,27 +49,22 @@ function AddNewProject(addProject: () => void) {
 }
 
 function Projects(props: ProjectsProps): JSX.Element {
+    const user = useStore(token)
     const [step, setStep] = useState(0)
     const [newProjectName, setNewProjectName] = useState("")
     const [username, setUserName] = useState<string>('');
     const [projects] = useState<Project[]>([
         new Project(1, "Cat or dog?", 5, "Reccurent", "Inference"),
         new Project(2, "Apple or orange?", 3, "Reccurent", "Inference"),
-        new Project(2, "Apple or orange?", 3, "Reccurent", "Inference"),
-        new Project(2, "Apple or orange?", 3, "Reccurent", "Inference"),
         new Project(3, "Maks or Ann?", 6, "Reccurent", "Inference"),
     ])
 
-    //const user = useStore(token)
-
-    const getName = () => {
+    useEffect(() => {
         const request = new api.GetNameRequest()
-        props.userAccountService.getName(request).then((result: api.GetNameResponse) => {
+        props.userAccountService.getName(request, {"Authorization": "Bearer " + user}).then((result) => {
             setUserName(result.getName())
         })
-        console.log(username)
-        return username
-    }
+    }, [])
 
     return (
         <>
@@ -80,13 +74,12 @@ function Projects(props: ProjectsProps): JSX.Element {
             {
                 step == 0 ?
                     <div className={"projects-page"}>
-                        {getName()}
                         Hello, {username}, here will be your projects!
                         <h2>Run learnt</h2>
                         <div className={"learnt"}>
                             <select>
                                 {projects.map(project =>
-                                    <option>{project.name}</option>
+                                    <option key={project.id}>{project.name}</option>
                                 )}
                             </select>
                             <input type={"submit"} value={"Load dataset"}/>
@@ -101,20 +94,22 @@ function Projects(props: ProjectsProps): JSX.Element {
                     </div> : step == 1 ? <div className={"project-dialog"}>
                         <div className={"project-dialog-header"}>Select the option</div>
                         <div className={"project-dialog-options"}>
-                            <input type={"submit"} value={"Create new NN"} className={"submit-grey"} onClick={() => setStep(2)}/>
+                            <input type={"submit"} value={"Create new NN"} className={"submit-grey"}
+                                   onClick={() => setStep(2)}/>
                             <input type={"submit"} value={"Load learnt model"} className={"submit-grey"}/>
                         </div>
                     </div> : <div className={"project-dialog"}>
                         <div className={"project-dialog-header"}>New NN settings</div>
                         <div className={"project-dialog-settings"}>
                             <div>Project's name</div>
-                            <input type={"text"} value={newProjectName} onChange={(event => setNewProjectName(event.target.value))}/>
+                            <input type={"text"} value={newProjectName}
+                                   onChange={(event => setNewProjectName(event.target.value))}/>
                             <div>Select NN type</div>
                             <select>
-                                <option>Feed Forward</option>
-                                <option>Recurrent Neural Network</option>
-                                <option>Long Term Memory</option>
-                                <option>Deep Convolutional Network</option>
+                                <option value={"ff"}>Feed Forward</option>
+                                <option value={"rnn"}>Recurrent Neural Network</option>
+                                <option value={"ltm"}>Long Term Memory</option>
+                                <option value={"dcn"}>Deep Convolutional Network</option>
                             </select>
                             <div>Select action</div>
                             <select>

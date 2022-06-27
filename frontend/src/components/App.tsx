@@ -21,7 +21,7 @@ type AppProps = {
 export const token = persistentAtom<string>('token', '')
 
 export default function App(props: AppProps): JSX.Element {
-    const user = useStore(token) + "247"
+    const user = useStore(token)
     console.log('current user token is: ', user)
 
     return (
