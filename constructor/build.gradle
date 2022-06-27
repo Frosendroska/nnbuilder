@@ -1,6 +1,6 @@
 task installTox(type: Exec) {
     executable 'python3'
-    args '-m', 'pip', 'install', 'tox'
+    args '-m', 'pip', 'install', 'tox', 'flake8'
 }
 
 task buildPythonPackage(type: Exec) {
