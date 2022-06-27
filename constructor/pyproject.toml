@@ -9,12 +9,7 @@ requires = [
 name = "nnbuilder-python"
 version = "0.0.0"
 dependencies = [
-    "numpy",
-    "psycopg2",
-    "torch",
-    "sklearn",
-    "dotenv",
-    "pandas"
+    "numpy"
 ]
 
 [project.scripts]
