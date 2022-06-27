@@ -68,3 +68,4 @@ share/python-wheels/
 MANIFEST
 *.manifest
 *.spec
+*.cfg
