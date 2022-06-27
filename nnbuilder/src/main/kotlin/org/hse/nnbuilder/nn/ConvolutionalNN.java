@@ -1,8 +1,8 @@
 package org.hse.nnbuilder.nn;
 
 import java.util.ArrayList;
-import org.hse.nnbuilder.services.Nnmodification.LayerType;
 import org.hse.nnbuilder.services.Enums.NetworkType;
+import org.hse.nnbuilder.services.Nnmodification.LayerType;
 
 /**
  * Cells: [0]Input | [1]Kernel | [2..i]ConvolutionOrPool | [i...n-2]Hidden | [n-1]Output

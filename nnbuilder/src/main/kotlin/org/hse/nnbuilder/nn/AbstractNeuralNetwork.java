@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import java.util.List;
-import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.hse.nnbuilder.services.Enums.NetworkType;
+import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.EXISTING_PROPERTY, property = "nntype")
 @JsonSubTypes({
