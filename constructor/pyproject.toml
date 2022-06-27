@@ -12,7 +12,8 @@ dependencies = [
     "numpy",
     "sklearn",
     "torch",
-    "psycopg2"
+    "psycopg2",
+    "pandas"
 ]
 
 [project.scripts]

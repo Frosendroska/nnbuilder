@@ -2,7 +2,7 @@ import torch.nn as nn
 import json
 import torch
 import structures
-import logging
+#import logging
 from structures import TrainType
 
 
@@ -92,12 +92,12 @@ def test_step(data, target, model, history):
     else:
         history.append(test_loss)
 
-    logging.info(f"Avg loss: {test_loss:>8f}")
+    #logging.info(f"Avg loss: {test_loss:>8f}")
 
 def train(model, dataset, optimizer, history, epochs=DEFAULT_EPOCH):
     X_train, X_test, y_train, y_test = dataset.split()
     for ep in range(epochs):
-        logging.info(f"Epoch {ep + 1} \n-------------------------------")
+        #logging.info(f"Epoch {ep + 1} \n-------------------------------")
         train_step(X_train, y_train, model, optimizer)
         test_step(X_test, y_test, model, history)
 
