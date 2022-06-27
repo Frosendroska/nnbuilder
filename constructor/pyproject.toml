@@ -10,7 +10,15 @@ name = "nnbuilder-python"
 version = "0.0.0"
 dependencies = [
     "numpy",
+    "psycopg2",
+    "torch",
+    "json",
+    "logging",
+    "sklearn",
+    "dotenv",
+    "os",
+    "pandas"
 ]
 
 [project.scripts]
-constructor = "constructor.main:main"
+constructor = "constructor.train:train"
