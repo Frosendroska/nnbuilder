@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+import "nnmodification.proto";
+
+service NNInfoService {
+  rpc getNNInfo (NNInfoRequest) returns (NNInfoResponse);
+}
+
+message NNInfoRequest {
+  int64 nnId = 1;
+}
+
+message NNInfoResponse {
+  NetworkType nnType = 1;
+  repeated ProtoLayer layers = 2;
+  float learningRate = 3;
+  int32 defaultNumberOfLayers = 4;
+}
+
+message ProtoLayer {
+  int64 neurons = 1;
+  LayerType layerType = 2;
+  ActivationFunction activationFunction = 3;
+}
