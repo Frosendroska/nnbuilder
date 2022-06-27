@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,11 +19,6 @@ import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
 @Entity
 @Table(name = "neuralnetworks")
 public final class NeuralNetworkStored {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long nnId;
-
     @Convert(converter = AbstractNeuralNetworkConverter.class)
     @Column(name = "content", columnDefinition = "text")
     private AbstractNeuralNetwork neuralNetwork;
@@ -39,6 +32,9 @@ public final class NeuralNetworkStored {
     @JoinColumn(name = "general_neural_network_id", nullable = false)
     public GeneralNeuralNetwork generalNeuralNetwork;
 
+    @Id
+    private Long nnId;
+
     public NeuralNetworkStored() {}
 
     // // ONLY FOR TESTS
@@ -49,6 +45,7 @@ public final class NeuralNetworkStored {
     public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork, GeneralNeuralNetwork generalNeuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         this.generalNeuralNetwork = generalNeuralNetwork;
+        this.nnId = generalNeuralNetwork.getId();
     }
 
     // Id

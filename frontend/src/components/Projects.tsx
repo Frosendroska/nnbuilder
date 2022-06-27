@@ -4,22 +4,27 @@ import './style/Projects.scss'
 import * as api from 'nnbuilder-api'
 import {token} from "./App";
 import {useStore} from "@nanostores/react";
+import {typesMap, actionsMap} from '../structure/Project';
 import Project from '../structure/Project';
 
 type ProjectsProps = {
     userAccountService: api.UserAccountServicePromiseClient
     modificationService: api.NNModificationServicePromiseClient
     versionService: api.NNVersionServicePromiseClient
+    chooseProject: (id: number | undefined) => void
 }
 
-function ProjectComponent(project: Project, deleteProject: (id: number) => void) {
+function ProjectComponent(project: Project,
+                          selectProject: (id: number) => void,
+                          deleteProject: (id: number) => void) {
     return <div key={project.id} className={"project-wrapper"}>
-        <div className={"project clickable"} onClick={() => window.location.href = "/editor"}>
+        <div className={"project clickable"} onClick={() => selectProject(project.id)}>
             <h3>{project.name}</h3>
             <div className={"project-version"}>Versions: {project.versions}</div>
             <div>
-                <div>Type: {project.type}</div>
+                <div>Type: {typesMap.get(project.type)}</div>
                 <div>Status: {project.status}</div>
+                <div>Action: {actionsMap.get(project.action)}</div>
             </div>
         </div>
         <div className={"project-exit no-select"} onClick={() => deleteProject(project.id)}>x</div>
@@ -40,6 +45,7 @@ function Projects(props: ProjectsProps): JSX.Element {
     const [step, setStep] = useState(0)
     const [newProjectName, setNewProjectName] = useState("")
     const [type, setType] = useState(0)
+    const [action, setAction] = useState(0)
     const [username, setUserName] = useState<string>('');
     const [projects, setProjects] = useState<Project[]>([])
 
@@ -56,14 +62,21 @@ function Projects(props: ProjectsProps): JSX.Element {
         const request = new api.GetProjectsRequest()
         props.userAccountService.getProjects(request, tokenInfo).then((result) => {
             const projects = result.getProjectList().map((project) =>
-                new Project(project.getId(), project.getName(), project.getVersions(), "Recurrent", "Inference"))
+                new Project(
+                    project.getId(),
+                    project.getName(),
+                    project.getVersions(),
+                    project.getNntype(),
+                    project.getActiontype(),
+                    "Inference"
+                ))
             setProjects(projects)
         })
     }
 
 
     const createNewProject = ((name: string, value: number) => {
-        const request = new api.NNCreationRequest().setName(name).setNntype(value)
+        const request = new api.NNCreationRequest().setName(name).setNntype(value).setActiontype(action)
         props.modificationService.createnn(request, tokenInfo).then((result) => {
             setStep(0)
             getAllProjects()
@@ -75,6 +88,11 @@ function Projects(props: ProjectsProps): JSX.Element {
         props.versionService.deleteProject(request).then((result) => {
             getAllProjects()
         })
+    }
+
+    const selectProject = (id: number) => {
+        props.chooseProject(id)
+        window.location.href = "/editor"
     }
 
     useEffect(() => getAllProjects(), [])
@@ -100,7 +118,7 @@ function Projects(props: ProjectsProps): JSX.Element {
                         </div>
                         <h2>Projects</h2>
                         <div className={"projects"}>{
-                            projects.map(project => ProjectComponent(project, deleteProject))
+                            projects.map(project => ProjectComponent(project, selectProject, deleteProject))
                         }
                             {AddNewProject(() => setStep(1))}
                         </div>
@@ -125,8 +143,9 @@ function Projects(props: ProjectsProps): JSX.Element {
                                 <option value={"3"}>Deep Convolutional Network</option>
                             </select>
                             <div>Select action</div>
-                            <select>
-                                <option>Classification</option>
+                            <select value={action} onChange={(event) => setAction(Number(event.target.value))}>
+                                <option value={"0"}>Classification</option>
+                                <option value={"1"}>Regression</option>
                             </select>
                             <input type={"submit"} className={"submit-green"} value={"Create"}
                                    onClick={() => {

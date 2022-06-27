@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import * as api from 'nnbuilder-api'
 import Login from './Login'
 import Editor from './Editor'
@@ -9,6 +9,7 @@ import Projects from './Projects'
 import Register from './Register'
 import {useStore} from '@nanostores/react'
 import './style/Main.scss'
+import {infoService} from "../clients";
 
 type AppProps = {
     authService: api.AuthServicePromiseClient
@@ -16,13 +17,15 @@ type AppProps = {
     taskQueueService: api.TasksQueueServicePromiseClient
     versionService: api.NNVersionServicePromiseClient
     userAccountService: api.UserAccountServicePromiseClient
+    infoService: api.NNInfoServicePromiseClient
 }
 
 export const token = persistentAtom<string>('token', '')
+export const currentProject = persistentAtom<string | undefined>("current", undefined)
 
 export default function App(props: AppProps): JSX.Element {
     const user = useStore(token)
-    console.log('current user token is: ', user)
+    const current = useStore(currentProject)
 
     return (
         <>
@@ -33,11 +36,16 @@ export default function App(props: AppProps): JSX.Element {
                         element={user == '' ? <Navigate to='/login'/> :
                             <Projects modificationService={props.modificationService}
                                       userAccountService={props.userAccountService}
-                                      versionService={props.versionService}/>}/>
+                                      versionService={props.versionService}
+                                      chooseProject={value => currentProject.set(value?.toString())}/>}/>
                     <Route
                         path='/editor'
                         element={user == '' ? <Navigate to='/login'/> :
-                            <Editor modificationService={props.modificationService}
+                            current == undefined ? <Navigate to={'/projects'}/> :
+                                <Editor
+                                    projectId={Number(current)}
+                                    infoService={props.infoService}
+                                    modificationService={props.modificationService}
                                     taskQueueService={props.taskQueueService} versionService={props.versionService}/>}/>
                     <Route
                         path='/login' element={<Login authService={props.authService}/>}/>

@@ -7,10 +7,13 @@ import './style/Panel.scss'
 import * as api from 'nnbuilder-api'
 import IncDecInput from './IncDecInput'
 import LayersSettings from './LayersSettings'
+import ProjectInfo from "../structure/ProjectInfo";
 
 type EditorWindowProps = {
     modificationService: api.NNModificationServicePromiseClient
     versionService: api.NNVersionServicePromiseClient
+
+    projectInfo: ProjectInfo
 }
 
 function calculateEdges(layers: LayerData[]): Edge[] {
@@ -26,9 +29,13 @@ function calculateEdges(layers: LayerData[]): Edge[] {
     })
 }
 
-function EditorWindow(_: EditorWindowProps) {
+function EditorWindow(props: EditorWindowProps) {
     const [layers, setLayers] = useState<LayerData[]>([])
     const edges = calculateEdges(layers)
+
+    useEffect(() => {
+        setLayers(props.projectInfo.layerData)
+    }, [])
 
     const width = (layerData: LayerData) => {
         return 300 + (700 - 300) * layerData.neurons.length / 100 //(Math.atan(layerData.neurons.length/100)) * 200 + 100
@@ -92,7 +99,7 @@ function EditorWindow(_: EditorWindowProps) {
 
     useEffect(() => {
         // call api and get layers
-        setLayers([new LayerData(0)])
+        // setLayers([new LayerData(0)])
 
         const svg = d3.select('#layers')
             .append('svg')
@@ -131,7 +138,7 @@ function EditorWindow(_: EditorWindowProps) {
             <div className={"layers-amount"}><div>Layers</div>
                 {IncDecInput(layers.length, setLayersAmount, 1, true, 1, 100)}</div>
             <div className={"layers-with-settings"}>
-                <LayersSettings updateLayer={updateLayer} layers={layers}/>
+                <LayersSettings modificationService={props.modificationService} updateLayer={updateLayer} layers={layers}/>
                 <div id='layers' style={neuronsStyle}> </div>
             </div>
         </div>

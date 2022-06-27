@@ -35,7 +35,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
 
     @Override
     public void modifynn(NNModificationRequest request, StreamObserver<NNModificationResponse> responseObserver) {
-
         Long nnId = request.getNnId();
         NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
 
@@ -44,28 +43,30 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
                             request.getAddLayer().getLType() // lType
-                            );
+                    );
         }
         if (request.hasDelLayer()) {
             loaded.getNeuralNetwork()
                     .delLayer(
                             request.getDelLayer().getIndex() // i
-                            );
+                    );
         }
         if (request.hasChangeActivationFunction()) {
             loaded.getNeuralNetwork()
                     .changeActivationFunction(
                             request.getChangeActivationFunction().getIndex(), // i
                             request.getChangeActivationFunction().getF() // f
-                            );
+                    );
         }
         if (request.hasChangeNumberOfNeuron()) {
             loaded.getNeuralNetwork()
                     .changeNumberOfNeuron(
                             request.getChangeNumberOfNeuron().getIndex(), // i
                             request.getChangeNumberOfNeuron().getNumber() // n
-                            );
+                    );
         }
+
+        neuralNetworkStorage.save(loaded);
 
         NNModificationResponse responseWithOk =
                 NNModificationResponse.newBuilder().build();

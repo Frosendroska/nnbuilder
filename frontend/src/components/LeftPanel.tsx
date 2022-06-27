@@ -2,10 +2,14 @@ import React, {useState} from 'react'
 import './style/Panel.scss'
 import IncDecInput from './IncDecInput';
 import * as api from 'nnbuilder-api'
+import ProjectInfo from "../structure/ProjectInfo";
+import {typesMap} from "../structure/Project";
 
 type PanelProps = {
     taskQueueService: api.TasksQueueServicePromiseClient
     versionService: api.NNVersionServicePromiseClient
+
+    projectInfo: ProjectInfo
 }
 
 function LeftPanel(props: PanelProps): JSX.Element {
@@ -22,11 +26,11 @@ function LeftPanel(props: PanelProps): JSX.Element {
         <div className='left'>
             <div className='line'>
                 <span className='description big'>Status:</span>
-                <div className='greyRect'>Trained</div>
+                <div className='greyRect'>Inference</div>
             </div>
             <div className='line'>
                 <span className={'description'}>NNtype:</span>
-                <div className='greyRect'>Recurrent</div>
+                <div className='greyRect'>{typesMap.get(props.projectInfo.type)}</div>
             </div>
             <div className='line-centered'>
                     <div className={'description'}>Epochs</div>
