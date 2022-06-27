@@ -35,7 +35,7 @@ public class NNInfoService extends NNInfoServiceGrpc.NNInfoServiceImplBase {
 
     public static Iterable<? extends ProtoLayer> buildAvailableParts(List<Layer> layers) {
         List<ProtoLayer> newLayers = new ArrayList<>();
-        for (var l : layers) {
+        for (Layer l : layers) {
             ProtoLayer curLayer = ProtoLayer.newBuilder()
                     .setNeurons(l.getNeurons())
                     .setLayerType(l.getLayerType())
