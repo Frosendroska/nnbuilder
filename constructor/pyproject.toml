@@ -20,4 +20,4 @@ dependencies = [
 ]
 
 [project.scripts]
-constructor = "constructor.train:train"
+constructor = "constructor.main:main"
