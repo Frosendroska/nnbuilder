@@ -31,7 +31,7 @@ function EditorWindow(_: EditorWindowProps) {
     const edges = calculateEdges(layers)
 
     const width = (layerData: LayerData) => {
-        return 200 + (800 - 200) * layerData.neurons.length / 100 //(Math.atan(layerData.neurons.length/100)) * 200 + 100
+        return 300 + (700 - 300) * layerData.neurons.length / 100 //(Math.atan(layerData.neurons.length/100)) * 200 + 100
     }
     const center = () => {
         return ((800 - 10) / 2)
@@ -69,14 +69,14 @@ function EditorWindow(_: EditorWindowProps) {
         .attr('fill', '#D95555')
 
     const simulation = d3.forceSimulation(layers.flatMap((x) => x.neurons))
-        .force('collideForce', d3.forceCollide().radius(20).strength(0.1))
+        .force('collideForce', d3.forceCollide().radius(10).strength(0.4))
         .force('x', d3.forceX(function () {
                 return 400
             }).strength(0.025),
         )
         .force('y', d3.forceY(function (d: NeuronData) {
             return d.layer_id * 115 + 50
-        }).strength(0.5))
+        }).strength(1))
         .alphaDecay(0.01)
 
     simulation.on('tick', () => {
