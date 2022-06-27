@@ -5,6 +5,7 @@ import structures
 import logging
 from structures import TrainType
 
+
 DEFAULT_EPOCH = 100
 
 activations = nn.ModuleDict([
