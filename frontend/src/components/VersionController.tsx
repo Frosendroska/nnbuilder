@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 function VersionController(currentValue: number, setCurrentValue: (arg: number) => void, increment: number,
-                           isInteger: boolean = true, min: number = 0, max: number = Infinity) {
+    isInteger = true, min= 0, max = Infinity) {
     const [localValue, setLocalValue] = useState(currentValue.toString())
 
     function correctValue(arg: number) {
@@ -24,7 +24,7 @@ function VersionController(currentValue: number, setCurrentValue: (arg: number) 
         <div className={'button'} onClick={() => setValueByButton(currentValue - increment)}>
             <div className={'arrow arrow-down'}/>
         </div>
-        <div className={"version-value"}>
+        <div className={'version-value'}>
             <div>Version<br/>
                 {localValue}/{max}</div>
         </div>

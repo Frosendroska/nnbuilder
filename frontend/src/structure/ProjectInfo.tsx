@@ -1,4 +1,4 @@
-import LayerData from "./LayerData";
+import LayerData from './LayerData'
 
 class ProjectInfo {
     type: number

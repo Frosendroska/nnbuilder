@@ -14,7 +14,7 @@ class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBas
     private lateinit var generalNeuralNetworkService: GeneralNeuralNetworkService
 
     @Override
-    override suspend fun makeNNSnapshot(request: Nnversion.makeNNSnapshotRequest): Nnversion.makeNNSnapshotResponse {
+    override suspend fun makeNNSnapshot(request: Nnversion.MakeNNSnapshotRequest): Nnversion.MakeNNSnapshotResponse {
         var exception = ""
         var newVersionId = 0L
         try {
@@ -22,31 +22,31 @@ class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBas
         } catch (e: NeuralNetworkNotFoundException) {
             exception = e.message
         }
-        return Nnversion.makeNNSnapshotResponse.newBuilder()
+        return Nnversion.MakeNNSnapshotResponse.newBuilder()
             .setNnId(newVersionId)
             .setException(exception)
             .build()
     }
 
     @Override
-    override suspend fun deleteNNVersion(request: Nnversion.deleteNNVersionRequest): Nnversion.deleteNNVersionResponse {
+    override suspend fun deleteNNVersion(request: Nnversion.DeleteNNVersionRequest): Nnversion.DeleteNNVersionResponse {
         val nnId = request.nnId
         generalNeuralNetworkService.deleteNNVersionById(nnId)
 
-        return Nnversion.deleteNNVersionResponse.newBuilder().build()
+        return Nnversion.DeleteNNVersionResponse.newBuilder().build()
     }
 
     @Override
-    override suspend fun deleteProject(request: Nnversion.deleteProjectRequest): Nnversion.deleteProjectResponse {
+    override suspend fun deleteProject(request: Nnversion.DeleteProjectRequest): Nnversion.DeleteProjectResponse {
         val projectId = request.projectId
         generalNeuralNetworkService.deleteById(projectId)
 
-        return Nnversion.deleteProjectResponse.newBuilder().build()
+        return Nnversion.DeleteProjectResponse.newBuilder().build()
     }
 
     @Override
-    override suspend fun compareNNVersions(request: Nnversion.compareRequest): Nnversion.compareResponse {
-        val responseBuilder = Nnversion.compareResponse.newBuilder()
+    override suspend fun compareNNVersions(request: Nnversion.CompareRequest): Nnversion.CompareResponse {
+        val responseBuilder = Nnversion.CompareResponse.newBuilder()
 
         val nnId1 = request.nnId1
         val nnId2 = request.nnId2

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
-function IncDecInput(currentValue: number, setCurrentValue: (arg: number) => void, increment: number,
-                     isInteger: boolean = true, min: number = 0, max: number = Infinity) {
+function incDecInput(currentValue: number, setCurrentValue: (arg: number) => void, increment: number,
+    isInteger = true, min = 0, max = Infinity) {
     const softValidation = new RegExp('^-?[0-9]*[.]?[0-9]{0,5}$')
     const hardValidation = new RegExp('^[0-9]+([.][0-9]{1,5})?$')
     const [localValue, setLocalValue] = useState(currentValue.toString())
@@ -35,7 +35,7 @@ function IncDecInput(currentValue: number, setCurrentValue: (arg: number) => voi
         </div>
         <input
             value={localValue}
-            onChange={e => setValueByInput(e.target.value)}
+            onChange={(e) => setValueByInput(e.target.value)}
             onBlur={() => setLocalValue(currentValue.toString())}
         />
         <div className={'button'} onClick={() => setValueByButton(currentValue + increment)}>
@@ -44,4 +44,4 @@ function IncDecInput(currentValue: number, setCurrentValue: (arg: number) => voi
     </div>
 }
 
-export default IncDecInput
+export default incDecInput

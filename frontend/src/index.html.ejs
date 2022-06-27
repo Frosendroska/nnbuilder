@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang='en' dir='ltr'>
     <head>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset='UTF-8'/>
+        <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
         <% if (webpackConfig.mode === 'production') { %>
         <title></title>
         <% } else { %>
@@ -10,14 +10,14 @@
         <% } %>
     </head>
     <body>
-        <div id="root"></div>
+        <div id='root'></div>
 
         <% if (webpackConfig.mode === 'production') { %>
-        <script crossorigin src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-        <script crossorigin src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+        <script crossorigin src='https://unpkg.com/react@17.0.2/umd/react.production.min.js'></script>
+        <script crossorigin src='https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js'></script>
         <% } else { %>
-        <script crossorigin src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
-        <script crossorigin src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+        <script crossorigin src='https://unpkg.com/react@17.0.2/umd/react.development.js'></script>
+        <script crossorigin src='https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js'></script>
         <% } %>
     </body>
 </html>

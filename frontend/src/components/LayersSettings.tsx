@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import './style/LayerSettings.scss'
-import IncDecInput from './IncDecInput'
-import LayerData from "../structure/LayerData";
-import Project from "../structure/Project";
+import incDecInput from './IncDecInput'
+import LayerData from '../structure/LayerData'
 import * as api from 'nnbuilder-api'
-import {useStore} from "@nanostores/react";
-import {currentProject, token} from "./App";
+import {useStore} from '@nanostores/react'
+import {currentProject} from './App'
 
 type LayersProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -42,16 +41,16 @@ function LayerSettings(props: LayerProps): JSX.Element {
     return (<div className='layer-settings'>
         <div className='line-centered'>
             <div className={'description'}>Neurons</div>
-            {IncDecInput(props.layer.neurons.length, (amount) => {
-                    console.log(amount)
+            {incDecInput(props.layer.neurons.length, (amount) => {
+                console.log(amount)
                 return updateLayer(
                     new LayerData(
                         props.layer.id,
                         amount,
                         props.layer.type,
-                        props.layer.activation
+                        props.layer.activation,
                     ))
-                }, 1, true, 1, 100)}
+            }, 1, true, 1, 100)}
         </div>
         <div className='line-centered'>
             <div className={'description'}>Activation</div>
@@ -60,7 +59,7 @@ function LayerSettings(props: LayerProps): JSX.Element {
                     props.layer.id,
                     props.layer.neurons.length,
                     props.layer.type,
-                    Number(event.target.value))
+                    Number(event.target.value)),
             )}>
                 <option value='1'>None</option>
                 <option value='2'>Linear</option>
@@ -80,7 +79,7 @@ function LayerSettings(props: LayerProps): JSX.Element {
                     props.layer.id,
                     props.layer.neurons.length,
                     Number(event.target.value),
-                    props.layer.activation)
+                    props.layer.activation),
             )}>
                 <option value='0'>InputCell</option>
                 <option value='1'>BackfedInputCell</option>
@@ -104,13 +103,13 @@ function LayerSettings(props: LayerProps): JSX.Element {
 
 function LayersSettings(props: LayersProps): JSX.Element {
     return (
-        <div className={"all-layers-settings"}>
-            <div className={"settings-label"}>Settings</div>
+        <div className={'all-layers-settings'}>
+            <div className={'settings-label'}>Settings</div>
             {props.layers.map((layerData, i) => {
                 return <LayerSettings key={layerData.id}
-                                      modificationService={props.modificationService}
-                                      updateLayer={(layer) => props.updateLayer(layer, i)}
-                                      layer={layerData}/>
+                    modificationService={props.modificationService}
+                    updateLayer={(layer) => props.updateLayer(layer, i)}
+                    layer={layerData}/>
             })}
         </div>
     )

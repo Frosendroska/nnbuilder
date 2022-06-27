@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "American Typewriter", sans-serif;
+  font-family: 'American Typewriter', sans-serif;
   outline: none;
 }
 
@@ -45,7 +45,7 @@ div.IncDecInput {
     background: #f1f1f1;
     font-size: 20px;
     text-align: center;
-    font-family: "American Typewriter", sans-serif;
+    font-family: 'American Typewriter', sans-serif;
   }
 }
 
@@ -59,7 +59,7 @@ select {
   border: none;
   background-color: #D9D9D9;
   text-align: center;
-  font-family: "American Typewriter", sans-serif;
+  font-family: 'American Typewriter', sans-serif;
   cursor: pointer;
   padding-left: 15px;
 
@@ -67,14 +67,14 @@ select {
   -moz-appearance: none;
   appearance: none;
 
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
   background-repeat: no-repeat;
   background-position-x: 97%;
   background-position-y: 8px;
 
 }
 
-.clickable:active, input[type="submit"]:active, button:active {
+.clickable:active, input[type='submit']:active, button:active {
   position: relative;
   top: 1px;
 }

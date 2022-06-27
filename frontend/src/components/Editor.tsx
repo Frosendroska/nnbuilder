@@ -3,10 +3,10 @@ import EditorWindow from './EditorWindow'
 import * as api from 'nnbuilder-api'
 import LeftPanel from './LeftPanel'
 import RightPanel from './RightPanel'
-import {token} from "./App";
-import {useStore} from "@nanostores/react";
-import ProjectInfo from "../structure/ProjectInfo";
-import LayerData from "../structure/LayerData";
+import {token} from './App'
+import {useStore} from '@nanostores/react'
+import ProjectInfo from '../structure/ProjectInfo'
+import LayerData from '../structure/LayerData'
 
 type EditorProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -19,7 +19,7 @@ type EditorProps = {
 
 function Editor(props: EditorProps): JSX.Element {
     const user = useStore(token)
-    const tokenInfo = {"Authorization": "Bearer " + user}
+    const tokenInfo = {'Authorization': 'Bearer ' + user}
     const [projectInfo, setProjectInfo] = useState<ProjectInfo | undefined>(undefined)
 
     useEffect(() => {
@@ -27,7 +27,8 @@ function Editor(props: EditorProps): JSX.Element {
         props.infoService.getNNInfo(request, tokenInfo).then((result) => {
             setProjectInfo(new ProjectInfo(
                 result.getNntype(),
-                result.getLayersList().map((layer, id) => new LayerData(id, layer.getNeurons(), layer.getLayertype(), layer.getActivationfunction()))
+                result.getLayersList().map((layer, id) => new LayerData(id, layer.getNeurons(), layer.getLayertype(),
+                    layer.getActivationfunction())),
             ))
         })
     }, [])
@@ -35,9 +36,12 @@ function Editor(props: EditorProps): JSX.Element {
     const flexStyle = {display: 'flex'}
     return (
         projectInfo != undefined ? <div style={flexStyle}>
-            <LeftPanel projectInfo={projectInfo} taskQueueService={props.taskQueueService} versionService={props.versionService}/>
-            <EditorWindow projectInfo={projectInfo} versionService={props.versionService} modificationService={props.modificationService}/>
-            <RightPanel modificationService={props.modificationService} versionService={props.versionService}/>
+            <LeftPanel projectInfo={projectInfo} taskQueueService={props.taskQueueService}
+                versionService={props.versionService}/>
+            <EditorWindow projectInfo={projectInfo} versionService={props.versionService}
+                modificationService={props.modificationService}/>
+            <RightPanel modificationService={props.modificationService}
+                versionService={props.versionService}/>
         </div> : <></>
     )
 }

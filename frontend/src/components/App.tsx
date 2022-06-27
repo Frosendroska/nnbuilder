@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import * as api from 'nnbuilder-api'
 import Login from './Login'
 import Editor from './Editor'
@@ -9,7 +9,6 @@ import Projects from './Projects'
 import Register from './Register'
 import {useStore} from '@nanostores/react'
 import './style/Main.scss'
-import {infoService} from "../clients";
 
 type AppProps = {
     authService: api.AuthServicePromiseClient
@@ -21,7 +20,7 @@ type AppProps = {
 }
 
 export const token = persistentAtom<string>('token', '')
-export const currentProject = persistentAtom<string | undefined>("current", undefined)
+export const currentProject = persistentAtom<string | undefined>('current', undefined)
 
 export default function App(props: AppProps): JSX.Element {
     const user = useStore(token)
@@ -35,9 +34,9 @@ export default function App(props: AppProps): JSX.Element {
                         path='/projects'
                         element={user == '' ? <Navigate to='/login'/> :
                             <Projects modificationService={props.modificationService}
-                                      userAccountService={props.userAccountService}
-                                      versionService={props.versionService}
-                                      chooseProject={value => currentProject.set(value?.toString())}/>}/>
+                                userAccountService={props.userAccountService}
+                                versionService={props.versionService}
+                                chooseProject={(value) => currentProject.set(value?.toString())}/>}/>
                     <Route
                         path='/editor'
                         element={user == '' ? <Navigate to='/login'/> :

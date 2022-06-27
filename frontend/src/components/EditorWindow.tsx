@@ -5,9 +5,9 @@ import Edge from '../structure/Edge'
 import NeuronData from '../structure/NeuronData'
 import './style/Panel.scss'
 import * as api from 'nnbuilder-api'
-import IncDecInput from './IncDecInput'
+import incDecInput from './IncDecInput'
 import LayersSettings from './LayersSettings'
-import ProjectInfo from "../structure/ProjectInfo";
+import ProjectInfo from '../structure/ProjectInfo'
 
 type EditorWindowProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -18,11 +18,11 @@ type EditorWindowProps = {
 
 function calculateEdges(layers: LayerData[]): Edge[] {
     let prev: LayerData | undefined = undefined
-    return layers.flatMap(layer => {
+    return layers.flatMap((layer) => {
         let result: Edge[] = []
         if (prev !== undefined) {
-            result = prev.neurons.flatMap(from => layer.neurons
-                .flatMap(to => new Edge(from, to)))
+            result = prev.neurons.flatMap((from) => layer.neurons
+                .flatMap((to) => new Edge(from, to)))
         }
         prev = layer
         return result
@@ -38,7 +38,7 @@ function EditorWindow(props: EditorWindowProps) {
     }, [])
 
     const width = (layerData: LayerData) => {
-        return 300 + (700 - 300) * layerData.neurons.length / 100 //(Math.atan(layerData.neurons.length/100)) * 200 + 100
+        return 300 + (700 - 300) * layerData.neurons.length / 100
     }
     const center = () => {
         return ((800 - 10) / 2)
@@ -77,11 +77,11 @@ function EditorWindow(props: EditorWindowProps) {
 
     const simulation = d3.forceSimulation(layers.flatMap((x) => x.neurons))
         .force('collideForce', d3.forceCollide().radius(10).strength(0.4))
-        .force('x', d3.forceX(function () {
-                return 400
-            }).strength(0.025),
+        .force('x', d3.forceX(function() {
+            return 400
+        }).strength(0.025),
         )
-        .force('y', d3.forceY(function (d: NeuronData) {
+        .force('y', d3.forceY(function(d: NeuronData) {
             return d.layer_id * 115 + 50
         }).strength(1))
         .alphaDecay(0.01)
@@ -103,18 +103,18 @@ function EditorWindow(props: EditorWindowProps) {
 
         const svg = d3.select('#layers')
             .append('svg')
-            .attr('style', 'width: 100%; height: 100%;')
-        svg.append('g').attr("class", "layers")
-        svg.append('g').attr("class", "graph")
+            .attr('style', 'width: 100% height: 100%')
+        svg.append('g').attr('class', 'layers')
+        svg.append('g').attr('class', 'graph')
     }, [])
 
-    function add(n: number = 1) {
+    function add(n = 1) {
         const layersId = layers.length
         const newLayers = [...Array(n).keys()].map((i) => new LayerData(layersId + i))
         setLayers((prev) => prev.concat(newLayers))
     }
 
-    function remove(n: number = 1) {
+    function remove(n = 1) {
         setLayers((prev) => prev.slice(0, -n))
     }
 
@@ -135,11 +135,13 @@ function EditorWindow(props: EditorWindowProps) {
 
     return (
         <div className='editor'>
-            <div className={"layers-amount"}><div>Layers</div>
-                {IncDecInput(layers.length, setLayersAmount, 1, true, 1, 100)}</div>
-            <div className={"layers-with-settings"}>
-                <LayersSettings modificationService={props.modificationService} updateLayer={updateLayer} layers={layers}/>
-                <div id='layers' style={neuronsStyle}> </div>
+            <div className={'layers-amount'}>
+                <div>Layers</div>
+                {incDecInput(layers.length, setLayersAmount, 1, true, 1, 100)}</div>
+            <div className={'layers-with-settings'}>
+                <LayersSettings modificationService={props.modificationService}
+                    updateLayer={updateLayer} layers={layers}/>
+                <div id='layers' style={neuronsStyle}/>
             </div>
         </div>
     )
