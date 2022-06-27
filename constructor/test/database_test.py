@@ -11,5 +11,3 @@ def test_init():
     cur = con.cursor()
     con.commit()
     con.close()
-
-test_init()
