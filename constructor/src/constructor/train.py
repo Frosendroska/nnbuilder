@@ -1,12 +1,10 @@
 import sys
 import numpy.random
 import pandas as pd
-import constructor as ctor
+import constructor.src.constructor.src.constructor as ctor
 import structures
-import psycopg2
 import json
 import torch
-import random
 import logging
 from function_for_db import upload, insert, update, connect
 
