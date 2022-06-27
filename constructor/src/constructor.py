@@ -18,6 +18,7 @@ activations = nn.ModuleDict([
                 ['elu', nn.ELU()],
     ])
 
+
 loss_functions = {'MSELoss': torch.nn.MSELoss(), 'CrossEntropy': torch.nn.CrossEntropyLoss(),
                   'BCE': torch.nn.BCELoss()}
 
