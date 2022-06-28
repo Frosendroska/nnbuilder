@@ -1,12 +1,13 @@
 import sys
 import numpy.random
 import pandas as pd
-import constructor as ctor
-import structures
 import json
 import torch
 #import logging
-from function_for_db import upload, insert, update, connect
+
+from constructor.function_for_db import upload, insert, update, connect
+import constructor.constructor as ctor
+import constructor.structures as structures
 
 
 def train():

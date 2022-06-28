@@ -1,5 +1,6 @@
 package org.hse.nnbuilder.queue;
 
+import com.google.common.collect.ImmutableList;
 import java.time.OffsetDateTime;
 import javax.transaction.Transactional;
 import org.hse.nnbuilder.PythonPackageLauncher.PythonPackageInstaller;
@@ -22,10 +23,12 @@ public class ScheduledTaskExecutor {
             if (task == null) {
                 return;
             }
-            Process exec = Runtime.getRuntime().exec(new String[] {
-                pythonPackageInstaller.getPackageExecutablePath(),
-                task.getTaskId().toString()
-            });
+            Process exec = new ProcessBuilder(ImmutableList.of(
+                            pythonPackageInstaller.getPackageExecutablePath(),
+                            task.getTaskId().toString()))
+                    .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+                    .redirectError(ProcessBuilder.Redirect.INHERIT)
+                    .start();
 
             // Wait till the end of the learning process
             int resultCode = exec.waitFor();

@@ -1,5 +1,6 @@
 package org.hse.nnbuilder
 
+import org.apache.commons.io.FileUtils
 import org.hse.nnbuilder.utils.HashUtil
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,7 +46,9 @@ open class PythonPackageLauncher {
         }
 
         private fun installPackage() {
-            val packageFile = resourceLoader.getResource("classpath:$packagePath").file
+            val packageResource = resourceLoader.getResource("classpath:$packagePath")
+            val packageFile = File("$virtualenvPath/package.tgz")
+            FileUtils.copyInputStreamToFile(packageResource.inputStream, packageFile)
             val currentPackageHash = HashUtil.getFileHash(packageFile.toPath())
 
             val fileWithCurrentPackageHash = File("$virtualenvPath/package-hash.txt")
