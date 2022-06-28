@@ -8,8 +8,8 @@ import * as api from 'nnbuilder-api'
 import incDecInput from './IncDecInput'
 import LayersSettings from './LayersSettings'
 import ProjectInfo from '../structure/ProjectInfo'
-import {useStore} from "@nanostores/react";
-import {currentProject} from "./App";
+import {useStore} from '@nanostores/react'
+import {currentVersion} from './App'
 
 type EditorWindowProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -34,7 +34,7 @@ function calculateEdges(layers: LayerData[]): Edge[] {
 function EditorWindow(props: EditorWindowProps) {
     const [layers, setLayers] = useState<LayerData[]>([])
     const edges = calculateEdges(layers)
-    const project = useStore(currentProject)
+    const project = useStore(currentVersion)
 
     useEffect(() => {
         setLayers(props.projectInfo.layerData)
@@ -114,26 +114,36 @@ function EditorWindow(props: EditorWindowProps) {
     function add(n = 1) {
         const layersId = layers.length
         const newLayers = [...Array(n).keys()].map((i) => new LayerData(layersId + i))
-        let request = new api.NNModificationRequest().setNnid(Number(project))
-            newLayers.forEach((layer) => {
-                console.log(layer.id)
-                request = request.setAddlayer(new api.AddLayer()
-                    .setIndex(Number(layer.id) + 1).setLtype(layer.type))
-            })
-        props.modificationService.modifynn(request).then((result: api.NNModificationResponse) => {
+        console.log(newLayers)
+
+        const requests = newLayers.map((layer) =>
+            new api.NNModificationRequest().setNnid(Number(project)).setAddlayer(new api.AddLayer()
+                .setIndex(Number(layer.id)).setLtype(layer.type)),
+        ).reverse()
+        makeRequest(requests.pop()!, requests, () => {
             setLayers((prev) => prev.concat(newLayers))
+        })
+    }
+
+    function makeRequest(request: api.NNModificationRequest, other: api.NNModificationRequest[], action: () => void) {
+        props.modificationService.modifynn(request).then(() => {
+            const last = other.pop()
+            if (last != undefined) {
+                makeRequest(last, other, action)
+            } else {
+                action()
+            }
         })
     }
 
     function remove(n = 1) {
         const layersAmount = layers.length
         const ids = [...Array(n).keys()].map((i) => layersAmount - i - 1)
-        let request = new api.NNModificationRequest().setNnid(Number(project))
-        ids.forEach((id) => {
-            request = request.setDellayer(new api.AddLayer()
-                .setIndex(id))
-        })
-        props.modificationService.modifynn(request).then((result: api.NNModificationResponse) => {
+        const requests = ids.map((id) =>
+            new api.NNModificationRequest().setNnid(Number(project)).setDellayer(new api.AddLayer()
+                .setIndex(id)),
+        ).reverse()
+        makeRequest(requests.pop()!, requests, () => {
             setLayers((prev) => prev.slice(0, -n))
         })
     }

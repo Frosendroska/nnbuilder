@@ -1,9 +1,5 @@
 import NeuronData from './NeuronData'
 
-function getRandomInt(min: number, max: number) {
-    return min + Math.floor(Math.random() * (max - min))
-}
-
 // export const layerTypeMap = new Map<number, string>(
 //     [[0, 'InputCell'],
 //     [1, 'BackfedInputCell'],
@@ -40,8 +36,8 @@ class LayerData {
     type: number
     activation: number
 
-    constructor(id: number, neuronsAmount: number = getRandomInt(3, 10),
-        type = 0,
+    constructor(id: number, neuronsAmount = 1,
+        type = 3,
         activation = 0) {
         this.id = id
         this.neurons = [...Array(neuronsAmount)].map((index) => new NeuronData(id, index))

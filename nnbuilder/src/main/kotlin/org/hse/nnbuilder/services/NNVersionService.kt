@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.services
 
 import net.devh.boot.grpc.server.service.GrpcService
-import org.hse.nnbuilder.exception.NeuralNetworkNotFoundException
 import org.hse.nnbuilder.nn.Layer
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,8 +18,9 @@ class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBas
         var newVersionId = 0L
         try {
             newVersionId = generalNeuralNetworkService.addNewVersion(request.nnId)
-        } catch (e: NeuralNetworkNotFoundException) {
-            exception = e.message
+        } catch (e: Exception) {
+            e.printStackTrace()
+            exception = e.message ?: ""
         }
         return Nnversion.MakeNNSnapshotResponse.newBuilder()
             .setNnId(newVersionId)

@@ -11,16 +11,17 @@ type ProjectsProps = {
     userAccountService: api.UserAccountServicePromiseClient
     modificationService: api.NNModificationServicePromiseClient
     versionService: api.NNVersionServicePromiseClient
-    chooseProject: (id: number | undefined) => void
+    datasetService: api.DatasetServicePromiseClient
+    chooseProject: (id: number | undefined, versionId: number | undefined) => void
 }
 
 function projectComponent(project: Project,
-    selectProject: (id: number) => void,
+    selectProject: (project: Project) => void,
     deleteProject: (id: number) => void) {
     return <div key={project.id} className={'project-wrapper'}>
-        <div className={'project clickable'} onClick={() => selectProject(project.id)}>
+        <div className={'project clickable'} onClick={() => selectProject(project)}>
             <h3>{project.name}</h3>
-            <div className={'project-version'}>Versions: {project.versions}</div>
+            <div className={'project-version'}>Versions: {project.versions.length}</div>
             <div>
                 <div>Type: {typesMap.get(project.type)}</div>
                 <div>Status: {project.status}</div>
@@ -51,6 +52,23 @@ function Projects(props: ProjectsProps): JSX.Element {
 
     const tokenInfo = {'Authorization': 'Bearer ' + user}
 
+    async function readFile(file: File): Promise<ArrayBuffer> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.addEventListener('loadend', (e) => resolve(e.target!.result as ArrayBuffer))
+            reader.addEventListener('error', reject)
+            reader.readAsArrayBuffer(file)
+        })
+    }
+
+    async function handleSubmission(file: File) {
+        const request = new api.UploadDatasetRequest()
+            .setContent(new Uint8Array(await readFile(file)))
+            .setTargetcolumnname('')
+        console.log(request)
+        props.datasetService.uploadDataset(request, tokenInfo)
+    }
+
     useEffect(() => {
         const request = new api.GetNameRequest()
         props.userAccountService.getName(request, tokenInfo).then((result) => {
@@ -65,7 +83,7 @@ function Projects(props: ProjectsProps): JSX.Element {
                 new Project(
                     project.getId(),
                     project.getName(),
-                    project.getVersions(),
+                    project.getVersionsList(),
                     project.getNntype(),
                     project.getActiontype(),
                     'Inference',
@@ -90,8 +108,8 @@ function Projects(props: ProjectsProps): JSX.Element {
         })
     }
 
-    const selectProject = (id: number) => {
-        props.chooseProject(id)
+    const selectProject = (project: Project) => {
+        props.chooseProject(project.id, project.versions[project.versions.length - 1])
         window.location.href = '/editor'
     }
 
@@ -113,7 +131,16 @@ function Projects(props: ProjectsProps): JSX.Element {
                                     <option key={project.id}>{project.name}</option>,
                                 )}
                             </select>
-                            <input type={'submit'} value={'Load dataset'}/>
+                            <label htmlFor='loadDataset' className={'load-dataset'}>
+                                Load dataset
+                                <input id='loadDataset' type='file' onChange={(event) => {
+                                    const files = event.target.files
+                                    if (files != null && files.length > 0) {
+                                        handleSubmission(files[0])
+                                    }
+                                }}
+                                />
+                            </label>
                             <input type={'submit'} className={'submit-green'} value={'Get started'}/>
                         </div>
                         <h2>Projects</h2>

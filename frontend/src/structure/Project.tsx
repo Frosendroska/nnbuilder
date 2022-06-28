@@ -15,12 +15,12 @@ export const actionsMap = new Map<number, string>([
 class Project {
     id: number
     name: string
-    versions: number
+    versions: number[]
     type: api.NetworkType
     action: api.ActionType
     status: string
 
-    constructor(id: number, name: string, versions: number,
+    constructor(id: number, name: string, versions: number[],
         type: api.NetworkType, action: api.ActionType, status: string) {
         this.id = id
         this.name = name

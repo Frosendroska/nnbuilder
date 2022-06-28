@@ -4,7 +4,7 @@ import incDecInput from './IncDecInput'
 import LayerData from '../structure/LayerData'
 import * as api from 'nnbuilder-api'
 import {useStore} from '@nanostores/react'
-import {currentProject} from './App'
+import {currentVersion} from './App'
 
 type LayersProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -19,7 +19,7 @@ type LayerProps = {
 }
 
 function LayerSettings(props: LayerProps): JSX.Element {
-    const project = useStore(currentProject)
+    const project = useStore(currentVersion)
 
     const updateLayer = (layer: LayerData) => {
         props.updateLayer(layer)
@@ -30,7 +30,7 @@ function LayerSettings(props: LayerProps): JSX.Element {
             .setChangenumberofneuron(new api.ChangeNumberOfNeuron()
                 .setIndex(props.layer.id)
                 .setNumber(layer.neurons.length))
-        props.modificationService.modifynn(request).then((result: api.NNModificationResponse) => {})
+        props.modificationService.modifynn(request)
     }
 
     return (<div className='layer-settings'>

@@ -48,7 +48,7 @@ message GetProjectsResponse {
 message ProjectInfo {
   int64 id = 1;
   string name = 2;
-  int32 versions = 3;
+  repeated int64 versions = 3;
   NetworkType nnType = 4;
   ActionType actionType = 5;
 }

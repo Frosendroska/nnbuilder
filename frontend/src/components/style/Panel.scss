@@ -40,6 +40,20 @@ div.left {
   }
 
   .line {
+
+    &.line-vertical {
+      margin-top: 15px;
+      flex-wrap: wrap;
+
+      .description, .greyRect {
+        width: 100%;
+      }
+
+      input {
+        margin-bottom: 0;
+      }
+    }
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -102,4 +116,22 @@ div.vertical-panel {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+label.load-dataset {
+  height: 40px;
+  width: 100%;
+  background: #a5b9c8;
+  color: #000000;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  input[type=file] {
+    display: none;
+  }
+  &:hover {
+    opacity:1;
+  }
 }

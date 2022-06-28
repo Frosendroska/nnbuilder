@@ -55,7 +55,7 @@ class UserAccountService : UserAccountServiceGrpcKt.UserAccountServiceCoroutineI
                 UserAccount.ProjectInfo.newBuilder()
                     .setName(project.name)
                     .setId(project.getId())
-                    .setVersions(project.getNNVersions().size)
+                    .addAllVersions(project.getNNVersions().map { it.nnId })
                     .setActionType(project.actionType)
                     .build()
             )

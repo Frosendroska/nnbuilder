@@ -13,6 +13,7 @@ type EditorProps = {
     taskQueueService: api.TasksQueueServicePromiseClient
     versionService: api.NNVersionServicePromiseClient
     infoService: api.NNInfoServicePromiseClient
+    datasetService: api.DatasetServicePromiseClient
 
     projectId: number
 }
@@ -37,7 +38,7 @@ function Editor(props: EditorProps): JSX.Element {
     return (
         projectInfo != undefined ? <div style={flexStyle}>
             <LeftPanel projectInfo={projectInfo} taskQueueService={props.taskQueueService}
-                versionService={props.versionService}/>
+                versionService={props.versionService} datasetService={props.datasetService}/>
             <EditorWindow projectInfo={projectInfo} versionService={props.versionService}
                 modificationService={props.modificationService}/>
             <RightPanel modificationService={props.modificationService}

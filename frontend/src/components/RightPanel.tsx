@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import * as api from 'nnbuilder-api'
 import './style/Panel.scss'
 import versionController from './VersionController'
+import {currentVersion} from './App'
+import {useStore} from '@nanostores/react'
 
 type EditorProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -10,19 +12,23 @@ type EditorProps = {
 
 function RightPanel(props: EditorProps): JSX.Element {
     const [version, setVersion] = useState(1)
-    const maxValue = 5
+    const maxValue = version
+    const nnId = useStore(currentVersion)
 
     const addSnapshot = () => {
+        console.log(nnId)
         alert('Snapshot added!')
-        const request = new api.MakeNNSnapshotRequest().setNnid(1)
+        const request = new api.MakeNNSnapshotRequest().setNnid(Number(nnId))
         props.versionService.makeNNSnapshot(request)
+        setVersion(version+1)
         return true
     }
 
     const delSnapshot = () => {
         alert('Snapshot deleted!')
-        const request = new api.DeleteNNVersionRequest().setNnid(1)
+        const request = new api.DeleteNNVersionRequest().setNnid(Number(nnId))
         props.versionService.deleteNNVersion(request)
+        setVersion(version-1)
         return true
     }
 

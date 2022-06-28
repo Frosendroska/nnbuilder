@@ -25,7 +25,7 @@ public class NeuralNetworkStorage {
 
     public NeuralNetworkStored getByGeneralNNIdOrThrow(Long id) {
         try {
-            return neuralNetworkRepository.getByGeneralNeuralNetwork(generalNeuralNetworkRepository.getById(id));
+            return neuralNetworkRepository.getById(id);
         } catch (ObjectRetrievalFailureException _e) {
             throw new NotFoundError(id, "neural network");
         }

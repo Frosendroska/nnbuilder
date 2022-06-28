@@ -17,14 +17,17 @@ type AppProps = {
     versionService: api.NNVersionServicePromiseClient
     userAccountService: api.UserAccountServicePromiseClient
     infoService: api.NNInfoServicePromiseClient
+    datasetService: api.DatasetServicePromiseClient
 }
 
 export const token = persistentAtom<string>('token', '')
 export const currentProject = persistentAtom<string | undefined>('current', undefined)
+export const currentVersion = persistentAtom<string | undefined>('version', undefined)
 
 export default function App(props: AppProps): JSX.Element {
     const user = useStore(token)
     const current = useStore(currentProject)
+    const version = useStore(currentVersion)
 
     return (
         <>
@@ -36,16 +39,21 @@ export default function App(props: AppProps): JSX.Element {
                             <Projects modificationService={props.modificationService}
                                 userAccountService={props.userAccountService}
                                 versionService={props.versionService}
-                                chooseProject={(value) => currentProject.set(value?.toString())}/>}/>
+                                datasetService={props.datasetService}
+                                chooseProject={(id, versionId) => {
+                                    currentProject.set(id?.toString())
+                                    currentVersion.set(versionId?.toString())
+                                }}/>}/>
                     <Route
                         path='/editor'
                         element={user == '' ? <Navigate to='/login'/> :
                             current == undefined ? <Navigate to={'/projects'}/> :
                                 <Editor
-                                    projectId={Number(current)}
+                                    projectId={Number(version)}
                                     infoService={props.infoService}
                                     modificationService={props.modificationService}
-                                    taskQueueService={props.taskQueueService} versionService={props.versionService}/>}/>
+                                    taskQueueService={props.taskQueueService} versionService={props.versionService}
+                                    datasetService={props.datasetService}/>}/>
                     <Route
                         path='/login' element={<Login authService={props.authService}/>}/>
                     <Route

@@ -7,9 +7,8 @@ function incDecInput(currentValue: number, setCurrentValue: (arg: number) => voi
     const [localValue, setLocalValue] = useState(currentValue.toString())
 
     useEffect(() => {
-        console.log(currentValue)
         setLocalValue(currentValue.toString())
-    }, [currentValue]);
+    }, [currentValue])
 
     function correctValue(arg: number) {
         return Math.min(max, Math.max(min, arg))

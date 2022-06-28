@@ -11,7 +11,8 @@ ReactDOM.render(
             taskQueueService={api.taskQueueService}
             versionService={api.versionService}
             userAccountService = {api.userAccountService}
-            infoService = {api.infoService}/>
+            infoService = {api.infoService}
+            datasetService={api.datasetService}/>
     </BrowserRouter>,
     document.getElementById('root'),
 )
