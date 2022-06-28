@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box
+}
+
+
+div.settings-label {
+  position: absolute;
+  top: -50px;
+  width: 130px;
+  text-align: center;
+}
+
+div.layers-with-settings {
+  display: flex;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px;
+
+  div.IncDecInput {
+    input {
+      font-size: 10px;
+    }
+  }
+
+  div.description {
+    font-size: larger;
+  }
+
+  div.all-layers-settings {
+    background-color: #F1F1F1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    position: relative;
+  }
+
+  div.layer-settings {
+    height: 95px;
+    font-size: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    div.line-centered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    div.IncDecInput {
+      height: 15px;
+      width: 60%;
+
+      input {
+        background-color: #D9D9D9;
+      }
+    }
+
+    select {
+      height: 15px;
+
+      width: 100px;
+      outline: none;
+      opacity: 0.9;
+      background-position-y: -5px;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+

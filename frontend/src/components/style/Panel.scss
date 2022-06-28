@@ -1,0 +1,137 @@
+* {
+  box-sizing: border-box
+}
+
+div.layers-amount {
+  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  > div {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  div.IncDecInput {
+    height: 25px;
+    width: 100px;
+    input {
+
+      font-size: 16px;
+    }
+  }
+}
+
+div.left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 50px 20px 20px;
+  width: 300px;
+  font-family: 'American Typewriter', sans-serif;
+  font-size: smaller;
+
+  .line-centered div.description {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .line {
+
+    &.line-vertical {
+      margin-top: 15px;
+      flex-wrap: wrap;
+
+      .description, .greyRect {
+        width: 100%;
+      }
+
+      input {
+        margin-bottom: 0;
+      }
+    }
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .description {
+      font-weight: bold;
+
+      &.big {
+        font-size: large;
+      }
+    }
+
+    .greyRect {
+      width: 55%;
+      min-height: 40px;
+      background: #f1f1f1;
+      padding: 12px;
+      text-align: center;
+    }
+  }
+}
+
+div.right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 50px 20px 20px 20px;
+  width: 300px;
+  font-family: 'American Typewriter', sans-serif;
+  font-size: smaller;
+}
+
+div.editor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 20px 20px;
+  font-family: 'American Typewriter', sans-serif;
+  font-size: larger;
+  width: 70%;
+}
+
+div.version-controller {
+  display: flex;
+  gap: 10px;
+  height: 50px;
+  align-items: stretch;
+
+  div.version-value {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #a5b9c8;
+    width: 150px;
+    justify-content: center;
+  }
+}
+
+div.vertical-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label.load-dataset {
+  height: 40px;
+  width: 100%;
+  background: #a5b9c8;
+  color: #000000;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  input[type=file] {
+    display: none;
+  }
+  &:hover {
+    opacity:1;
+  }
+}

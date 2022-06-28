@@ -3,6 +3,7 @@ package org.hse.nnbuilder.services;
 import io.grpc.stub.StreamObserver;
 import java.util.ArrayList;
 import java.util.List;
+import net.devh.boot.grpc.server.service.GrpcService;
 import org.hse.nnbuilder.nn.Layer;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStorage;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
@@ -11,6 +12,7 @@ import org.hse.nnbuilder.services.Nninfo.NNInfoResponse;
 import org.hse.nnbuilder.services.Nninfo.ProtoLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@GrpcService
 public class NNInfoService extends NNInfoServiceGrpc.NNInfoServiceImplBase {
 
     @Autowired

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package org.hse.nnbuilder.services;
+
+enum NetworkType {
+  FF = 0; // Feed Forward (Default is actually Perception)
+  RNN = 1; // Recurrent Neural Network
+  LSTM = 2; // Long Term Memory
+  CNN = 3; // Deep Convolutional Network
+}
+
+enum ActionType {
+  Classification = 0;
+  Regression = 1;
+}

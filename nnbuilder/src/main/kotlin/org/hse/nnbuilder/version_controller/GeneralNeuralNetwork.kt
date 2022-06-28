@@ -1,8 +1,10 @@
 package org.hse.nnbuilder.version_controller
 
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored
+import org.hse.nnbuilder.services.Enums
 import org.hse.nnbuilder.user.User
 import javax.persistence.CascadeType
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -18,21 +20,23 @@ import javax.persistence.Table
  */
 @Entity
 @Table(name = "general_neural_network")
-class GeneralNeuralNetwork() {
+class GeneralNeuralNetwork(
+    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE, CascadeType.REFRESH])
+    @JoinColumn(name = "owner_id", nullable = false)
+    var owner: User,
+
+    @Column
+    val name: String,
+
+    @Column
+    val actionType: Enums.ActionType?
+) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private val id: Long = 0
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE, CascadeType.REFRESH])
-    @JoinColumn(name = "owner_id", nullable = false)
-    lateinit var owner: User
-
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "generalNeuralNetwork", cascade = [CascadeType.REMOVE])
     private var nnversions: Set<NeuralNetworkStored> = LinkedHashSet()
-
-    constructor(owner: User) : this() {
-        this.owner = owner
-    }
 
     fun getId(): Long {
         return id

@@ -3,6 +3,7 @@ syntax = "proto3";
 package org.hse.nnbuilder.services;
 
 import "nnmodification.proto";
+import "enums.proto";
 
 service NNInfoService {
   rpc getNNInfo (NNInfoRequest) returns (NNInfoResponse);

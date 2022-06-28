@@ -21,11 +21,6 @@ import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork;
 @Entity
 @Table(name = "neuralnetworks")
 public final class NeuralNetworkStored {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long nnId;
-
     @Convert(converter = AbstractNeuralNetworkConverter.class)
     @Column(name = "content", columnDefinition = "text")
     private AbstractNeuralNetwork neuralNetwork;
@@ -38,6 +33,10 @@ public final class NeuralNetworkStored {
             cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "general_neural_network_id", nullable = false)
     public GeneralNeuralNetwork generalNeuralNetwork;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long nnId;
 
     public NeuralNetworkStored() {}
 

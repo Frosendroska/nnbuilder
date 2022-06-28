@@ -1,0 +1,82 @@
+* {
+  box-sizing: border-box;
+}
+
+.form-center {
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  font-family: 'American Typewriter', sans-serif;
+  width: 500px;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 400px;
+  left: 50%;
+  padding: 50px 35px;
+  h1 {
+    margin-bottom: 25px;
+  }
+}
+
+input[type=text], input[type=password], input[type=email] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+input[type=submit], input[type=file] {
+  background-color: #a5b9c8;
+  color: white;
+  //padding: 16px 20px;
+  //margin: 8px 0;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+  &.submit-green {
+    background: #ACC8A5;
+    color: #000000
+  }
+  &.submit-red {
+    background: #D95555;
+    color: #000000
+  }
+  &.submit-grey {
+    background: #F1F1F1;
+    color: #000000
+  }
+}
+
+input[type=button] {
+  background-color: #a5b9c8;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 2%;
+  opacity: 0.9;
+}
+
+input[type=submit]:hover, input[type=button]:hover {
+  opacity:1;
+}
+
+.invalid-feedback {
+  font-size: smaller;
+  position: relative;
+  top:-20px;
+  color: #D95555;
+  display: inline;
+}

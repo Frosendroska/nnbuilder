@@ -24,6 +24,6 @@ task jest(type: NpmTask) {
 npm_run_build.dependsOn awaitApi
 assemble.dependsOn npm_run_build
 
-test.dependsOn jest
+//test.dependsOn jest
 spotlessCheck.dependsOn lint
 spotlessApply.dependsOn lintApply

@@ -1,9 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {BrowserRouter} from 'react-router-dom'
 import App from './components/App'
 import * as api from './clients'
 
 ReactDOM.render(
-    <App authService={api.authService} sumService={api.sumService} />,
+    <BrowserRouter>
+        <App authService={api.authService}
+            modificationService={api.modificationService}
+            taskQueueService={api.taskQueueService}
+            versionService={api.versionService}
+            userAccountService = {api.userAccountService}
+            infoService = {api.infoService}
+            datasetService={api.datasetService}/>
+    </BrowserRouter>,
     document.getElementById('root'),
 )

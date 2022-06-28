@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.OneToMany
+import javax.persistence.OrderBy
 import javax.persistence.Table
 
 @Entity
@@ -33,7 +34,8 @@ class User() {
         }
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", orphanRemoval = true)
-    private var projects: Set<GeneralNeuralNetwork> = LinkedHashSet()
+    @OrderBy("id ASC")
+    val projects: Set<GeneralNeuralNetwork> = LinkedHashSet()
 
     constructor(name: String, email: String, password: String) : this() {
         this.name = name

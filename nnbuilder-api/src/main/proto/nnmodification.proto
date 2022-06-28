@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package org.hse.nnbuilder.services;
 
+import "enums.proto";
+
 enum LayerType {
   InputCell = 0;
   BackfedInputCell = 1;
@@ -18,13 +20,6 @@ enum LayerType {
   Kernel = 12;
   ConvolutionalOrPool = 13;
   Undefined = 14;
-}
-
-enum NetworkType {
-  FF = 0; // Feed Forward (Default is actually Perception)
-  RNN = 1; // Recurrent Neural Network
-  LSTM = 2; // Long Term Memory
-  CNN = 3; // Deep Convolutional Network
 }
 
 /**
@@ -84,7 +79,9 @@ message ChangeNumberOfNeuron {
 
 // Creating new neural network
 message NNCreationRequest {
-  NetworkType nnType = 1;
+  string name = 1;
+  NetworkType nnType = 2;
+  ActionType actionType = 3;
 }
 
 message NNCreationResponse {

@@ -37,7 +37,7 @@ public class NeuralNetworkRepositoryTest {
     @BeforeAll
     void prepare() {
         User user = userService.save("Ivan", "ivan@gmail.com", "password");
-        testingGeneralNeuralNetwork = generalNeuralNetworkService.create(user);
+        testingGeneralNeuralNetwork = generalNeuralNetworkService.create(user, "test", null);
     }
 
     @Test

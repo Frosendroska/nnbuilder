@@ -6,7 +6,7 @@ import org.hse.nnbuilder.nn.ConvolutionalNN
 import org.hse.nnbuilder.nn.FeedForwardNN
 import org.hse.nnbuilder.nn.LongShortTermMemoryNN
 import org.hse.nnbuilder.nn.RecurrentNN
-import org.hse.nnbuilder.services.Nnmodification
+import org.hse.nnbuilder.services.Enums
 import org.hse.nnbuilder.version_controller.GeneralNeuralNetwork
 import org.springframework.stereotype.Service
 
@@ -55,16 +55,16 @@ class NeuralNetworkService(
     fun addNewVersion(id: Long, generalNeuralNetwork: GeneralNeuralNetwork): Long {
         val oldNNVersion = getNeuralNetworkById(id)
 
-        if (oldNNVersion.nnType == Nnmodification.NetworkType.FF) {
+        if (oldNNVersion.nnType == Enums.NetworkType.FF) {
             val ffnn = FeedForwardNN(oldNNVersion as FeedForwardNN)
             return createNeuralNetworkStored(ffnn, generalNeuralNetwork)
-        } else if (oldNNVersion.nnType == Nnmodification.NetworkType.RNN) {
+        } else if (oldNNVersion.nnType == Enums.NetworkType.RNN) {
             val rnn = RecurrentNN(oldNNVersion as RecurrentNN)
             return createNeuralNetworkStored(rnn, generalNeuralNetwork)
-        } else if (oldNNVersion.nnType == Nnmodification.NetworkType.LSTM) {
+        } else if (oldNNVersion.nnType == Enums.NetworkType.LSTM) {
             val lstmnn = LongShortTermMemoryNN(oldNNVersion as LongShortTermMemoryNN)
             return createNeuralNetworkStored(lstmnn, generalNeuralNetwork)
-        } else if (oldNNVersion.nnType == Nnmodification.NetworkType.CNN) {
+        } else if (oldNNVersion.nnType == Enums.NetworkType.CNN) {
             val cnn = ConvolutionalNN(oldNNVersion as ConvolutionalNN)
             return createNeuralNetworkStored(cnn, generalNeuralNetwork)
         }

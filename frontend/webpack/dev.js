@@ -17,6 +17,7 @@ module.exports = merge.merge(commonConfig, {
   devServer: {
     hot: true,
     port: process.env.FRONTEND_DEV_PORT,
+    historyApiFallback: true,
   },
   devtool: 'eval-cheap-module-source-map',
   plugins: [],

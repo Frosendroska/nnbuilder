@@ -2,11 +2,14 @@ syntax = "proto3";
 
 package org.hse.nnbuilder.services;
 
+import "enums.proto";
+
 service UserAccountService {
   rpc getName (GetNameRequest) returns (GetNameResponse);
   rpc getEmail (GetEmailRequest) returns (GetEmailResponse);
   rpc changeName (ChangeNameRequest) returns (ChangeNameResponse);
   rpc changePassword (ChangePasswordRequest) returns (ChangePasswordResponse);
+  rpc getProjects (GetProjectsRequest) returns (GetProjectsResponse);
 }
 
 message GetNameRequest {}
@@ -34,4 +37,18 @@ message ChangePasswordRequest {
 
 message ChangePasswordResponse {
   string exception = 1;
+}
+
+message GetProjectsRequest {}
+
+message GetProjectsResponse {
+  repeated ProjectInfo project = 1;
+}
+
+message ProjectInfo {
+  int64 id = 1;
+  string name = 2;
+  repeated int64 versions = 3;
+  NetworkType nnType = 4;
+  ActionType actionType = 5;
 }
