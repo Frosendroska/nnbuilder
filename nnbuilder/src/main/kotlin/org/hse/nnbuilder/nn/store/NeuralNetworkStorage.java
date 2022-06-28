@@ -1,7 +1,6 @@
 package org.hse.nnbuilder.nn.store;
 
 import org.hse.nnbuilder.services.errors.NotFoundError;
-import org.hse.nnbuilder.version_controller.GeneralNeuralNetworkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Component;
@@ -11,9 +10,6 @@ public class NeuralNetworkStorage {
 
     @Autowired
     private NeuralNetworkRepository neuralNetworkRepository;
-
-    @Autowired
-    private GeneralNeuralNetworkRepository generalNeuralNetworkRepository;
 
     public NeuralNetworkStored getByIdOrThrow(Long id) {
         try {
