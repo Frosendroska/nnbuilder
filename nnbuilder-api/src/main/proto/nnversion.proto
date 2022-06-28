@@ -9,6 +9,8 @@ service NNVersionService {
   rpc deleteNNVersion (DeleteNNVersionRequest) returns (DeleteNNVersionResponse);
   rpc deleteProject (DeleteProjectRequest) returns (DeleteProjectResponse);
   rpc compareNNVersions (CompareRequest) returns (CompareResponse);
+  rpc undo (UndoRequest) returns (UndoResponse);
+  rpc redo (RedoRequest) returns (RedoResponse);
 }
 
 // Comparing 2 neural network versions
@@ -64,3 +66,19 @@ message DeleteProjectRequest {
 }
 
 message DeleteProjectResponse {}
+
+message UndoRequest {
+  int64 nnId = 1;
+}
+
+message UndoResponse {
+  string exception = 1;
+}
+
+message RedoRequest {
+  int64 nnId = 1;
+}
+
+message RedoResponse {
+  string exception = 1;
+}

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import java.util.LinkedList;
 import java.util.List;
+import org.hse.nnbuilder.modification_types.Modification;
 import org.hse.nnbuilder.services.Enums.NetworkType;
 import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 
@@ -33,6 +35,14 @@ public abstract class AbstractNeuralNetwork implements NeuralNetwork {
      * Param for constructor for default network
      */
     int defaultNumberOfLayers;
+    /**
+     * History of small changes
+     */
+    private List<Modification> modifications = new LinkedList<>();
+    /**
+     * Index in modifications showing the current nn version
+     */
+    private int currentVersionPointer = -1;
 
     protected void init(AbstractNeuralNetwork other) {
         this.nnType = other.getNNType();
@@ -80,5 +90,27 @@ public abstract class AbstractNeuralNetwork implements NeuralNetwork {
         // Neuron can be added everywhere (input is fixed)
         /* assert (0 < i && i < layers.size()); */
         layers.get(i).changeNumberOfNeuron(n);
+    }
+
+    public void addNewModification(Modification modification) {
+        modifications = modifications.subList(0, currentVersionPointer + 1);
+        modifications.add(modification);
+        currentVersionPointer++;
+    }
+
+    public void undo() {
+        if (currentVersionPointer < 0) {
+            throw new IllegalArgumentException("There are no previous chenges.");
+        }
+        modifications.get(currentVersionPointer).makeReverseChange(this);
+        currentVersionPointer--;
+    }
+
+    public void redo() {
+        if (currentVersionPointer == modifications.size() - 1) {
+            throw new IllegalArgumentException("There are no subsequent chenges.");
+        }
+        currentVersionPointer++;
+        modifications.get(currentVersionPointer).makeDirectChange(this);
     }
 }

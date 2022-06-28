@@ -114,4 +114,29 @@ class NNVersionService : NNVersionServiceGrpcKt.NNVersionServiceCoroutineImplBas
 
         return layersDiff
     }
+
+    @Override
+    override suspend fun undo(request: Nnversion.UndoRequest): Nnversion.UndoResponse {
+        // TODO add tests, check if it is enough for front
+        val responseBuilder = Nnversion.UndoResponse.newBuilder()
+        val nnId = request.nnId
+        try {
+            generalNeuralNetworkService.undo(nnId)
+        } catch (e: Exception) {
+            return responseBuilder.setException(e.message).build()
+        }
+        return responseBuilder.build()
+    }
+
+    @Override
+    override suspend fun redo(request: Nnversion.RedoRequest): Nnversion.RedoResponse {
+        val responseBuilder = Nnversion.RedoResponse.newBuilder()
+        val nnId = request.nnId
+        try {
+            generalNeuralNetworkService.redo(nnId)
+        } catch (e: Exception) {
+            return responseBuilder.setException(e.message).build()
+        }
+        return responseBuilder.build()
+    }
 }

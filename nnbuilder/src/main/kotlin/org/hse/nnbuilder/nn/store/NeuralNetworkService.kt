@@ -70,4 +70,16 @@ class NeuralNetworkService(
         }
         return 0
     }
+
+    fun undo(id: Long) {
+        val nn = getById(id)
+        nn.neuralNetwork.undo()
+        neuralNetworkRepository.save(nn)
+    }
+
+    fun redo(id: Long) {
+        val nn = getById(id)
+        nn.neuralNetwork.redo()
+        neuralNetworkRepository.save(nn)
+    }
 }

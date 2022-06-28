@@ -59,6 +59,10 @@ public final class NeuralNetworkStored {
         this.nnId = nnId;
     }
 
+    public GeneralNeuralNetwork getGeneralNeuralNetwork() {
+        return generalNeuralNetwork;
+    }
+
     // Abstract Neural Network
     public AbstractNeuralNetwork getNeuralNetwork() {
         return neuralNetwork;
