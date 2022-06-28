@@ -23,7 +23,7 @@ public class NNInfoService extends NNInfoServiceGrpc.NNInfoServiceImplBase {
 
         responseObserver.onNext(NNInfoResponse.newBuilder()
                 .setNnType(loaded.getNeuralNetwork().getNNType())
-                .addAllLayers(NNInfoService.buildAvailableParts(
+                .addAllLayers(NNInfoService.buildLayers(
                         loaded.getNeuralNetwork().getLayers()))
                 .setLearningRate(loaded.getNeuralNetwork().getLearningRate())
                 .setDefaultNumberOfLayers(loaded.getNeuralNetwork().getDefaultNumberOfLayers())
@@ -31,9 +31,9 @@ public class NNInfoService extends NNInfoServiceGrpc.NNInfoServiceImplBase {
         responseObserver.onCompleted();
     }
 
-    public static Iterable<? extends ProtoLayer> buildAvailableParts(List<Layer> layers) {
+    public static Iterable<? extends ProtoLayer> buildLayers(List<Layer> layers) {
         List<ProtoLayer> newLayers = new ArrayList<>();
-        for (var l : layers) {
+        for (Layer l : layers) {
             ProtoLayer curLayer = ProtoLayer.newBuilder()
                     .setNeurons(l.getNeurons())
                     .setLayerType(l.getLayerType())
