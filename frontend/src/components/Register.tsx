@@ -39,7 +39,7 @@ function Register(props: FormProps): JSX.Element {
     const sendRequest = (handleSubmit(async (data) => {
         setError('')
         const request = new api.RegisterRequest()
-            .setName(data.lastName != '' ? data.firstName + '' + data.lastName : data.firstName)
+            .setName(data.lastName != '' ? data.firstName + ' ' + data.lastName : data.firstName)
             .setEmail(data.email)
             .setPassword(data.password)
         const result = await props.authService.register(request)

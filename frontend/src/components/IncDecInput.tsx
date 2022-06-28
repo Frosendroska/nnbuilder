@@ -1,10 +1,15 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 function incDecInput(currentValue: number, setCurrentValue: (arg: number) => void, increment: number,
     isInteger = true, min = 0, max = Infinity) {
     const softValidation = new RegExp('^-?[0-9]*[.]?[0-9]{0,5}$')
     const hardValidation = new RegExp('^[0-9]+([.][0-9]{1,5})?$')
     const [localValue, setLocalValue] = useState(currentValue.toString())
+
+    useEffect(() => {
+        console.log(currentValue)
+        setLocalValue(currentValue.toString())
+    }, [currentValue]);
 
     function correctValue(arg: number) {
         return Math.min(max, Math.max(min, arg))

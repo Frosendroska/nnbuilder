@@ -8,6 +8,8 @@ import * as api from 'nnbuilder-api'
 import incDecInput from './IncDecInput'
 import LayersSettings from './LayersSettings'
 import ProjectInfo from '../structure/ProjectInfo'
+import {useStore} from "@nanostores/react";
+import {currentProject} from "./App";
 
 type EditorWindowProps = {
     modificationService: api.NNModificationServicePromiseClient
@@ -32,6 +34,7 @@ function calculateEdges(layers: LayerData[]): Edge[] {
 function EditorWindow(props: EditorWindowProps) {
     const [layers, setLayers] = useState<LayerData[]>([])
     const edges = calculateEdges(layers)
+    const project = useStore(currentProject)
 
     useEffect(() => {
         setLayers(props.projectInfo.layerData)
@@ -103,7 +106,7 @@ function EditorWindow(props: EditorWindowProps) {
 
         const svg = d3.select('#layers')
             .append('svg')
-            .attr('style', 'width: 100% height: 100%')
+            .attr('style', 'width: 100%; height: 100%')
         svg.append('g').attr('class', 'layers')
         svg.append('g').attr('class', 'graph')
     }, [])
@@ -111,11 +114,28 @@ function EditorWindow(props: EditorWindowProps) {
     function add(n = 1) {
         const layersId = layers.length
         const newLayers = [...Array(n).keys()].map((i) => new LayerData(layersId + i))
-        setLayers((prev) => prev.concat(newLayers))
+        let request = new api.NNModificationRequest().setNnid(Number(project))
+            newLayers.forEach((layer) => {
+                console.log(layer.id)
+                request = request.setAddlayer(new api.AddLayer()
+                    .setIndex(Number(layer.id) + 1).setLtype(layer.type))
+            })
+        props.modificationService.modifynn(request).then((result: api.NNModificationResponse) => {
+            setLayers((prev) => prev.concat(newLayers))
+        })
     }
 
     function remove(n = 1) {
-        setLayers((prev) => prev.slice(0, -n))
+        const layersAmount = layers.length
+        const ids = [...Array(n).keys()].map((i) => layersAmount - i - 1)
+        let request = new api.NNModificationRequest().setNnid(Number(project))
+        ids.forEach((id) => {
+            request = request.setDellayer(new api.AddLayer()
+                .setIndex(id))
+        })
+        props.modificationService.modifynn(request).then((result: api.NNModificationResponse) => {
+            setLayers((prev) => prev.slice(0, -n))
+        })
     }
 
     const neuronsStyle = {width: 1000, height: layers.length * 115 + 'px'}

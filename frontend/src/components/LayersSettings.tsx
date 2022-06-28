@@ -30,12 +30,7 @@ function LayerSettings(props: LayerProps): JSX.Element {
             .setChangenumberofneuron(new api.ChangeNumberOfNeuron()
                 .setIndex(props.layer.id)
                 .setNumber(layer.neurons.length))
-        props.modificationService.modifynn(request).then((result: api.NNModificationResponse) => {
-            console.log(result.getException())
-            console.log(result)
-            console.log(result)
-            console.log(result)
-        })
+        props.modificationService.modifynn(request).then((result: api.NNModificationResponse) => {})
     }
 
     return (<div className='layer-settings'>

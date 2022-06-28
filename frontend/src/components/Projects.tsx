@@ -105,7 +105,7 @@ function Projects(props: ProjectsProps): JSX.Element {
             {
                 step == 0 ?
                     <div className={'projects-page'}>
-                        Hello, {username}, here will be your projects!
+                        <div className={'hello-user'}>Hello, {username}, here will be your projects!</div>
                         <h2>Run learnt</h2>
                         <div className={'learnt'}>
                             <select>
