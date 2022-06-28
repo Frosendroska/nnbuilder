@@ -109,7 +109,7 @@ class NNVersionServiceTest {
         val nnId = nnModificationService.creatennForUser(user.getEmail(), Enums.NetworkType.FF, "test", null)
         val originalNNStored = neuralNetworkService.getById(nnId)
         val originalNN = originalNNStored.neuralNetwork
-        val request = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId).build()
+        val request = Nnversion.MakeNNSnapshotRequest.newBuilder().setNnId(nnId).build()
 
         // Action
         val response = nnVersionService.makeNNSnapshot(request)
@@ -130,7 +130,7 @@ class NNVersionServiceTest {
         // Prepare data
         val nnId = nnModificationService.creatennForUser(user.getEmail(), Enums.NetworkType.FF, "test", null)
         assertTrue(neuralNetworkService.checkExistsById(nnId))
-        val request = Nnversion.deleteNNVersionRequest.newBuilder().setNnId(nnId).build()
+        val request = Nnversion.DeleteNNVersionRequest.newBuilder().setNnId(nnId).build()
 
         // Action
         nnVersionService.deleteNNVersion(request)
@@ -145,7 +145,7 @@ class NNVersionServiceTest {
         val nnId = nnModificationService.creatennForUser(user.getEmail(), Enums.NetworkType.FF, "test", null)
         val projectId = generalNeuralNetworkService.getByIdOfNNVersion(nnId).getId()
         assertTrue(generalNeuralNetworkService.checkExistsById(projectId))
-        val request = Nnversion.deleteProjectRequest.newBuilder().setProjectId(projectId).build()
+        val request = Nnversion.DeleteProjectRequest.newBuilder().setProjectId(projectId).build()
 
         // Action
         nnVersionService.deleteProject(request)
@@ -160,11 +160,11 @@ class NNVersionServiceTest {
         // Prepare data
         val nnId1 = nnModificationService.creatennForUser(user.getEmail(), Enums.NetworkType.FF, "test", null)
         val projectId = generalNeuralNetworkService.getByIdOfNNVersion(nnId1).getId()
-        val snapshotRequest = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
+        val snapshotRequest = Nnversion.MakeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
         val snapshotResponse = nnVersionService.makeNNSnapshot(snapshotRequest)
         val nnId2 = snapshotResponse.nnId
-        val deleteNNVersionRequest1 = Nnversion.deleteNNVersionRequest.newBuilder().setNnId(nnId1).build()
-        val deleteNNVersionRequest2 = Nnversion.deleteNNVersionRequest.newBuilder().setNnId(nnId2).build()
+        val deleteNNVersionRequest1 = Nnversion.DeleteNNVersionRequest.newBuilder().setNnId(nnId1).build()
+        val deleteNNVersionRequest2 = Nnversion.DeleteNNVersionRequest.newBuilder().setNnId(nnId2).build()
 
         assertTrue(neuralNetworkService.checkExistsById(nnId1))
         assertTrue(neuralNetworkService.checkExistsById(nnId2))
@@ -188,10 +188,10 @@ class NNVersionServiceTest {
     fun compareNNVersionsTest() = runBlockingTest {
         // Prepare data
         val nnId1 = nnModificationService.creatennForUser(user.getEmail(), Enums.NetworkType.FF, "test", null)
-        val snapshotRequest = Nnversion.makeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
+        val snapshotRequest = Nnversion.MakeNNSnapshotRequest.newBuilder().setNnId(nnId1).build()
         val snapshotResponse = nnVersionService.makeNNSnapshot(snapshotRequest)
         val nnId2 = snapshotResponse.nnId
-        val compareRequest = Nnversion.compareRequest.newBuilder()
+        val compareRequest = Nnversion.CompareRequest.newBuilder()
             .setNnId1(nnId1)
             .setNnId2(nnId2)
             .build()
