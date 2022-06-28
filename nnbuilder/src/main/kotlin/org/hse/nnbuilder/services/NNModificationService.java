@@ -2,21 +2,14 @@ package org.hse.nnbuilder.services;
 
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.hse.nnbuilder.modification_types.AddLayer;
-import org.hse.nnbuilder.modification_types.ChangeActivationFunction;
-import org.hse.nnbuilder.modification_types.ChangeNumberOfNeuron;
-import org.hse.nnbuilder.modification_types.DelLayer;
-import org.hse.nnbuilder.modification_types.Modification;
 import org.hse.nnbuilder.nn.ConvolutionalNN;
 import org.hse.nnbuilder.nn.FeedForwardNN;
-import org.hse.nnbuilder.nn.Layer;
 import org.hse.nnbuilder.nn.LongShortTermMemoryNN;
 import org.hse.nnbuilder.nn.RecurrentNN;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStorage;
 import org.hse.nnbuilder.nn.store.NeuralNetworkStored;
 import org.hse.nnbuilder.services.Enums.ActionType;
 import org.hse.nnbuilder.services.Enums.NetworkType;
-import org.hse.nnbuilder.services.Nnmodification.ActivationFunction;
 import org.hse.nnbuilder.services.Nnmodification.NNCreationResponse;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationRequest;
 import org.hse.nnbuilder.services.Nnmodification.NNModificationResponse;
@@ -45,12 +38,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         Long nnId = request.getNnId();
         NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
 
-        Modification _modification = null;
-
         if (request.hasAddLayer()) {
-            _modification = new AddLayer(
-                    request.getAddLayer().getIndex(), request.getAddLayer().getLType());
-
             loaded.getNeuralNetwork()
                     .addLayer(
                             request.getAddLayer().getIndex(), // i
@@ -58,23 +46,12 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                             );
         }
         if (request.hasDelLayer()) {
-            int index = request.getDelLayer().getIndex();
-            Layer deletedLayer = loaded.getNeuralNetwork().getLayers().get(index);
-            _modification = new DelLayer(index, deletedLayer);
-
             loaded.getNeuralNetwork()
                     .delLayer(
                             request.getDelLayer().getIndex() // i
                             );
         }
         if (request.hasChangeActivationFunction()) {
-            int index = request.getChangeActivationFunction().getIndex();
-            ActivationFunction oldActivationFunction =
-                    loaded.getNeuralNetwork().getLayers().get(index).getActivationFunction();
-            ActivationFunction newActivationFunction =
-                    request.getChangeActivationFunction().getF();
-            _modification = new ChangeActivationFunction(index, oldActivationFunction, newActivationFunction);
-
             loaded.getNeuralNetwork()
                     .changeActivationFunction(
                             request.getChangeActivationFunction().getIndex(), // i
@@ -82,11 +59,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                             );
         }
         if (request.hasChangeNumberOfNeuron()) {
-            int index = request.getChangeActivationFunction().getIndex();
-            long oldNumber = loaded.getNeuralNetwork().getLayers().get(index).getNeurons();
-            long newNumber = request.getChangeNumberOfNeuron().getNumber();
-            _modification = new ChangeNumberOfNeuron(index, oldNumber, newNumber);
-
             loaded.getNeuralNetwork()
                     .changeNumberOfNeuron(
                             request.getChangeNumberOfNeuron().getIndex(), // i
@@ -94,7 +66,6 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                             );
         }
 
-        //loaded.getNeuralNetwork().addNewModification(modification);
         neuralNetworkStorage.save(loaded);
 
         NNModificationResponse responseWithOk =
