@@ -23,13 +23,13 @@ import javax.persistence.Table
 class GeneralNeuralNetwork(
     @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE, CascadeType.REFRESH])
     @JoinColumn(name = "owner_id", nullable = false)
-    var owner: User,
+    var owner: User? = null,
 
     @Column
-    val name: String,
+    var name: String = "",
 
     @Column
-    val actionType: Enums.ActionType?
+    var actionType: Enums.ActionType? = null
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
