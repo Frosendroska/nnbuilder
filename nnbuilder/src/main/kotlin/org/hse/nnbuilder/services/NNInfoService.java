@@ -23,8 +23,8 @@ public class NNInfoService extends NNInfoServiceGrpc.NNInfoServiceImplBase {
 
         responseObserver.onNext(NNInfoResponse.newBuilder()
                 .setNnType(loaded.getNeuralNetwork().getNNType())
-                .addAllLayers(NNInfoService.buildLayers(
-                        loaded.getNeuralNetwork().getLayers()))
+                .addAllLayers(
+                        NNInfoService.buildLayers(loaded.getNeuralNetwork().getLayers()))
                 .setLearningRate(loaded.getNeuralNetwork().getLearningRate())
                 .setDefaultNumberOfLayers(loaded.getNeuralNetwork().getDefaultNumberOfLayers())
                 .build());
