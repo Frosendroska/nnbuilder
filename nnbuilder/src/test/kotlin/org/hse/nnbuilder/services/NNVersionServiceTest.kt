@@ -99,7 +99,7 @@ class NNVersionServiceTest {
         val project = generalNeuralNetworkService.getByIdOfNNVersion(nnId) // general neural network
 
         // Assert
-        assertTrue(project.owner.getId() == user.getId())
+        assertTrue(project.owner?.getId() == user.getId())
         assertTrue(nnVersion.generalNeuralNetwork.getId() == project.getId())
     }
 
