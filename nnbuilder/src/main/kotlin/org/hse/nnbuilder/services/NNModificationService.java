@@ -45,10 +45,10 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         Long nnId = request.getNnId();
         NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
 
-        Modification modification = null;
+        Modification _modification = null;
 
         if (request.hasAddLayer()) {
-            modification = new AddLayer(
+            _modification = new AddLayer(
                     request.getAddLayer().getIndex(), request.getAddLayer().getLType());
 
             loaded.getNeuralNetwork()
@@ -60,7 +60,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
         if (request.hasDelLayer()) {
             int index = request.getDelLayer().getIndex();
             Layer deletedLayer = loaded.getNeuralNetwork().getLayers().get(index);
-            modification = new DelLayer(index, deletedLayer);
+            _modification = new DelLayer(index, deletedLayer);
 
             loaded.getNeuralNetwork()
                     .delLayer(
@@ -73,7 +73,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                     loaded.getNeuralNetwork().getLayers().get(index).getActivationFunction();
             ActivationFunction newActivationFunction =
                     request.getChangeActivationFunction().getF();
-            modification = new ChangeActivationFunction(index, oldActivationFunction, newActivationFunction);
+            _modification = new ChangeActivationFunction(index, oldActivationFunction, newActivationFunction);
 
             loaded.getNeuralNetwork()
                     .changeActivationFunction(
@@ -85,7 +85,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
             int index = request.getChangeActivationFunction().getIndex();
             long oldNumber = loaded.getNeuralNetwork().getLayers().get(index).getNeurons();
             long newNumber = request.getChangeNumberOfNeuron().getNumber();
-            modification = new ChangeNumberOfNeuron(index, oldNumber, newNumber);
+            _modification = new ChangeNumberOfNeuron(index, oldNumber, newNumber);
 
             loaded.getNeuralNetwork()
                     .changeNumberOfNeuron(
