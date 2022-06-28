@@ -21,7 +21,7 @@ public class NNInfoService extends NNInfoServiceGrpc.NNInfoServiceImplBase {
     @Override
     public void getNNInfo(NNInfoRequest request, StreamObserver<NNInfoResponse> responseObserver) {
         Long nnId = request.getNnId();
-        NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
+        NeuralNetworkStored loaded = neuralNetworkStorage.getByGeneralNNIdOrThrow(nnId);
 
         responseObserver.onNext(NNInfoResponse.newBuilder()
                 .setNnType(loaded.getNeuralNetwork().getNNType())

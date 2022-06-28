@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,6 +35,7 @@ public final class NeuralNetworkStored {
     public GeneralNeuralNetwork generalNeuralNetwork;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long nnId;
 
     public NeuralNetworkStored() {}
@@ -45,7 +48,6 @@ public final class NeuralNetworkStored {
     public NeuralNetworkStored(AbstractNeuralNetwork neuralNetwork, GeneralNeuralNetwork generalNeuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         this.generalNeuralNetwork = generalNeuralNetwork;
-        this.nnId = generalNeuralNetwork.getId();
     }
 
     // Id
