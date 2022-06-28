@@ -21,19 +21,19 @@ public class NNInfoService extends NNInfoServiceGrpc.NNInfoServiceImplBase {
     @Override
     public void getNNInfo(NNInfoRequest request, StreamObserver<NNInfoResponse> responseObserver) {
         Long nnId = request.getNnId();
-        NeuralNetworkStored loaded = neuralNetworkStorage.getByGeneralNNIdOrThrow(nnId);
+        NeuralNetworkStored loaded = neuralNetworkStorage.getByIdOrThrow(nnId);
 
         responseObserver.onNext(NNInfoResponse.newBuilder()
                 .setNnType(loaded.getNeuralNetwork().getNNType())
-                .addAllLayers(NNInfoService.buildAvailableParts(
-                        loaded.getNeuralNetwork().getLayers()))
+                .addAllLayers(
+                        NNInfoService.buildLayers(loaded.getNeuralNetwork().getLayers()))
                 .setLearningRate(loaded.getNeuralNetwork().getLearningRate())
                 .setDefaultNumberOfLayers(loaded.getNeuralNetwork().getDefaultNumberOfLayers())
                 .build());
         responseObserver.onCompleted();
     }
 
-    public static Iterable<? extends ProtoLayer> buildAvailableParts(List<Layer> layers) {
+    public static Iterable<? extends ProtoLayer> buildLayers(List<Layer> layers) {
         List<ProtoLayer> newLayers = new ArrayList<>();
         for (Layer l : layers) {
             ProtoLayer curLayer = ProtoLayer.newBuilder()
