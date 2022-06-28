@@ -94,7 +94,7 @@ public class NNModificationService extends NNModificationServiceGrpc.NNModificat
                             );
         }
 
-        loaded.getNeuralNetwork().addNewModification(modification);
+        //loaded.getNeuralNetwork().addNewModification(modification);
         neuralNetworkStorage.save(loaded);
 
         NNModificationResponse responseWithOk =
