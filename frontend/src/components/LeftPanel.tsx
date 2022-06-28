@@ -5,7 +5,7 @@ import * as api from 'nnbuilder-api'
 import ProjectInfo from '../structure/ProjectInfo'
 import {typesMap} from '../structure/Project'
 import {useStore} from '@nanostores/react'
-import {currentProject, token} from './App'
+import {currentVersion, token} from './App'
 
 type PanelProps = {
     taskQueueService: api.TasksQueueServicePromiseClient
@@ -21,7 +21,7 @@ function LeftPanel(props: PanelProps): JSX.Element {
     const [target, setTarget] = useState('')
     const [dataset, setDataset] = useState(0)
     const user = useStore(token)
-    const nnId = useStore(currentProject)
+    const nnId = useStore(currentVersion)
     const tokenInfo = {'Authorization': 'Bearer ' + user}
 
     async function readFile(file: File): Promise<ArrayBuffer> {
