@@ -17,14 +17,14 @@ def train():
     cur = con.cursor()
 
     task_info = structures.Task(upload(cur, "tasksqueue", "task_id", task_id))
-    dataset = structures.Dataset(upload(cur, "datasets", "ds_id", task_info.dataset))
+    dataset = structures.Dataset(upload(cur, "datasets", "dataset_id", task_info.dataset))
     info = json.loads(upload(cur, "neuralnetworks", "nn_id", task_info.nnDescription)[1])
 
     model = ctor.NeuralNetwork()
     model.load_info(info)
 
     if task_info.model is not None:
-        model_params = upload(cur, "models", "m_id", task_info.model)
+        model_params = upload(cur, "nntrained_models", "nn_trained_model_id", task_info.model)
         ctor.restore_net(model_params[1], model)
 
     if task_info.task_type == structures.TaskType.applyToData:
@@ -33,8 +33,8 @@ def train():
         data = df.to_csv(index=False)
 
         generate_answer_id = numpy.random.randint(1000000)
-        insert(cur, "answers", "a_id", "answers", generate_answer_id, data, task_id)
-        update(cur, "a_id", generate_answer_id, task_id)
+        insert(cur, "predictions", "prediction_id", "predictions", generate_answer_id, data, task_id)
+        update(cur, "prediction_id", generate_answer_id, task_id)
 
     else:
         nn_type = structures.TrainType(int(task_info.task_type))
@@ -45,8 +45,8 @@ def train():
         ctor.train(model, dataset, optimizer, history, task_info.epoch)
         network = ctor.save(model, optimizer, history)
         generate_model_id = numpy.random.randint(1000000)
-        insert(cur, "models", "m_id", "model", generate_model_id, network, task_id)
-        update(cur, "m_id", generate_model_id, task_id)
+        insert(cur, "nntrained_models", "nn_trained_model_id", "nn_trained_model", generate_model_id, network, task_id)
+        update(cur, "model_id", generate_model_id, task_id)
 
     #logging.info("Done")
 

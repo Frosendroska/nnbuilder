@@ -36,7 +36,7 @@ class TaskType(enum.Enum):
 class Task(object):
     def __init__(self, args):
         self.epoch = args[2]
-        self.task_type = TaskType(args[5])
+        self.task_type = TaskType(args[6])
 
         self.dataset = args[7]
         self.nnDescription = args[8]
