@@ -103,10 +103,10 @@ def train(model, dataset, optimizer, history, epochs=DEFAULT_EPOCH):
 
 def save(network, optimizer, history):
     dict = network.state_dict()
+    print(tensor_to_lists(dict))
     state = {
         'state_dict': tensor_to_lists(dict),
         'type': int(network.type),
-        'history': history
     }
     info = json.dumps(state)
     return info
