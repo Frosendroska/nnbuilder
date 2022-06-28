@@ -79,6 +79,7 @@ def train_step(data, target, model, optimizer):
         loss.backward()
         optimizer.step()
 
+
 def test_step(data, target, model, history):
     size = len(data)
     test_loss = 0
@@ -94,6 +95,7 @@ def test_step(data, target, model, history):
 
     #logging.info(f"Avg loss: {test_loss:>8f}")
 
+
 def train(model, dataset, optimizer, history, epochs=DEFAULT_EPOCH):
     X_train, X_test, y_train, y_test = dataset.split()
     for ep in range(epochs):
@@ -101,15 +103,17 @@ def train(model, dataset, optimizer, history, epochs=DEFAULT_EPOCH):
         train_step(X_train, y_train, model, optimizer)
         test_step(X_test, y_test, model, history)
 
+
 def save(network, optimizer, history):
     dict = network.state_dict()
+    #print(tensor_to_lists(dict))
     state = {
         'state_dict': tensor_to_lists(dict),
         'type': int(network.type),
-        'history': history
     }
     info = json.dumps(state)
     return info
+
 
 def restore_net(states, model):
     state_dict = json.loads(states)

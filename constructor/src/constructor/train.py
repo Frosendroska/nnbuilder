@@ -1,7 +1,7 @@
 import sys
 import numpy.random
 import pandas as pd
-import constructor.src.constructor.src.constructor as ctor
+import constructor as ctor
 import structures
 import json
 import torch
