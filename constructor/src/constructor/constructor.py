@@ -1,9 +1,9 @@
 import torch.nn as nn
 import json
 import torch
-import structures
 #import logging
-from structures import TrainType
+
+from constructor.structures import TrainType
 
 
 DEFAULT_EPOCH = 100
@@ -49,7 +49,7 @@ class NeuralNetwork(nn.Module):
 
     def load_type(self, nntype):
         self.type = nntype
-        if nntype == structures.TrainType.classification:
+        if nntype == TrainType.classification:
             self.criterion = loss_functions['CrossEntropy']
         else:
             self.criterion = loss_functions['MSELoss']

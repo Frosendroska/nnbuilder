@@ -40,9 +40,9 @@ public class TaskQueuedStorage {
         dsStored.getTasks().add(taskQueued);
         nnStored.getTasks().add(taskQueued);
 
+        tasksQueueRepository.save(taskQueued);
         neuralNetworkRepository.save(nnStored);
         datasetRepository.save(dsStored);
-        tasksQueueRepository.save(taskQueued);
     }
 
     @Transactional
