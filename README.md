@@ -3,6 +3,12 @@
 ## About a project
 
  WEB PLATFORM FOR RESEARCHERS TO HELP THEM MAKE A NEURAL NETWORK USING A PAINLESS VISUAL CONSTRUCTOR AND THEN UPLOAD A DATASET TO GET A TRAINED MODEL
+ 
+ ##  Run in prod
+ 
+ gw build -x test 
+ 
+ java -jar nnbuilder/build/libs/nnbuilder-0.0.1-SNAPSHOT.jar
 
 ## Development setup
 
