@@ -1,5 +1,17 @@
 # nnbuilder ![Build Status](https://img.shields.io/circleci/build/github/hse-mentorship/nnbuilder?style=flat-square) ![Lines of Code](https://img.shields.io/tokei/lines/github/hse-mentorship/nnbuilder?style=flat-square)
 
+## About a project
+
+ WEB PLATFORM FOR RESEARCHERS TO HELP THEM MAKE A NEURAL NETWORK USING A PAINLESS VISUAL CONSTRUCTOR AND THEN UPLOAD A DATASET TO GET A TRAINED MODEL
+ 
+ ##  Run in prod
+ 
+ 1) Add DB parameters to .env
+ 
+ 2) gw build -x test 
+ 
+ 3)  java -jar nnbuilder/build/libs/nnbuilder-0.0.1-SNAPSHOT.jar
+
 ## Development setup
 
 0. Install JDK 17, Gradle, Node, Docker; alias `./gradlew` to `gw`
