@@ -6,9 +6,11 @@
  
  ##  Run in prod
  
- gw build -x test 
+ 1) Add DB parameters to .env
  
- java -jar nnbuilder/build/libs/nnbuilder-0.0.1-SNAPSHOT.jar
+ 2) gw build -x test 
+ 
+ 3)  java -jar nnbuilder/build/libs/nnbuilder-0.0.1-SNAPSHOT.jar
 
 ## Development setup
 
